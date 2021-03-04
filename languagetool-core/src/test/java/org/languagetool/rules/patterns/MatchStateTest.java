@@ -54,6 +54,12 @@ public class MatchStateTest {
     assertThat(startLower.convertCase("xxx", "Yyy", new FakeLanguage("en")), is("xxx"));
     assertThat(startLower.convertCase("XXX", "Yyy", new FakeLanguage("en")), is("xXX"));
     assertThat(startLower.convertCase("Xxx", "Yyy", new FakeLanguage("en")), is("xxx"));
+
+    MatchState notashkeel = getMatchState(Match.CaseConversion.NOTASHKEEL);
+    assertThat(notashkeel.convertCase("سلام", "yyy", new FakeLanguage("ar")), is("سلام"));
+    // with diacritics
+    assertThat(notashkeel.convertCase("سَلام", "yyy", new FakeLanguage("ar")), is("سلام"));
+
   }
 
   private MatchState getMatchState(Match.CaseConversion conversion) {
