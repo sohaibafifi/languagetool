@@ -35,6 +35,7 @@ USA
     <!ENTITY verb_prefixes "ي|ت|ن|أ|سي|ست|سن|سأ">
     <!ENTITY verb6_prefixes "ا|ي|ت|ن|أ|سي|ست|سن|سأ">
     <!ENTITY conj "و|ف">
+    <!ENTITY prep "ب|ك|ل">
     <!ENTITY enclitics "|ه|ها|هما|هم|هن|ك|كما|كم|كن|ي|نا">
     <!ENTITY verb_enclitics "ه|ها|هما|هم|هن|ك|كما|كم|كن|ني|نا">
     <!ENTITY forms_3an "عن|عني|عنا|عنك|عنكما|عنكم|عنكن|عنه|عنها|عنهما|عنهم|عنهن">
@@ -322,6 +323,92 @@ USA
        <!-- FIXME: توليد صيغة المثنى المنصوب المتصل بضمير-->
              <!--  <example correction="هاتين كتفيه" type="incorrect"><marker>هذين كتفيه</marker>.</example>-->
         <example correction="وهاتين الكتفين" type="incorrect"><marker>وهذين الكتفين</marker>.</example>
+      </rule>
+      <rule id="gender_0018_hadhani_case" name="تطابق الإعراب مع هذان">
+        <pattern>
+          <marker>
+            <token inflected="yes">هذان</token>
+            <token postag="N.*;M2[I|A].*;--.*" postag_regexp="yes"/>
+          </marker>
+        </pattern>
+        <message>الكلمة "\2" بدل من هذان لذا تتبعه في الإعراب، ربما عليك مراجعة العبارة: <suggestion><match no="1" regexp_match="هذان" regexp_replace="هذين"/>&nbsp;<match no="2"/></suggestion><suggestion><match no="1"/>&nbsp;<match no="2" postag="(N.*;M2)([I|A])(.*)" postag_replace="$1U$3" postag_regexp="yes"/></suggestion>
+        </message>
+        <example correction="هذين الكتابين|هذان الكتابان" type="incorrect"><marker>هذان الكتابين</marker></example>
+        <example correction="وهذين الكتابين|وهذان الكتابان" type="incorrect"><marker>وهذان الكتابين</marker></example>
+        <example correction="هذين كتابين|هذان كتابان" type="incorrect"><marker>هذان كتابين</marker></example>
+      </rule>
+       <rule id="gender_0019_hadhani_case" name="تطابق الإعراب مع هذين">
+<!-- طبقنا هذه القاعدة تعطي اقتراحين على  هذين وهذين فهذين فقط
+أمّا "بهذين ولهذين فتعطي حالة واحدة -->
+        <pattern>
+          <marker>
+            <token regexp="yes">(&conj;)?هذين</token>
+            <token postag="N.*;M2U.*;--.*" postag_regexp="yes"/>
+          </marker>
+        </pattern>
+        <message>الكلمة "\2" بدل من هذين لذا تتبعه في الإعراب، ربما عليك مراجعة العبارة: <suggestion><match no="1" regexp_match="هذين" regexp_replace="هذان"/>&nbsp;<match no="2"/></suggestion><suggestion><match no="1"/>&nbsp;<match no="2" postag="(N.*;M2)(U)(.*)" postag_replace="$1A$3" postag_regexp="yes"/></suggestion>
+        </message>
+        <example correction="هذان الكتابان|هذين الكتابين" type="incorrect"><marker>هذين الكتابان</marker></example>
+        <example correction="وهذان الكتابان|وهذين الكتابين" type="incorrect"><marker>وهذين الكتابان</marker></example>
+        <example correction="هذان كتابان|هذين كتابين" type="incorrect"><marker>هذين كتابان</marker></example>
+      </rule>
+      <rule id="gender_0020_hadhani_case" name="تطابق الإعراب مع هذين">
+<!-- طبقنا هذه القاعدة تعطي اقتراحين على  هذين وهذين فهذين فقط
+أمّا "بهذين ولهذين فتعطي حالة واحدة -->
+        <pattern>
+          <marker>
+            <token regexp="yes">(&conj;)?(&prep;)هذين</token>
+            <token postag="N.*;M2U.*;--.*" postag_regexp="yes"/>
+          </marker>
+        </pattern>
+        <message>الكلمة "\2" بدل من هذين لذا تتبعه في الإعراب، ربما عليك مراجعة العبارة: <suggestion><match no="1"/>&nbsp;<match no="2" postag="(N.*;M2)(U)(.*)" postag_replace="$1A$3" postag_regexp="yes"/></suggestion>
+        </message>
+        <example correction="بهذين الكتابين" type="incorrect"><marker>بهذين الكتابان</marker></example>
+        <example correction="وبهذين الكتابين" type="incorrect"><marker>وبهذين الكتابان</marker></example>
+        <example correction="كهذين كتابين" type="incorrect"><marker>كهذين كتابان</marker></example>
+      </rule>
+      <rule id="gender_0021_hatayni_case" name="تطابق الإعراب مع هاتان">
+        <pattern>
+          <marker>
+            <token inflected="yes">هاتان</token>
+            <token postag="N.*;F2[I|A].*;--.*" postag_regexp="yes"/>
+          </marker>
+        </pattern>
+        <message>الكلمة "\2" بدل من هاتان لذا تتبعه في الإعراب، ربما عليك مراجعة العبارة: <suggestion><match no="1" regexp_match="هاتان" regexp_replace="هاتين"/>&nbsp;<match no="2"/></suggestion><suggestion><match no="1"/>&nbsp;<match no="2" postag="(N.*;F2)([I|A])(.*)" postag_replace="$1U$3" postag_regexp="yes"/></suggestion>
+        </message>
+        <example correction="هاتين البطاقتين|هاتان البطاقتان" type="incorrect"><marker>هاتان البطاقتين</marker></example>
+        <example correction="وهاتين البطاقتين|وهاتان البطاقتان" type="incorrect"><marker>وهاتان البطاقتين</marker></example>
+        <example correction="هاتين بطاقتين|هاتان بطاقتان" type="incorrect"><marker>هاتان بطاقتين</marker></example>
+      </rule>
+       <rule id="gender_0022_hatayni_case" name="تطابق الإعراب مع هاتين">
+<!-- طبقنا هذه القاعدة تعطي اقتراحين على  هاتين وهاتين فهاتين فقط
+أمّا "بهاتين ولهاتين فتعطي حالة واحدة -->
+        <pattern>
+          <marker>
+            <token regexp="yes">(&conj;)?هاتين</token>
+            <token postag="N.*;F2U.*;--.*" postag_regexp="yes"/>
+          </marker>
+        </pattern>
+        <message>الكلمة "\2" بدل من هاتين لذا تتبعه في الإعراب، ربما عليك مراجعة العبارة: <suggestion><match no="1" regexp_match="هاتين" regexp_replace="هاتان"/>&nbsp;<match no="2"/></suggestion><suggestion><match no="1"/>&nbsp;<match no="2" postag="(N.*;F2)(U)(.*)" postag_replace="$1A$3" postag_regexp="yes"/></suggestion>
+        </message>
+        <example correction="هاتان البطاقتان|هاتين البطاقتين" type="incorrect"><marker>هاتين البطاقتان</marker></example>
+        <example correction="وهاتان البطاقتان|وهاتين البطاقتين" type="incorrect"><marker>وهاتين البطاقتان</marker></example>
+        <example correction="هاتان بطاقتان|هاتين بطاقتين" type="incorrect"><marker>هاتين بطاقتان</marker></example>
+      </rule>
+      <rule id="gender_0023_hatayni_case" name="تطابق الإعراب مع هاتين">
+<!-- طبقنا هذه القاعدة تعطي اقتراحين على  هاتين وهاتين فهاتين فقط
+أمّا "بهاتين ولهاتين فتعطي حالة واحدة -->
+        <pattern>
+          <marker>
+            <token regexp="yes">(&conj;)?(&prep;)هاتين</token>
+            <token postag="N.*;F2U.*;--.*" postag_regexp="yes"/>
+          </marker>
+        </pattern>
+        <message>الكلمة "\2" بدل من هاتين لذا تتبعه في الإعراب، ربما عليك مراجعة العبارة: <suggestion><match no="1"/>&nbsp;<match no="2" postag="(N.*;F2)(U)(.*)" postag_replace="$1A$3" postag_regexp="yes"/></suggestion>
+        </message>
+        <example correction="بهاتين البطاقتين" type="incorrect"><marker>بهاتين البطاقتان</marker></example>
+        <example correction="وبهاتين البطاقتين" type="incorrect"><marker>وبهاتين البطاقتان</marker></example>
+        <example correction="كهاتين بطاقتين" type="incorrect"><marker>كهاتين بطاقتان</marker></example>
       </rule>
      <!-- هذه القاعة متضمنة في القواعد السابقة، 
 
