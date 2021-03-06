@@ -119,15 +119,15 @@ USA
       <rule id="gender_0001_hadha" name="تطابق النوع مع هذا">
         <pattern>
           <marker>
-            <token>هذا</token>
+            <token inflected="yes">هذا</token>
+            <token postag="N.*;F1.*;--.*" postag_regexp="yes"/>
           </marker>
-          <token postag="N.*;F1.*;--.*" postag_regexp="yes"/>
         </pattern>
-        <message>انتبه إلى اسم الإشارة للمذكر، ربما عليك أن تضع اسم إشارة مؤنثا <suggestion>هذه</suggestion>?
-                </message>
-        <example correction="هذه" type="incorrect"><marker>هذا</marker> السلامة </example>
-        <!--                <example correction="هذه"><marker>هذا</marker> سلامته </example>-->
-        <example correction="هذه" type="incorrect"><marker>هذا</marker> سلامة </example>
+        <message>انتبه إلى اسم الإشارة للمذكر، ربما عليك أن تضع اسم إشارة مؤنثا <suggestion>هذه&nbsp;<match no="2"/></suggestion>?
+        </message>
+        <example correction="هذه السلامة" type="incorrect"><marker>هذا السلامة</marker></example>
+        <example correction="هذه سلامته"><marker>هذا سلامته</marker></example>
+        <example correction="هذه سلامة" type="incorrect"><marker>هذا سلامة</marker></example>
       </rule>
       <rule id="gender_0002_hadhihi" name="تطابق النوع مع هذه">
         <pattern>
