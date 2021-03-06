@@ -218,6 +218,111 @@ USA
         <example correction="تلك كتفه" type="incorrect"><marker>ذلك كتفه</marker>.</example>
         <example correction="وتلك الكتف" type="incorrect"><marker>وذلك الكتف</marker>.</example>
       </rule>
+
+      <rule id="gender_0010_hadhani" name="تطابق النوع مع هذان">
+        <pattern>
+          <marker>
+            <token inflected="yes">هذان</token>
+            <token postag="N.*;F2U.*;--.*" postag_regexp="yes"/>
+          </marker>
+        </pattern>
+        <message>الكلمة "\2"  مؤنثة، ربما عليك وضع اسم اشارة مؤنث: <suggestion><match no="1" regexp_match="هذان" regexp_replace="هاتان"/>&nbsp;<match no="2"/></suggestion>
+        </message>
+        <example correction="هاتان البطاقتان" type="incorrect"><marker>هذان البطاقتان</marker></example>
+        <example correction="وهاتان البطاقتان" type="incorrect"><marker>وهذان البطاقتان</marker></example>
+        <example correction="هاتان بطاقتاه"><marker>هذان بطاقتاه</marker></example>
+        <example correction="هاتان بطاقتان" type="incorrect"><marker>هذان بطاقتان</marker></example>
+      </rule>
+      <rule id="gender_0011_hatani" name="تطابق النوع مع هاتان">
+        <pattern>
+          <marker>
+            <token inflected="yes">هاتان</token>
+            <token postag="N.*;M2U.*;--.*" postag_regexp="yes"/>
+        </marker>
+        </pattern>
+        <message>الكلمة "\2"  مذكرة، ضع اسم اشارة مذكرًا: 
+ <suggestion><match no="1" regexp_match="هاتان" regexp_replace="هذان"/>&nbsp;\2</suggestion>
+                </message>
+        <example correction="هذان السلامان" type="incorrect"><marker>هاتان السلامان</marker></example>
+        <example correction="هذان سلامان" type="incorrect"><marker>هاتان سلامان</marker></example>
+      </rule>
+      <rule id="gender_0012_hadhani" name="تطابق هذان مع الكلمات ملتبسة النوع">
+        <pattern>
+          <marker>
+            <token>هاتان</token>
+          <token regexp="yes" inflected="yes" postag="N.*;.?2U.*;--.*" postag_regexp="yes">&wrong_feminine;</token>
+        </marker>
+        </pattern>
+        <message>الكلمة "\2"  مؤنثة، ضع اسم اشارة مؤنثة:  <suggestion><match no="1" regexp_match="هاتان" regexp_replace="هذان"/>&nbsp;<match no="2"/></suggestion></message>
+        <example correction="هذان الذقنان"><marker>هاتان الذقنان</marker>.
+    </example>
+      </rule>
+      <rule id="gender_0013_hatani" name="تطابق هاتان مع الكلمات ملتبسة النوع">
+        <pattern>
+          <marker>
+            <token inflected="yes">هذان</token>
+          <token regexp="yes" inflected="yes" postag="N.*;.?2U.*;--.*" postag_regexp="yes">&wrong_masculine;</token>
+         </marker>
+        </pattern>
+        <message>الكلمة "\2"  مؤنثة، ضع اسم اشارة مؤنثة: 
+            <suggestion><match no="1" regexp_match="هذان" regexp_replace="هاتان"/>&nbsp;<match no="2"/></suggestion></message>
+        <example correction="هاتان الكتفان" type="incorrect"><marker>هذان الكتفان</marker>.</example>
+        <example correction="هاتان كتفاه" type="incorrect"><marker>هذان كتفاه</marker>.</example>
+        <example correction="وهاتان الكتفان" type="incorrect"><marker>وهذان الكتفان</marker>.</example>
+      </rule>
+      <rule id="gender_0014_hadhayni" name="تطابق النوع مع هذين">
+        <pattern>
+          <marker>
+            <token inflected="yes">هذين</token>
+            <token postag="N.*;F2[I|A].*;--.*" postag_regexp="yes"/>
+          </marker>
+        </pattern>
+        <message>الكلمة "\2"  مؤنثة، ربما عليك وضع اسم اشارة مؤنث: <suggestion><match no="1" regexp_match="هذين" regexp_replace="هاتين"/>&nbsp;<match no="2"/></suggestion>
+        </message>
+        <example correction="هاتين البطاقتين" type="incorrect"><marker>هذين البطاقتين</marker></example>
+        <example correction="وهاتين البطاقتين" type="incorrect"><marker>وهذين البطاقتين</marker></example>
+       <!-- FIXME: توليد صيغة المثنى المنصوب المتصل بضمير-->
+        <!-- <example correction="هاتين بطاقتيه"><marker>هذين بطاقتيه</marker></example>-->
+        <example correction="هاتين بطاقتين" type="incorrect"><marker>هذين بطاقتين</marker></example>
+      </rule>
+      <rule id="gender_0015_hatayni" name="تطابق النوع مع هاتين">
+        <pattern>
+          <marker>
+            <token inflected="yes">هاتين</token>
+            <token postag="N.*;M2[I|A].*;--.*" postag_regexp="yes"/>
+        </marker>
+        </pattern>
+        <message>الكلمة "\2"  مذكرة، ضع اسم اشارة مذكرًا: 
+ <suggestion><match no="1" regexp_match="هاتين" regexp_replace="هذين"/>&nbsp;\2</suggestion>
+                </message>
+        <example correction="هذين السلامين" type="incorrect"><marker>هاتين السلامين</marker></example>
+        <example correction="هذين سلامين" type="incorrect"><marker>هاتين سلامين</marker></example>
+      </rule>
+      <rule id="gender_0016_hadhayni" name="تطابق هذين مع الكلمات ملتبسة النوع">
+        <pattern>
+          <marker>
+            <token>هاتين</token>
+          <token regexp="yes" inflected="yes" postag="N.*;.?2[I|A].*;--.*" postag_regexp="yes">&wrong_feminine;</token>
+        </marker>
+        </pattern>
+        <message>الكلمة "\2"  مؤنثة، ضع اسم اشارة مؤنثة:  <suggestion><match no="1" regexp_match="هاتين" regexp_replace="هذين"/>&nbsp;<match no="2"/></suggestion></message>
+        <example correction="هذين الذقنين"><marker>هاتين الذقنين</marker>.
+    </example>
+      </rule>
+      <rule id="gender_0017_hatayni" name="تطابق هاتين مع الكلمات ملتبسة النوع">
+        <pattern>
+          <marker>
+            <token inflected="yes">هذين</token>
+          <token regexp="yes" inflected="yes" postag="N.*;.?2[I|A].*;--.*" postag_regexp="yes">&wrong_masculine;</token>
+         </marker>
+        </pattern>
+        <message>الكلمة "\2"  مؤنثة، ضع اسم اشارة مؤنثة: 
+            <suggestion><match no="1" regexp_match="هذين" regexp_replace="هاتين"/>&nbsp;<match no="2"/></suggestion></message>
+        <example correction="هاتين الكتفين" type="incorrect"><marker>هذين الكتفين</marker>.</example>
+       <!-- FIXME: توليد صيغة المثنى المنصوب المتصل بضمير-->
+             <!--  <example correction="هاتين كتفيه" type="incorrect"><marker>هذين كتفيه</marker>.</example>-->
+        <example correction="وهاتين الكتفين" type="incorrect"><marker>وهذين الكتفين</marker>.</example>
+      </rule>
      <!-- هذه القاعة متضمنة في القواعد السابقة، 
 
 <rule id="gender_0005_Sin" name="هذا السن">
