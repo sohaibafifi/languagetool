@@ -61,7 +61,7 @@ USA
     <!ENTITY forms_dhiddah "ضدنا|ضدك|ضدكما|ضدكم|ضدكن|ضده|ضدها|ضدهما|ضدهم|ضدهن">
     <!ENTITY allah_names "الآخر|الحميد|الحفيظ|اللطيف|المحيي|الجامع|الباطن|الولي|المقسط|الغفار|الودود|الوهاب|المانع|الشكور|الحليم|المتكبر|الحسيب|الجليل|النافع|الصبور|النور|المصور|الفتاح|مالك|الحي|الغني|الحق|الواسع|الجبار|المغني|العظيم|الباقي|الوارث|الرزاق|المهيمن|الضار|المقيت|الهادي|المتعالي|الوالي|المقتدر|المعز|الأول|القادر|الصمد|السميع|المذل|الكريم|ذو|البصير|العلي|السلام|المميت|العدل|الرافع|التواب|القهار|القابض|المعيد|المبدئ|الرشيد|المؤخر|المؤمن|الجلال|الظاهر|القيوم|الخبير|الوكيل|العزيز|الرحيم|الواجد|البر|المقدم|البديع|الغفور|الرقيب|الأحد|القدوس|الباسط|الجميل|والإكرام|المجيد|الرحمن|الرؤوف|المجيب|القوي|الخالق|الواحد|المنتقم|الملك|المعطي|المحصي|الكبير|العفو|المتين|الباعث|الماجد|الخافض|الحكم|العليم|البارئ|الشهي">
     <!ENTITY wrong_feminine "ذقن|رفات">
-    <!ENTITY wrong_masculine "كتف|فخذ|ساق|ريح|بئر|يمين|ضبع">
+    <!ENTITY wrong_masculine "كتف|فخذ|ساق|ريح|بئر|يمين|ضبع|سن">
     ]>
 
 <rules xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -123,7 +123,7 @@ USA
             <token postag="N.*;F1.*;--.*" postag_regexp="yes"/>
           </marker>
         </pattern>
-        <message>انتبه إلى اسم الإشارة للمذكر، ربما عليك أن تضع اسم إشارة مؤنثا <suggestion><match no="1" regexp_match="هذا" regexp_replace="هذه"/>&nbsp;<match no="2"/></suggestion>?
+        <message>الكلمة "\2"  مؤنثة، ربما عليك وضع اسم اشارة مؤنث: <suggestion><match no="1" regexp_match="هذا" regexp_replace="هذه"/>&nbsp;<match no="2"/></suggestion>
         </message>
         <example correction="هذه السلامة" type="incorrect"><marker>هذا السلامة</marker></example>
         <example correction="وهذه السلامة" type="incorrect"><marker>وهذا السلامة</marker></example>
@@ -137,7 +137,8 @@ USA
             <token postag="N.*;M1.*;--.*" postag_regexp="yes"/>
         </marker>
         </pattern>
-        <message>انتبه إلى اسم الإشارة للمؤنث، ربما عليك أن تضع اسم إشارة مذكرا <suggestion><match no="1" regexp_match="هذه" regexp_replace="هذا"/>&nbsp;\2</suggestion>?
+        <message>الكلمة "\2"  مذكرة، ضع اسم اشارة مذكرًا: 
+ <suggestion><match no="1" regexp_match="هذه" regexp_replace="هذا"/>&nbsp;\2</suggestion>
                 </message>
         <example correction="هذا السلام" type="incorrect"><marker>هذه السلام</marker></example>
         <example correction="هذا سلام" type="incorrect"><marker>هذه سلام</marker></example>
@@ -146,38 +147,42 @@ USA
         <pattern>
           <marker>
             <token>هذه</token>
-          </marker>
           <token regexp="yes" inflected="yes" postag="N.*;.?1.*;--.*" postag_regexp="yes">&wrong_feminine;</token>
+        </marker>
         </pattern>
-        <message>أتقصد <suggestion>هذا</suggestion>&nbsp;\2 لأن "\2" مذكر?
-            </message>
-        <example correction="هذا"><marker>هذه</marker> الذقن.
+        <message>الكلمة "\2"  مؤنثة، ضع اسم اشارة مؤنثة:  <suggestion><match no="1" regexp_match="هذه" regexp_replace="هذا"/>&nbsp;<match no="2"/></suggestion></message>
+        <example correction="هذا الذقن"><marker>هذه الذقن</marker>.
     </example>
       </rule>
       <rule id="gender_0004_hadhihi" name="تطابق هذه مع الكلمات ملتبسة النوع">
         <pattern>
           <marker>
-            <token>هذا</token>
-          </marker>
+            <token inflected="yes">هذا</token>
           <token regexp="yes" inflected="yes" postag="N.*;.?1.*;--.*" postag_regexp="yes">&wrong_masculine;</token>
+         </marker>
         </pattern>
-        <message>أتقصد <suggestion>هذه</suggestion>&nbsp;\2 لأن "\2" مؤنث?
-            </message>
-        <example correction="هذه"><marker>هذا</marker> الكتف.</example>
+        <message>الكلمة "\2"  مؤنثة، ضع اسم اشارة مؤنثة: 
+            <suggestion><match no="1" regexp_match="هذا" regexp_replace="هذه"/>&nbsp;<match no="2"/></suggestion></message>
+        <example correction="هذه الكتف" type="incorrect"><marker>هذا الكتف</marker>.</example>
+        <example correction="هذه كتفه" type="incorrect"><marker>هذا كتفه</marker>.</example>
+        <example correction="وهذه الكتف" type="incorrect"><marker>وهذا الكتف</marker>.</example>
       </rule>
-      <rule id="gender_0005_Sin" name="هذا السن">
+     <!-- هذه القاعة متضمنة في القواعد السابقة، 
+
+<rule id="gender_0005_Sin" name="هذا السن">
         <pattern>
           <marker>
-            <token>هذا</token>
+            <token inflected="yes">هذا</token>
           </marker>
           <token>السن</token>
         </pattern>
-        <message>أتقصد بالسن:العمر و الجارحة <suggestion>هذه</suggestion>؟
+        <message>أتقصد بالسن:العمر و الجارحة وهي مؤنثة<suggestion>هذه</suggestion>؟
                 </message>
         <example correction="هذه"><marker>هذا</marker>
                     السن تعبر عن مدى كبر هذا الشيخ
                 </example>
       </rule>
+-->
     </rulegroup>
 <!--
     END RULEGROUP gender_agreement_with_demonstrative_pronouns
