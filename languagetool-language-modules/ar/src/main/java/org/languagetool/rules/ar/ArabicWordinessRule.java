@@ -25,7 +25,8 @@ import org.languagetool.rules.Categories;
 import org.languagetool.rules.Example;
 import org.languagetool.rules.ITSIssueType;
 
-import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -54,8 +55,9 @@ public class ArabicWordinessRule extends AbstractSimpleReplaceRule2 {
   }
 
   @Override
-  public final String getFileName() {
-    return FILE_NAME;
+
+  public final List<String> getFileNames() {
+    return Collections.singletonList(FILE_NAME);
   }
 
   @Override
@@ -74,7 +76,7 @@ public class ArabicWordinessRule extends AbstractSimpleReplaceRule2 {
   }
 
   @Override
-  public String getSuggestion() {
+  public String getMessage() {
     return "'$match' تعبير فيه حشو يفضل أن يقال $suggestions";
   }
 

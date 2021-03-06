@@ -56,7 +56,7 @@ public class ArabicTagger extends BaseTagger {
       // if not a stop word add more stemming
       if (!isStopWord(taggerTokens)) {
         // test all possible tags
-        addTokens(additionalTags(striped, dictLookup), l);
+        addTokens(additionalTags(word, dictLookup), l);
       }
       if (l.isEmpty()) {
         l.add(new AnalyzedToken(word, null, null));
@@ -69,18 +69,19 @@ public class ArabicTagger extends BaseTagger {
 
   @Nullable
   protected List<AnalyzedToken> additionalTags(String word, IStemmer stemmer) {
+    String striped = word.replaceAll("[" + Arabic.TASHKEEL_CHARS + "]", "");
     List<AnalyzedToken> additionalTaggedTokens = new ArrayList<>();
-    List<Integer> prefix_index_list = getPrefixIndexList(word);
-    List<Integer> suffix_index_list = getSuffixIndexList(word);
+    List<Integer> prefix_index_list = getPrefixIndexList(striped);
+    List<Integer> suffix_index_list = getSuffixIndexList(striped);
 
     for (int i : prefix_index_list) {
       for (int j : suffix_index_list) {
         // avoid default case of returned word as it
-        if ((i == 0) && (j == word.length()))
+        if ((i == 0) && (j == striped.length()))
           continue;
         // get stem return a list, to generate some variants for stems.
-        List<String> stemsList = getStem(word, i, j);
-        List<String> tags = getTags(word, i);
+        List<String> stemsList = getStem(striped, i, j);
+        List<String> tags = getTags(striped, i);
 
         for (String stem : stemsList) {
           List<AnalyzedToken> taggerTokens;
@@ -105,8 +106,6 @@ public class ArabicTagger extends BaseTagger {
       l.addAll(taggedTokens);
     }
   }
-
-
   private List<Integer> getSuffixIndexList(String possibleWord) {
     List<Integer> suffix_indexes = new ArrayList<>();
     suffix_indexes.add(possibleWord.length());
@@ -128,6 +127,7 @@ public class ArabicTagger extends BaseTagger {
       else
         suffix_pos -= 2;
       suffix_indexes.add(suffix_pos);
+
     }
     return suffix_indexes;
   }
@@ -235,33 +235,32 @@ public class ArabicTagger extends BaseTagger {
     return tags;
   }
   
-
   /**
-   * @param taggerTokens
    * @return test if word has stopword tagging
    */
   private boolean isStopWord(List<AnalyzedToken> taggerTokens) {
     // if one token is stop word
     for (AnalyzedToken tok : taggerTokens) {
-      if (tagmanager.isStopWord(tok.getPOSTag()))
+      if (tok != null && tagmanager.isStopWord(tok.getPOSTag())) {
         return true;
+      }
     }
     return false;
   }
 
   private String getPrefix(String word, int pos) {
-    // get prefixe
     return word.substring(0, pos);
   }
 
   private List<String> getStem(String word, int posStart, int posEnd) {
-    // get prefixe
+    // get prefix
     // extract only stem+suffix, the suffix ill be replaced by pronoun model
     List<String> stemList = new ArrayList<>();
     String stem = word.substring(posStart);
     if (posEnd != word.length()) { // convert attached pronouns to one model form
       stem = stem.replaceAll("(ك|ها|هما|هم|هن|كما|كم|كن|نا|ي)$", "ه");
     }
+
     // correct some stems
     // correct case of للاسم
     String prefix = getPrefix(word, posStart);

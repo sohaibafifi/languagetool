@@ -19,17 +19,18 @@
 
 package org.languagetool.tagging.disambiguation.rules;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.languagetool.AnalyzedSentence;
 import org.languagetool.JLanguageTool;
 import org.languagetool.Language;
+import org.languagetool.rules.Rule;
+import org.languagetool.rules.patterns.RuleSet;
 import org.languagetool.tagging.disambiguation.AbstractDisambiguator;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Rule-based disambiguator.
@@ -41,23 +42,22 @@ public class XmlRuleDisambiguator extends AbstractDisambiguator {
 
   private static final String DISAMBIGUATION_FILE = "disambiguation.xml";
 
-  private final List<DisambiguationPatternRule> disambiguationRules;
+  private final RuleSet disambiguationRules;
 
   public XmlRuleDisambiguator(Language language) {
     Objects.requireNonNull(language);
     String disambiguationFile = language.getShortCode() + "/" + DISAMBIGUATION_FILE;
     try {
-      disambiguationRules = loadPatternRules(disambiguationFile);
+      disambiguationRules = RuleSet.textHinted(loadPatternRules(disambiguationFile));
     } catch (Exception e) {
       throw new RuntimeException("Problems with loading disambiguation file: " + disambiguationFile, e);
     }
   }
 
   @Override
-  public AnalyzedSentence disambiguate(AnalyzedSentence input) throws IOException {
-    AnalyzedSentence sentence = input;
-    for (DisambiguationPatternRule patternRule : disambiguationRules) {
-      sentence = patternRule.replace(sentence);
+  public AnalyzedSentence disambiguate(AnalyzedSentence sentence) throws IOException {
+    for (Rule rule : disambiguationRules.rulesForSentence(sentence)) {
+      sentence = ((DisambiguationPatternRule) rule).replace(sentence);
     }
     return sentence;
   }

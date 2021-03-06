@@ -26,6 +26,7 @@ import org.languagetool.TestTools;
 import org.languagetool.language.English;
 import org.languagetool.tagging.disambiguation.rules.XmlRuleDisambiguator;
 import org.languagetool.tagging.disambiguation.xx.DemoDisambiguator;
+import org.languagetool.tagging.en.EnglishHybridDisambiguator;
 import org.languagetool.tagging.en.EnglishTagger;
 import org.languagetool.tokenizers.SRXSentenceTokenizer;
 import org.languagetool.tokenizers.SentenceTokenizer;
@@ -38,6 +39,7 @@ public class EnglishDisambiguationRuleTest {
   private SentenceTokenizer sentenceTokenizer;
   private XmlRuleDisambiguator disambiguator;
   private DemoDisambiguator disamb2;
+  private EnglishHybridDisambiguator hybridDisam;
   
   @Before
   public void setUp() {
@@ -46,6 +48,7 @@ public class EnglishDisambiguationRuleTest {
     sentenceTokenizer = new SRXSentenceTokenizer(new English());
     disambiguator = new XmlRuleDisambiguator(new English());
     disamb2 = new DemoDisambiguator(); 
+    hybridDisam = new EnglishHybridDisambiguator();
   }
 
   @Test
@@ -63,11 +66,14 @@ public class EnglishDisambiguationRuleTest {
         "/[null]SENT_START He/[he]PRP  /[null]null is/[be]VBZ  /[null]null to/[to]IN|to/[to]TO  /[null]null blame/[blame]JJ|blame/[blame]NN:UN|blame/[blame]VB|blame/[blame]VBP ./[null]null", 
         tokenizer, sentenceTokenizer, tagger, disamb2);
     TestTools.myAssert("He is well known.",
-        "/[null]SENT_START He/[he]PRP  /[null]null is/[be]VBZ  /[null]null well/[well]RB  /[null]null known/[known]JJ ./[.]PCT", 
-        tokenizer, sentenceTokenizer, tagger, disambiguator);
-    TestTools.myAssert("He is well known.",
-        "/[null]SENT_START He/[he]PRP  /[null]null is/[be]VBZ  /[null]null well/[well]NN|well/[well]RB|well/[well]UH|well/[well]VB|well/[well]VBP  /[null]null known/[know]VBN|known/[known]NN ./[null]null", 
+        "/[null]SENT_START He/[he]PRP  /[null]null is/[be]VBZ  /[null]null well/[well]JJ|well/[well]NN|well/[well]RB|well/[well]UH|well/[well]VB|well/[well]VBP  /[null]null known/[know]VBN|known/[known]NN ./[null]null", 
         tokenizer, sentenceTokenizer, tagger, disamb2);
+    TestTools.myAssert("The quid pro quo.",
+        "/[null]SENT_START The/[the]DT  /[null]null quid/[quid pro quo]NN  /[null]null pro/[quid pro quo]NN  /[null]null quo/[quid pro quo]NN ./[.]PCT", 
+        tokenizer, sentenceTokenizer, tagger, hybridDisam);
+    TestTools.myAssert("The QUID PRO QUO.",
+        "/[null]SENT_START The/[the]DT  /[null]null QUID/[quid pro quo]NN  /[null]null PRO/[quid pro quo]NN  /[null]null QUO/[quid pro quo]NN ./[.]PCT", 
+        tokenizer, sentenceTokenizer, tagger, hybridDisam);
   }
 
 }

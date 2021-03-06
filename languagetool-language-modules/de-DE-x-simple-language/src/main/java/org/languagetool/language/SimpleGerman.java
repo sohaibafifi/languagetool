@@ -59,7 +59,7 @@ public class SimpleGerman extends GermanyGerman {
   @Override
   public List<Rule> getRelevantRules(ResourceBundle messages, UserConfig userConfig, Language motherTongue, List<Language> altLanguages) throws IOException {
     List<Rule> rules = new ArrayList<>();
-    LongSentenceRule lengthRule = new LongSentenceRule(messages, userConfig, 12, true);
+    LongSentenceRule lengthRule = new LongSentenceRule(messages, userConfig, 12, true, false);
     rules.add(lengthRule);
     return rules;
   }
@@ -80,7 +80,7 @@ public class SimpleGerman extends GermanyGerman {
   }
 
   @Override
-  public int getPriorityForId(String id) {
+  protected int getPriorityForId(String id) {
     if (id.equals(LongSentenceRule.RULE_ID)) {
       return 10;
     } else if (id.equals("LANGES_WORT")) {

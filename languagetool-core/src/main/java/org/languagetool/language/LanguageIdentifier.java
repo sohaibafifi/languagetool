@@ -24,16 +24,14 @@ import com.optimaize.langdetect.ngram.NgramExtractors;
 import com.optimaize.langdetect.profiles.LanguageProfile;
 import com.optimaize.langdetect.profiles.LanguageProfileReader;
 import com.optimaize.langdetect.text.*;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jetbrains.annotations.Nullable;
 import org.languagetool.*;
+import org.languagetool.noop.NoopLanguage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -50,7 +48,6 @@ public class LanguageIdentifier {
 
   private static final Logger logger = LoggerFactory.getLogger(LanguageIdentifier.class);
   private static final double MINIMAL_CONFIDENCE = 0.9;
-  private static final int K_HIGHEST_SCORES = 5;
   private static final int SHORT_ALGO_THRESHOLD = 50;
   // texts shorter than this will *only* consider preferred languages (if set):
   private static final int CONSIDER_ONLY_PREFERRED_THRESHOLD = 50;
@@ -73,10 +70,8 @@ public class LanguageIdentifier {
   private final int maxLength;
   private final UnicodeBasedLangIdentifier unicodeIdentifier = new UnicodeBasedLangIdentifier();
 
-  private boolean fasttextEnabled = false;
-  private Process fasttextProcess;
-  private BufferedReader fasttextIn;
-  private BufferedWriter fasttextOut;
+  private FastText fastText;
+  private NGramLangIdentifier ngram;
 
   public LanguageIdentifier() {
     this(1000);
@@ -104,7 +99,7 @@ public class LanguageIdentifier {
       textObjectFactory = new TextObjectFactoryBuilder()
         .maxTextLength(10000)
         // note: keep these in sync with if(fasttextEnabled) in detectLanguage:
-        .withTextFilter(UrlTextFilter.getInstance())
+        .withTextFilter(ImprovedUrlTextFilter.getInstance())
         .withTextFilter(RemoveMinorityScriptsTextFilter.forThreshold(0.3))
         .withTextFilter(new RemoveEMailSignatureFilter())
         .withTextFilter(new RemoveNonBreakingSpaces())
@@ -117,14 +112,26 @@ public class LanguageIdentifier {
   public void enableFasttext(File fasttextBinary, File fasttextModel) {
     if (fasttextBinary != null && fasttextModel != null) {
       try {
-        startFasttext(fasttextModel, fasttextBinary);
+        fastText = new FastText(fasttextModel, fasttextBinary);
         logger.info("Started fasttext process for language identification: Binary " + fasttextBinary + " with model @ " + fasttextModel);
-        fasttextEnabled = true;
       } catch (IOException e) {
-        fasttextEnabled = false;
-        logger.error("Error while starting fasttext (binary: " + fasttextBinary + ", model: " + fasttextModel + ")", e);
         throw new RuntimeException("Could not start fasttext process for language identification @ " + fasttextBinary + " with model @ " + fasttextModel, e);
       }
+    }
+  }
+
+  /** @since 5.2 */
+  public boolean isFastTextEnabled() {
+    return fastText != null;
+  }
+
+  public void enableNgrams(File ngramDir) {
+    try {
+      logger.info("Loading ngram data for language identification from " + ngramDir + "...");
+      ngram = new NGramLangIdentifier(ngramDir, 50);
+      logger.info("Loaded ngram data for language identification from " + ngramDir);
+    } catch (IOException e) {
+      throw new RuntimeException("Could not load ngram data language identification from " + ngramDir, e);
     }
   }
 
@@ -200,27 +207,45 @@ public class LanguageIdentifier {
     }
     String shortText = text.length() > maxLength ? text.substring(0, maxLength) : text;
     shortText = shortText.replaceAll("\uFEFF+", " ");  // used by the browser add-on to filter HTML etc. (_ignoreText() in validator.js)
+    List<String> domLangCodes = unicodeIdentifier.getDominantLangCodes(text);
+    String domLangStr = String.join(",", domLangCodes);
+    if (domLangStr.equals("th") || domLangStr.equals("he") || domLangStr.equals("ko") || domLangStr.equals("hi,mr")) {
+      // more than 50% of characters are ..., so assume we don't support this text:
+      return new DetectedLanguage(null, new NoopLanguage());
+    }
     if (!preferredLangs.contains("ru") && !preferredLangs.contains("uk") && !preferredLangs.contains("be") && !preferredLangs.contains("zh") &&
         !preferredLangs.contains("hi") && !preferredLangs.contains("mr")) {
       // Cyrillic and Chinese are so different from Latin characters that we try to detect it even with preferredLangs not properly set:
-      preferredLangs.addAll(unicodeIdentifier.getAdditionalLangCodes(text));
-      additionalLangs.addAll(unicodeIdentifier.getAdditionalLangCodes(text));
+      preferredLangs.addAll(domLangCodes);
+      additionalLangs.addAll(domLangCodes);
     }
     Map.Entry<String,Double> result = null;
-    if (fasttextEnabled) {
+    if (fastText != null || ngram != null) {
       try {
         // do *not* use TextObjectFactory because of https://github.com/languagetool-org/languagetool/issues/1278
         // (using it for optimaize is okay, assuming the same strong normalization was applied during training):
-        shortText = UrlTextFilter.getInstance().filter(shortText);
+        shortText = ImprovedUrlTextFilter.getInstance().filter(shortText);
         shortText = new RemoveEMailSignatureFilter().filter(shortText);
         shortText = new RemoveNonBreakingSpaces().filter(shortText);
         shortText = shortText.replaceAll("\uFEFF+", " ");  // used by the browser add-on to filter HTML etc. (_ignoreText() in validator.js)
-        Map<String, Double> scores = runFasttext(shortText, additionalLangs);
+        Map<String, Double> scores;
+        boolean usingFastText = false;
+        if ((text.length() <= SHORT_ALGO_THRESHOLD || fastText == null) && ngram != null) {
+          scores = ngram.detectLanguages(shortText, additionalLangs);
+        } else {
+          usingFastText = true;
+          scores = fastText.runFasttext(shortText, additionalLangs);
+        }
         result = getHighestScoringResult(scores);
-        if (result.getValue().floatValue() < THRESHOLD) {
+        /*if (result.getValue().floatValue() < THRESHOLD) {
+          System.out.println("FastText below threshold: " + result.getValue().floatValue() + " for " + text.length() + " chars");
+        } else {
+          System.out.println("FastText above threshold: " + result.getValue().floatValue() + " for " + text.length() + " chars");
+        }*/
+        if ((usingFastText && result.getValue().floatValue() < THRESHOLD) || result.getKey().equals("zz")) {
           //System.out.println(text + " ->" + result.getValue().floatValue() + " " + result.getKey());
           CommonWords commonWords = new CommonWords();
-          Map<Language, Integer> lang2Count = commonWords.getKnownWordsPerLanguage(text);
+          Map<Language, Integer> lang2Count = commonWords.getKnownWordsPerLanguage(shortText);
           //System.out.println("-> "+ lang2Count);
           for (Map.Entry<Language, Integer> entry : lang2Count.entrySet()) {
             String langCode = entry.getKey().getShortCode();
@@ -247,12 +272,12 @@ public class LanguageIdentifier {
         //System.out.println("newScore  : " + newScore);
         result = new AbstractMap.SimpleImmutableEntry<>(result.getKey(), newScore);
       } catch (Exception e) {
-        fasttextEnabled = false;
-        fasttextProcess.destroy();
+        //fastText.destroy();
+        fastText = null;
         logger.error("Fasttext disabled", e);
       }
     }
-    if (!fasttextEnabled) { // no else, value can change in if clause
+    if (fastText == null && ngram == null) { // no else, value can change in if clause
       shortText = textObjectFactory.forText(shortText).toString();
       result = detectLanguageCode(shortText);
       if (additionalLangs.size() > 0) {
@@ -268,14 +293,8 @@ public class LanguageIdentifier {
     }
   }
   
-  private boolean canLanguageBeDetected(String langCode, List<String> additionalLanguageCodes) {
+  static boolean canLanguageBeDetected(String langCode, List<String> additionalLanguageCodes) {
     return Languages.isLanguageSupported(langCode) || additionalLanguageCodes.contains(langCode);
-  }
-
-  private void startFasttext(File modelPath, File binaryPath) throws IOException {
-    fasttextProcess = new ProcessBuilder(binaryPath.getPath(), "predict-prob", modelPath.getPath(), "-", "" + K_HIGHEST_SCORES).start();
-    fasttextIn = new BufferedReader(new InputStreamReader(fasttextProcess.getInputStream(), StandardCharsets.UTF_8));
-    fasttextOut = new BufferedWriter(new OutputStreamWriter(fasttextProcess.getOutputStream(), StandardCharsets.UTF_8));
   }
 
   private Map.Entry<String, Double> getHighestScoringResult(Map<String, Double> probs) {
@@ -288,46 +307,6 @@ public class LanguageIdentifier {
       }
     }
     return new AbstractMap.SimpleImmutableEntry<>(result, max);
-  }
-
-  private Map<String, Double> runFasttext(String text, List<String> additionalLanguageCodes) throws IOException {
-    Map<String, Double> probabilities = new HashMap<>();
-    String joined = text.replace("\n", " ");
-    String buffer;
-    synchronized(this) {
-      fasttextOut.write(joined);
-      fasttextOut.newLine();
-      fasttextOut.flush();
-      buffer = fasttextIn.readLine();
-      if (buffer == null) {
-        // hack to see if this helps us debug the rare case of readLine() returning null:
-        try {
-          logger.warn("fasttextIn.readLine() returned null, trying again after short delay for input '" + text + "'");
-          Thread.sleep(10);
-          buffer = fasttextIn.readLine();
-          if (buffer == null) {
-            logger.warn("fasttextIn.readLine() returned null again");
-          }
-        } catch (InterruptedException e) {
-          throw new RuntimeException(e);
-        }
-      }
-    }
-    String[] values = buffer.split(" ");
-    if (values.length % 2 != 0) {
-      logger.error("Error while parsing fasttext output '{}'", buffer);
-      throw new RuntimeException("Error while parsing fasttext output: " + buffer);
-    }
-    for (int i = 0; i < values.length; i += 2) {
-      String lang = values[i];
-      String langCode = lang.substring(lang.lastIndexOf("__") + 2);
-      String prob = values[i + 1];
-      Double probValue = Double.parseDouble(prob);
-      if (canLanguageBeDetected(langCode, additionalLanguageCodes)) {
-        probabilities.put(langCode, probValue);
-      }
-    }
-    return probabilities;
   }
 
   /**
@@ -360,4 +339,19 @@ public class LanguageIdentifier {
       return text.toString().replace('\u00A0', ' ');
     }
   }
+
+  static class ImprovedUrlTextFilter implements TextFilter {
+    private static final Pattern URL_REGEX = Pattern.compile("https?://[-_.?&~;+=/#%0-9A-Za-z]+");   // '%' has been added
+    private static final Pattern MAIL_REGEX = Pattern.compile("[-_.0-9A-Za-z]+@[-_0-9A-Za-z]+[-_.0-9A-Za-z]+");
+    private static final ImprovedUrlTextFilter INSTANCE = new ImprovedUrlTextFilter();
+    static ImprovedUrlTextFilter getInstance() {
+      return INSTANCE;
+    }
+    @Override
+    public String filter(CharSequence text) {
+      String modified = URL_REGEX.matcher(text).replaceAll(" ");
+      return MAIL_REGEX.matcher(modified).replaceAll(" ");
+    }
+  }
+
 }

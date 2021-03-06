@@ -48,6 +48,7 @@ public class GermanCompoundTokenizer implements Tokenizer {
     static Set<String> extendedList() {
       Set<String> words = new HashSet<>(EmbeddedGermanDictionary.getWords());
       // add compound parts here so we don't need to update JWordSplitter for every missing word we find:
+      words.add("tool");
       words.add("online");
       words.add("affin");
       words.add("affine");
@@ -118,6 +119,24 @@ public class GermanCompoundTokenizer implements Tokenizer {
       words.add("genetische");
       words.add("genetischen");
       words.add("genetisches");
+      words.add("premium");
+      words.add("kontrolleurin");
+      words.add("konstrukteurin");
+      words.add("importeurin");
+      words.add("requisiteurin");
+      words.add("akteurin");
+      words.add("masseurin");
+      words.add("profiteurin");
+      words.add("charmeurin");
+      words.add("medailleurin");
+      words.add("exporteurin");
+      words.add("rechercheurin");
+      words.add("poseurin");
+      words.add("auskommentieren");
+      words.add("impfung");
+      words.add("impfungen");
+      words.add("call");
+      words.add("cloud");
       return words;
     }
   }
@@ -134,6 +153,47 @@ public class GermanCompoundTokenizer implements Tokenizer {
     wordSplitter.addException("Buchungstricks", asList("Buchungs", "tricks"));
     wordSplitter.addException("Rückzugsorte", asList("Rückzugs", "orte"));
     wordSplitter.addException("Malerarbeiten", asList("Maler", "arbeiten"));
+    wordSplitter.addException("Siebengestirn", asList("Sieben", "gestirn"));
+    wordSplitter.addException("Siebengestirne", asList("Sieben", "gestirne"));
+    wordSplitter.addException("Siebengestirnen", asList("Sieben", "gestirnen"));
+    wordSplitter.addException("Siebengestirns", asList("Sieben", "gestirns"));
+    wordSplitter.addException("Siebengestirnes", asList("Sieben", "gestirnes"));
+    wordSplitter.addException("Alpinforum", asList("Alpin", "forum"));
+    wordSplitter.addException("Rollerskate", asList("Rollerskate"));
+    wordSplitter.addException("Baumeisterarbeiten", asList("Baumeister", "arbeiten"));
+    wordSplitter.addException("Bilderarbeiten", asList("Bilder", "arbeiten"));
+    wordSplitter.addException("Dachdeckerarbeiten", asList("Dachdecker", "arbeiten"));
+    wordSplitter.addException("Handlangerarbeiten", asList("Handlanger", "arbeiten"));
+    wordSplitter.addException("Handwerkerarbeiten", asList("Handwerker", "arbeiten"));
+    wordSplitter.addException("Kinderarbeiten", asList("Kinder", "arbeiten"));
+    wordSplitter.addException("Masterarbeiten", asList("Master", "arbeiten"));
+    wordSplitter.addException("Meisterarbeiten", asList("Meister", "arbeiten"));
+    wordSplitter.addException("Putzerarbeiten", asList("Putzer", "arbeiten"));
+    wordSplitter.addException("Schlosserarbeiten", asList("Schlosser", "arbeiten"));
+    wordSplitter.addException("Schneiderarbeiten", asList("Schneider", "arbeiten"));
+    wordSplitter.addException("Wanderarbeiten", asList("Wander", "arbeiten"));
+    wordSplitter.addException("Taucherarbeiten", asList("Taucher", "arbeiten"));
+    wordSplitter.addException("Hauptakteurin", asList("Haupt", "akteurin"));
+    wordSplitter.addException("Kleiderecke", asList("Kleider", "ecke"));
+    wordSplitter.addException("Kleiderecken", asList("Kleider", "ecken"));
+    wordSplitter.addException("Abwehrecke", asList("Abwehr", "ecke"));
+    wordSplitter.addException("Abwehrecken", asList("Abwehr", "ecken"));
+    wordSplitter.addException("Dichterecke", asList("Dichter", "ecke"));
+    wordSplitter.addException("Dichterecken", asList("Dichter", "ecken"));
+    wordSplitter.addException("Kellerecke", asList("Keller", "ecke"));
+    wordSplitter.addException("Kellerecken", asList("Keller", "ecken"));
+    wordSplitter.addException("Kinderecke", asList("Kinder", "ecke"));
+    wordSplitter.addException("Kinderecken", asList("Kinder", "ecken"));
+    wordSplitter.addException("Silberecke", asList("Silber", "ecke"));
+    wordSplitter.addException("Silberecken", asList("Silber", "ecken"));
+    wordSplitter.addException("Schreibart", asList("Schreib", "art"));
+    wordSplitter.addException("Prüfungsorte", asList("Prüfungs", "orte"));
+    wordSplitter.addException("Prüfungsorten", asList("Prüfungs", "orten"));
+    wordSplitter.addException("Ölsorte", asList("Öl", "sorte"));
+    wordSplitter.addException("Ölsorten", asList("Öl", "sorten"));
+    wordSplitter.addException("Pflanzenölsorte", asList("Pflanzenöl", "sorte"));
+    wordSplitter.addException("Pflanzenölsorten", asList("Pflanzenöl", "sorten"));
+    wordSplitter.addException("Damenshorts", asList("Damen", "shorts"));
     wordSplitter.setStrictMode(strictMode);
     wordSplitter.setMinimumWordLength(3);
   }

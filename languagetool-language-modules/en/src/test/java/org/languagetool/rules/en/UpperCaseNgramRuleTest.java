@@ -48,7 +48,7 @@ public class UpperCaseNgramRuleTest {
   }
   private final LanguageModel lm = new FakeLanguageModel(map);
   private final Language lang = Languages.getLanguageForShortCode("en");
-  private final UpperCaseNgramRule rule = new UpperCaseNgramRule(TestTools.getEnglishMessages(), lm, lang);
+  private final UpperCaseNgramRule rule = new UpperCaseNgramRule(TestTools.getEnglishMessages(), lm, lang, null);
   private final JLanguageTool lt = new JLanguageTool(lang);
 
   @Test
@@ -69,6 +69,26 @@ public class UpperCaseNgramRuleTest {
     assertGood("Ben (Been).");
     assertGood("C stands for Curse.");
     assertGood("The United States also used the short-lived slogan, \"Tastes So Good, You'll Roar\", in the early 1980s.");
+    assertGood("09/06 - Spoken to the business manager.");
+    assertGood("12.3 Game.");
+    assertGood("Let's talk to the Onboarding team.");
+    assertGood("My name is Gentle.");
+    assertGood("They called it Greet.");
+    assertGood("What is Foreshadowing?");
+    assertGood("His name is Carp.");
+    assertGood("Victor or Rabbit as everyone calls him.");
+    assertGood("Think I'm Tripping?");
+    assertGood("Music and Concepts.");
+    assertGood("It is called Ranked mode.");
+    assertGood("I was into Chronicle of a Death Foretold.");
+    assertGood("I talked with Engineering.");
+    assertGood("They used Draft.js to solve it.");
+    assertGood("And mine is Wed.");
+    assertGood("I would support Knicks rather than Hawks.");
+    // TODO:
+    //assertGood("Best Regards.");
+    //assertGood("USB Port.");
+    assertGood("ii) Expanded the notes.");
 
     assertMatch("I really Like spaghetti.");
     assertMatch("This Was a good idea.");
@@ -81,7 +101,7 @@ public class UpperCaseNgramRuleTest {
     // FIXME commented out version doesn't work when running tests through maven
     //URL ngramUrl = JLanguageTool.getDataBroker().getFromResourceDirAsUrl("/yy/ngram-index");
     //try (LuceneLanguageModel lm = new LuceneLanguageModel(new File(ngramUrl.toURI()))) {
-    UpperCaseNgramRule rule = new UpperCaseNgramRule(TestTools.getEnglishMessages(), lm, lang);
+    UpperCaseNgramRule rule = new UpperCaseNgramRule(TestTools.getEnglishMessages(), lm, lang, null);
 
     AnalyzedTokenReadings[] tokens1 = lt.getAnalyzedSentence("As with Lifeboat and Rope, the principal characters were ...").getTokens();
     // left:

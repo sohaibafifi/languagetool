@@ -18,10 +18,6 @@
  */
 package org.languagetool.rules.de;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
-
 import org.languagetool.AnalyzedTokenReadings;
 import org.languagetool.Language;
 import org.languagetool.rules.Categories;
@@ -30,6 +26,11 @@ import org.languagetool.rules.WordRepeatRule;
 import org.languagetool.rules.patterns.PatternToken;
 import org.languagetool.rules.patterns.PatternTokenBuilder;
 import org.languagetool.tagging.disambiguation.rules.DisambiguationPatternRule;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.function.Supplier;
 
 import static org.languagetool.rules.patterns.PatternRuleBuilderHelper.*;
 
@@ -41,7 +42,6 @@ import static org.languagetool.rules.patterns.PatternRuleBuilderHelper.*;
  */
 public class GermanWordRepeatRule extends WordRepeatRule {
 
-  private final Language GERMAN;
   private static final List<List<PatternToken>> ANTI_PATTERNS = Arrays.asList(
     Arrays.asList(
       csToken("Bora"),
@@ -104,13 +104,14 @@ public class GermanWordRepeatRule extends WordRepeatRule {
       csToken("essen")
     )
   );
+  private final Supplier<List<DisambiguationPatternRule>> antiPatterns;
 
   public GermanWordRepeatRule(ResourceBundle messages, Language language) {
     super(messages, language);
     super.setCategory(Categories.REDUNDANCY.getCategory(messages));
     addExamplePair(Example.wrong("In diesem Satz <marker>ist ist</marker> ein Wort doppelt."),
                    Example.fixed("In diesem Satz <marker>ist</marker> ein Wort doppelt."));
-    this.GERMAN = language;
+    antiPatterns = cacheAntiPatterns(language, ANTI_PATTERNS);
   }
 
   @Override
@@ -123,6 +124,11 @@ public class GermanWordRepeatRule extends WordRepeatRule {
     // "Warum fragen Sie sie nicht selbst?"
     if (position != 2 && tokens[position - 1].getToken().equals("Sie") && tokens[position].getToken().equals("sie") ||
         tokens[position - 1].getToken().equals("sie") && tokens[position].getToken().equals("Sie")) {
+      return true;
+    }
+    // "Ihre verbotenen Waren waren bisher nicht aufgeflogen"
+    if (position != 2 && tokens[position - 1].getToken().equals("Waren") && tokens[position].getToken().equals("waren") ||
+        tokens[position - 1].getToken().equals("waren") && tokens[position].getToken().equals("Waren")) {
       return true;
     }
     if (position > 2 && tokens[position - 1].getToken().equals("sie") && tokens[position].getToken().equals("sie")) {
@@ -142,11 +148,11 @@ public class GermanWordRepeatRule extends WordRepeatRule {
       return true;
     }
 
-    return false;
+    return super.ignore(tokens, position);
   }
 
   @Override
   public List<DisambiguationPatternRule> getAntiPatterns() {
-    return makeAntiPatterns(ANTI_PATTERNS, GERMAN);
+    return antiPatterns.get();
   }
 }

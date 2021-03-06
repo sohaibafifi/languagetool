@@ -1,5 +1,5 @@
 /* LanguageTool, a natural language style checker
- * Copyright (C) 2016 Jaume Ortolà (http://www.languagetool.org)
+ * Copyright (C) 2016 Jaume Ortolà
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,7 +31,7 @@ import java.util.List;
  */
 public class CleanOverlappingFilter implements RuleMatchFilter {
 
-  private Language language;
+  private final Language language;
   
   public CleanOverlappingFilter(Language lang) {
     this.language = lang;
@@ -57,8 +57,8 @@ public class CleanOverlappingFilter implements RuleMatchFilter {
         continue;
       }
       // overlapping
-      int currentPriority = getMatchPriority(ruleMatch);
-      int prevPriority = getMatchPriority(prevRuleMatch);
+      int currentPriority = language.getRulePriority(ruleMatch.getRule());
+      int prevPriority = language.getRulePriority(prevRuleMatch.getRule());
       if (currentPriority == prevPriority) {
         // take the longest error:
         currentPriority = ruleMatch.getToPos() - ruleMatch.getFromPos();
@@ -77,19 +77,6 @@ public class CleanOverlappingFilter implements RuleMatchFilter {
     }
     return cleanList;
   }
-  
-  private int getMatchPriority(RuleMatch r) {
-    if (r.getRule().getCategory().getId() == null) {
-      return 0;
-    }
-    int categoryPriority = language.getPriorityForId(r.getRule().getCategory().getId().toString());
-    int rulePriority = language.getPriorityForId(r.getRule().getId());
-    // if there is a priority defined for rule it takes precedence over category priority
-    if (rulePriority != 0) {
-      return rulePriority;
-    } else {
-      return categoryPriority;
-    }
-  }
+
   
 }

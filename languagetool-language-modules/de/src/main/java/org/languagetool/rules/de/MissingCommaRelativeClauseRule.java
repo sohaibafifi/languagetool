@@ -18,13 +18,6 @@
  */
 package org.languagetool.rules.de;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.regex.Pattern;
-
 import org.apache.commons.lang3.StringUtils;
 import org.languagetool.AnalyzedSentence;
 import org.languagetool.AnalyzedTokenReadings;
@@ -35,13 +28,19 @@ import org.languagetool.rules.Category.Location;
 import org.languagetool.rules.CategoryId;
 import org.languagetool.rules.Rule;
 import org.languagetool.rules.RuleMatch;
-import org.languagetool.rules.patterns.PatternToken;
 import org.languagetool.tagging.disambiguation.rules.DisambiguationPatternRule;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 import static org.languagetool.rules.patterns.PatternRuleBuilderHelper.*;
 
 /**
- * A rule checks a sentence for a missing comma before or after a relative clause (only for German language)
+ * A rule checks a sentence for a missing comma before or after a relative clause (only for German language).
  * @author Fred Kruse
  */
 public class MissingCommaRelativeClauseRule extends Rule {
@@ -52,14 +51,14 @@ public class MissingCommaRelativeClauseRule extends Rule {
 
   private static final German GERMAN = new GermanyGerman();
 
-  private static final List<List<PatternToken>> ANTI_PATTERNS = Arrays.asList(
+  private static final List<DisambiguationPatternRule> ANTI_PATTERNS = makeAntiPatterns(Arrays.asList(
       Arrays.asList(
         regex("gerade|wenn"),
         token("das")
       ),
       Arrays.asList(
         token("anstelle"),
-        regex("dieser|dieses")
+        regex("diese[rs]")
       ),
       Arrays.asList(
         csToken("mit"),
@@ -67,8 +66,14 @@ public class MissingCommaRelativeClauseRule extends Rule {
         regex("de[mrs]"),
         posRegex("SUB:.+"),
         csToken("verbindet")
+      ),
+      Arrays.asList(
+        csToken("am"),
+        pos("ADJ:PRD:SUP"),
+        posRegex("PRP:.+"),
+        regex("d(e[mnr]|ie|as|e([nr]|ss)en)")
       )
-  );
+  ), GERMAN);
 
   public MissingCommaRelativeClauseRule(ResourceBundle messages) {
     this(messages, false);
@@ -78,7 +83,6 @@ public class MissingCommaRelativeClauseRule extends Rule {
     super(messages);
     super.setCategory(new Category(new CategoryId("HILFESTELLUNG_KOMMASETZUNG"),
         "Kommasetzung", Location.INTERNAL, true));
-    super.makeAntiPatterns(ANTI_PATTERNS, GERMAN);
     this.behind = behind;
   }
 
@@ -123,7 +127,7 @@ public class MissingCommaRelativeClauseRule extends Rule {
    */
   private static boolean isVerb(AnalyzedTokenReadings[] tokens, int n) {
     return (tokens[n].matchesPosTagRegex("(VER:[1-3]:|VER:.*:[1-3]:).*")
-        && !tokens[n].matchesPosTagRegex("(ZAL|ADJ|ADV|ART|SUB|PRO:POS).*")
+        && !tokens[n].matchesPosTagRegex("(ZAL|AD[JV]|ART|SUB|PRO:POS).*")
         && (!tokens[n].hasPosTagStartingWith("VER:INF:") || !tokens[n-1].getToken().equals("zu"))
         && !tokens[n].isImmunized()
       );
@@ -694,6 +698,6 @@ public class MissingCommaRelativeClauseRule extends Rule {
 
   @Override
   public List<DisambiguationPatternRule> getAntiPatterns() {
-    return makeAntiPatterns(ANTI_PATTERNS, GERMAN);
+    return ANTI_PATTERNS;
   }
 }
