@@ -54,6 +54,8 @@ public class MatchStateTest {
     assertThat(startLower.convertCase("xxx", "Yyy", new FakeLanguage("en")), is("xxx"));
     assertThat(startLower.convertCase("XXX", "Yyy", new FakeLanguage("en")), is("xXX"));
     assertThat(startLower.convertCase("Xxx", "Yyy", new FakeLanguage("en")), is("xxx"));
+
+
   }
 
   private MatchState getMatchState(Match.CaseConversion conversion) {

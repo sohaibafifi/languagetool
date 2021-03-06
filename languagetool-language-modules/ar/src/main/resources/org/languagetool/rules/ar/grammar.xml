@@ -388,10 +388,11 @@ USA
             <token postag="V..;..Y.f.[^0];---" postag_regexp="yes"/>
           </marker>
         </pattern>
-        <message>أتقصد؟
-الفعل المضارع بعد "لا الناهية" يأتي مجزوما.
+        <message>
+الفعل المضارع بعد "لا الناهية" يأتي مجزوما. أتقصد؟
+        
+        <suggestion><match no="1"/>&nbsp;<match no="2" postag="(V..;..Y.f.).*" postag_replace="$10;---" postag_regexp="yes"/></suggestion>        
 
-        <suggestion><match no="1"/>&nbsp;<match no="2" postag="(V..;..Y.f.).*" postag_replace="$10;---" postag_regexp="yes"/></suggestion>
         </message>
 
         <example type="correct"><marker>لا يجري</marker></example>
@@ -5494,17 +5495,37 @@ END RULEGROUP Masdar errors
 -->
     <rulegroup id="wrong_adj_use" name="خطأ في استعمال صفة">
       <rule>
-        <pattern>
+    <pattern>
+      <unify>
+        <feature id="definite"/>
+        <feature id="gender"/>
+        <!--<feature id="case"/>-->
+        <feature id="number"/>
+        <token postag="N.*" postag_regexp="yes"/>
+        <marker>
+          <token inflected="yes" postag="N.*;.*;--." postag_regexp="yes">رئيسي</token>
+        </marker>
+      </unify>
+    </pattern>
+      <!--  <pattern>
           <marker>
             <token inflected="yes">رئيسي</token>
           </marker>
-        </pattern>
-        <message>لا تقل رئيسي  أو رئيسية بل قل <suggestion>رئيس</suggestion> <suggestion>رئيسة</suggestion>
+        </pattern>-->
+        <message>لا تقل  شيء رئيسي  أو حاجة رئيسية بل قل شيء  رئيس و حاجة رئيسة، 
         أن كلمة "رئيس" أو "رئيسة" من الصفات وياء النسبة لا تُنسب للصفات فلا يصح مثلًا قول "(رأيتُ الرجل العظيمي)" أو "(رأيتُ المرأة العظيمية)"
+    <suggestion><match no="2" regexp_match="رئيسي" regexp_replace="رئيس"/></suggestion>
         </message>
-        <example correction="رئيس|رئيسة">‎صفحة <marker>رئيسية</marker></example>
-        <example correction="رئيس|رئيسة">‎طبق <marker>رئيسي</marker></example>
-      </rule>
+        <example correction="الرئيسة" type="incorrect">‎الصفحة  <marker>الرئيسية</marker></example>
+        <example correction="الرئيس" type="incorrect">‎الطبق <marker>الرئيسي</marker></example>
+        <example correction="رئيسة" type="incorrect">‎صفحة <marker>رئيسية</marker></example>
+                <example correction="الرئيستان" type="incorrect">‎الصفحتان <marker>الرئيسيتان</marker></example>
+        <example correction="رئيسان" type="incorrect">‎طبقان <marker>رئيسيان</marker></example>
+        <!--<example correction="الرئيسة" type="incorrect">‎الأطباق <marker>الرئيسية</marker></example>-->
+        
+        <example type="correct">‎يقول <marker>رئيسي</marker> في العمل أنني مجتهد</example>
+
+        </rule>
       <rule>
         <pattern>
           <marker>
@@ -8179,6 +8200,21 @@ END RULEGROUP Masdar errors
             <suggestion>عند</suggestion>
         </message>
         <example correction="عند" type="incorrect"> ذهبت <marker>إلى عند</marker> فلان </example>
+        <example type="correct"> ذهبت عند فلان </example>
+      </rule>
+    <rule id="redund_0005_ila_3inda22222" name="رزوقي">
+        <pattern>
+          <marker>
+            <token regexp="yes">رزُوقي|رزوقي</token>
+          </marker>
+        </pattern>
+        <message>يفضل أن يقال: 
+            <suggestion><match no="1" regexp_match="رزوق" regexp_replace="زروق" case_conversion="notashkeel"/></suggestion>
+        </message>
+        <example correction="زروقي" type="incorrect"> ذهبت <marker>رزوقي</marker> فلان </example>
+        <example correction="زروقي" type="incorrect"> ذهبت <marker>رزُوقي</marker> فلان </example>
+
+<!---->
         <example type="correct"> ذهبت عند فلان </example>
       </rule>
     </rulegroup>
