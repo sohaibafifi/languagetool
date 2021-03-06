@@ -499,15 +499,15 @@ USA
       </rule>
       <rule id="gender_0101" name="شريعة سمحاء">
         <pattern>
-          <token inflected="yes">شريعة</token>
           <marker>
-            <token inflected="yes" postag="N.*;.*;--.?" postag_regexp="yes">سمحاء</token>
+          <token inflected="yes">شريعة</token>
+          <token inflected="yes" postag="N.*;.*;--.?" postag_regexp="yes">سمحاء</token>
           </marker>
         </pattern>
         <message>(سمحاء) مؤنث (أَسْمَح)، لم تقلهما العرب 
-            <suggestion><match no="2" regexp_match="سمحاء" regexp_replace="سَمْحة"/></suggestion>
+            <suggestion><match no="1"/>&nbsp;<match no="2" regexp_match="سمحاء" regexp_replace="سَمْحة"/></suggestion>
         </message>
-        <example correction="سَمْحة" type="incorrect"> شريعة <marker>سمحاء</marker> </example>
+        <example correction="شريعة سَمْحة" type="incorrect"><marker>شريعة سمحاء</marker> </example>
         <example type="correct"> شريعةٌ سَمْحَةٌ </example>
       </rule>
       <rule id="gender_0102" name="ضبع مفترس">
