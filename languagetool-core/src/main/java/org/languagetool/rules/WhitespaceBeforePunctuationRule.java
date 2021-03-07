@@ -48,16 +48,13 @@ public class WhitespaceBeforePunctuationRule extends Rule {
   }
 
   @Override
-  public String getId() {
+  public final String getId() {
     return "WHITESPACE_PUNCTUATION";
   }
 
   @Override
   public final String getDescription() {
     return messages.getString("desc_whitespace_before_punctuation");
-  }
-  public String getSemicolonCharacter() {
-    return ";";
   }
 
   @Override
@@ -82,9 +79,9 @@ public class WhitespaceBeforePunctuationRule extends Rule {
               && Character.isDigit(tokens[i + 2].getToken().charAt(0))) {
             msg = null;
           }
-        } else if (token.equals(getSemicolonCharacter())) {
+        } else if (token.equals(";")) {
           msg = messages.getString("no_space_before_semicolon");
-          suggestionText = getSemicolonCharacter();
+          suggestionText = ";";
         } else if (i > 1 && token.equals("%")) {
           String prevPrevToken = tokens[i - 2].getToken();
           if (prevPrevToken.length() > 0 && Character.isDigit(prevPrevToken.charAt(0))) {
