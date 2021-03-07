@@ -275,7 +275,7 @@ USA
         <pattern>
           <marker>
             <token inflected="yes">هذين</token>
-            <token postag="N.*;F2[I|A].*;--.*" postag_regexp="yes"/>
+            <token postag="N.*;F2[IA].*;--.*" postag_regexp="yes"/>
           </marker>
         </pattern>
         <message>الكلمة "\2"  مؤنثة، ربما عليك وضع اسم اشارة مؤنث: <suggestion><match no="1" regexp_match="هذين" regexp_replace="هاتين"/>&nbsp;<match no="2"/></suggestion>
@@ -290,7 +290,7 @@ USA
         <pattern>
           <marker>
             <token inflected="yes">هاتين</token>
-            <token postag="N.*;M2[I|A].*;--.*" postag_regexp="yes"/>
+            <token postag="N.*;M2[IA].*;--.*" postag_regexp="yes"/>
         </marker>
         </pattern>
         <message>الكلمة "\2"  مذكرة، ضع اسم اشارة مذكرًا: 
@@ -303,7 +303,7 @@ USA
         <pattern>
           <marker>
             <token>هاتين</token>
-          <token regexp="yes" inflected="yes" postag="N.*;.?2[I|A].*;--.*" postag_regexp="yes">&wrong_feminine;</token>
+          <token regexp="yes" inflected="yes" postag="N.*;.?2[IA].*;--.*" postag_regexp="yes">&wrong_feminine;</token>
         </marker>
         </pattern>
         <message>الكلمة "\2"  مؤنثة، ضع اسم اشارة مؤنثة:  <suggestion><match no="1" regexp_match="هاتين" regexp_replace="هذين"/>&nbsp;<match no="2"/></suggestion></message>
@@ -314,7 +314,7 @@ USA
         <pattern>
           <marker>
             <token inflected="yes">هذين</token>
-          <token regexp="yes" inflected="yes" postag="N.*;.?2[I|A].*;--.*" postag_regexp="yes">&wrong_masculine;</token>
+          <token regexp="yes" inflected="yes" postag="N.*;.?2[IA].*;--.*" postag_regexp="yes">&wrong_masculine;</token>
          </marker>
         </pattern>
         <message>الكلمة "\2"  مؤنثة، ضع اسم اشارة مؤنثة: 
@@ -328,10 +328,10 @@ USA
         <pattern>
           <marker>
             <token inflected="yes">هذان</token>
-            <token postag="N.*;M2[I|A].*;--.*" postag_regexp="yes"/>
+            <token postag="N.*;M2[IA].*;--.*" postag_regexp="yes"/>
           </marker>
         </pattern>
-        <message>الكلمة "\2" بدل من هذان لذا تتبعه في الإعراب، ربما عليك مراجعة العبارة: <suggestion><match no="1" regexp_match="هذان" regexp_replace="هذين"/>&nbsp;<match no="2"/></suggestion><suggestion><match no="1"/>&nbsp;<match no="2" postag="(N.*;M2)([I|A])(.*)" postag_replace="$1U$3" postag_regexp="yes"/></suggestion>
+        <message>الكلمة "\2" بدل من هذان لذا تتبعه في الإعراب، ربما عليك مراجعة العبارة: <suggestion><match no="1" regexp_match="هذان" regexp_replace="هذين"/>&nbsp;<match no="2"/></suggestion><suggestion><match no="1"/>&nbsp;<match no="2" postag="(N.*;M2)([IA])(.*)" postag_replace="$1U$3" postag_regexp="yes"/></suggestion>
         </message>
         <example correction="هذين الكتابين|هذان الكتابان" type="incorrect"><marker>هذان الكتابين</marker></example>
         <example correction="وهذين الكتابين|وهذان الكتابان" type="incorrect"><marker>وهذان الكتابين</marker></example>
@@ -371,10 +371,10 @@ USA
         <pattern>
           <marker>
             <token inflected="yes">هاتان</token>
-            <token postag="N.*;F2[I|A].*;--.*" postag_regexp="yes"/>
+            <token postag="N.*;F2[IA].*;--.*" postag_regexp="yes"/>
           </marker>
         </pattern>
-        <message>الكلمة "\2" بدل من هاتان لذا تتبعه في الإعراب، ربما عليك مراجعة العبارة: <suggestion><match no="1" regexp_match="هاتان" regexp_replace="هاتين"/>&nbsp;<match no="2"/></suggestion><suggestion><match no="1"/>&nbsp;<match no="2" postag="(N.*;F2)([I|A])(.*)" postag_replace="$1U$3" postag_regexp="yes"/></suggestion>
+        <message>الكلمة "\2" بدل من هاتان لذا تتبعه في الإعراب، ربما عليك مراجعة العبارة: <suggestion><match no="1" regexp_match="هاتان" regexp_replace="هاتين"/>&nbsp;<match no="2"/></suggestion><suggestion><match no="1"/>&nbsp;<match no="2" postag="(N.*;F2)([IA])(.*)" postag_replace="$1U$3" postag_regexp="yes"/></suggestion>
         </message>
         <example correction="هاتين البطاقتين|هاتان البطاقتان" type="incorrect"><marker>هاتان البطاقتين</marker></example>
         <example correction="وهاتين البطاقتين|وهاتان البطاقتان" type="incorrect"><marker>وهاتان البطاقتين</marker></example>
