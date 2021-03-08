@@ -26,7 +26,7 @@ package org.languagetool.rules.ar;
   import java.io.IOException;
 
   import static org.junit.Assert.assertEquals;
-
+gy
 public class ArabicPunctuationWhitespaceRuleTest {
 
   private ArabicPunctuationWhitespaceRule rule;
@@ -34,7 +34,7 @@ public class ArabicPunctuationWhitespaceRuleTest {
 
   @Before
   public void setUp() {
-    rule = new ArabicPunctuationWhitespaceRule(TestTools.getEnglishMessages(), true);
+    rule = new ArabicPunctuationWhitespaceRule(TestTools.getEnglishMessages());
     langTool = new JLanguageTool(TestTools.getDemoLanguage());
   }
 
@@ -52,18 +52,6 @@ public class ArabicPunctuationWhitespaceRuleTest {
     assertMatches("This is a ,,test''.", 0);
     assertMatches("Run ./validate.sh to check the file.", 0);
     assertMatches("This is,\u00A0really,\u00A0non-breaking whitespace.", 0);
-    assertMatches("هذه جملة تجريبية.", 0);
-    assertMatches("هذه, هي, جملة التجربة.", 0);
-    assertMatches("قل (كيت وكيت) تجربة!.", 0);
-    assertMatches("تكلف €2,45.", 0);
-    assertMatches("ثمنها 50,- يورو", 0);
-    assertMatches("جملة مع علامات الحذف ...", 0);
-    assertMatches("هذه صورة: .5 وهي صحيحة.", 0);
-    assertMatches("هذه $1,000,000.", 0);
-    assertMatches("هذه 1,5.", 0);
-    assertMatches("هذا ,,فحص''.", 0);
-    assertMatches("نفّذ ./validate.sh لفحص الملف.", 0);
-    assertMatches("هذه,\u00A0حقا,\u00A0فراغ غير فاصل.", 0);
     //test OpenOffice field codes:
     assertMatches("In his book,\u0002 Einstein proved this to be true.", 0);
     assertMatches("- [ ] A checkbox at GitHub", 0);
@@ -91,32 +79,6 @@ public class ArabicPunctuationWhitespaceRuleTest {
     assertMatches("A sentence ' with' one examples of wrong quotations marks in it.", 1);
     assertMatches("A sentence 'with ' one examples of wrong quotations marks in it.", 1);
 
-    // arabic comma
-    assertMatches("This،is a test sentence.", 1);
-    assertMatches("هذه،جملة للتجربة.", 1);
-    assertMatches("هذه ، جملة للتجربة.", 1);
-    assertMatches("هذه ,تجربة جملة.", 2);
-    assertMatches("هذه ،تجربة جملة.", 2);
-    assertMatches("،هذه جملة للتجربة.", 2);
-
-    // arabic question mark
-    assertMatches("This is a test sentence؟", 0);
-    assertMatches("أهذه تجربة؟", 0);
-    assertMatches("أهذه تجربة ؟", 1);
-    //latin question mark
-    assertMatches("This is a test sentence?", 0);
-    assertMatches("أهذه تجربة?", 0);
-    assertMatches("أهذه تجربة ?", 1);
-
-    // latin semi colon
-    assertMatches("This is a test sentence;", 0);
-    assertMatches("أهذه تجربة;", 0);
-    assertMatches("أهذه تجربة ;", 1);
-    //Arabic semi colon
-    assertMatches("This is a test sentence؛", 0);
-    assertMatches("أهذه تجربة؛", 0);
-    assertMatches("أهذه تجربة ؛", 1);
-
     RuleMatch[] matches = rule.match(langTool.getAnalyzedSentence("ABB (  z.B. )"));
     assertEquals(2, matches.length);
     assertEquals(4, matches[0].getFromPos());
@@ -124,15 +86,15 @@ public class ArabicPunctuationWhitespaceRuleTest {
     assertEquals(11, matches[1].getFromPos());
     assertEquals(13, matches[1].getToPos());
 
-    matches = rule.match(langTool.getAnalyzedSentence("This ،"));
+    matches = rule.match(langTool.getAnalyzedSentence("This ,"));
     assertEquals(1, matches.length);
-    assertEquals("،", matches[0].getSuggestedReplacements().get(0));
-    matches = rule.match(langTool.getAnalyzedSentence("This ،is a test sentence."));
+    assertEquals(",", matches[0].getSuggestedReplacements().get(0));
+    matches = rule.match(langTool.getAnalyzedSentence("This ,is a test sentence."));
     assertEquals(2, matches.length);
-    assertEquals("، ", matches[0].getSuggestedReplacements().get(0));
-    matches = rule.match(langTool.getAnalyzedSentence("This ، is a test sentence."));
+    assertEquals(", ", matches[0].getSuggestedReplacements().get(0));
+    matches = rule.match(langTool.getAnalyzedSentence("This , is a test sentence."));
     assertEquals(1, matches.length);
-    assertEquals("،", matches[0].getSuggestedReplacements().get(0));
+    assertEquals(",", matches[0].getSuggestedReplacements().get(0));
 
 
     assertMatches("Ellipsis . . . as suggested by The Chicago Manual of Style", 3);

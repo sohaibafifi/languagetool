@@ -54,7 +54,6 @@ public class WordTokenizer implements Tokenizer {
       + "\u206E\u206F\u3000\u3164\ufeff\uffa0\ufff9\ufffa\ufffb"
       + ",.;()[]{}=*#∗×·+÷<>!?:/|\\\"'«»„”“`´‘’‛′›‹…¿¡→‼⁇⁈⁉_™®"
       + "—"  // em dash
-      + "،؟؛"
       + "\t\n\r";
 
   /**
