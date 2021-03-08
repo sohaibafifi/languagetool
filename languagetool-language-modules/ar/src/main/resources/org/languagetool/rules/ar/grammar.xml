@@ -119,7 +119,7 @@ USA
       <rule id="gender_0001_hadha" name="تطابق النوع مع هذا">
         <pattern>
           <marker>
-            <token inflected="yes">هذا</token>
+            <token inflected="yes">هَذَا</token>
             <token postag="N.*;F1.*;--.*" postag_regexp="yes"/>
           </marker>
         </pattern>
@@ -167,57 +167,6 @@ USA
         <example correction="هذه كتفه" type="incorrect"><marker>هذا كتفه</marker>.</example>
         <example correction="وهذه الكتف" type="incorrect"><marker>وهذا الكتف</marker>.</example>
       </rule>
-      <rule id="gender_0006_dhalika" name="تطابق النوع مع ذلك">
-        <pattern>
-          <marker>
-            <token inflected="yes">ذلك</token>
-            <token postag="N.*;F1.*;--.*" postag_regexp="yes"/>
-          </marker>
-        </pattern>
-        <message>الكلمة "\2"  مؤنثة، ربما عليك وضع اسم اشارة مؤنث: <suggestion><match no="1" regexp_match="ذلك" regexp_replace="تلك"/>&nbsp;<match no="2"/></suggestion>
-        </message>
-        <example correction="تلك السلامة" type="incorrect"><marker>ذلك السلامة</marker></example>
-        <example correction="وتلك السلامة" type="incorrect"><marker>وذلك السلامة</marker></example>
-        <example correction="تلك سلامته"><marker>ذلك سلامته</marker></example>
-        <example correction="تلك سلامة" type="incorrect"><marker>ذلك سلامة</marker></example>
-      </rule>
-      <rule id="gender_0007_tilka" name="تطابق النوع مع تلك">
-        <pattern>
-          <marker>
-            <token inflected="yes">تلك</token>
-            <token postag="N.*;M1.*;--.*" postag_regexp="yes"/>
-        </marker>
-        </pattern>
-        <message>الكلمة "\2"  مذكرة، ضع اسم اشارة مذكرًا: 
- <suggestion><match no="1" regexp_match="تلك" regexp_replace="ذلك"/>&nbsp;\2</suggestion>
-                </message>
-        <example correction="ذلك السلام" type="incorrect"><marker>تلك السلام</marker></example>
-        <example correction="ذلك سلام" type="incorrect"><marker>تلك سلام</marker></example>
-      </rule>
-      <rule id="gender_0008_dhalika" name="تطابق ذلك مع الكلمات ملتبسة النوع">
-        <pattern>
-          <marker>
-            <token>تلك</token>
-          <token regexp="yes" inflected="yes" postag="N.*;.?1.*;--.*" postag_regexp="yes">&wrong_feminine;</token>
-        </marker>
-        </pattern>
-        <message>الكلمة "\2"  مؤنثة، ضع اسم اشارة مؤنثة:  <suggestion><match no="1" regexp_match="تلك" regexp_replace="ذلك"/>&nbsp;<match no="2"/></suggestion></message>
-        <example correction="ذلك الذقن"><marker>تلك الذقن</marker>.
-    </example>
-      </rule>
-      <rule id="gender_0009_tilka" name="تطابق تلك مع الكلمات ملتبسة النوع">
-        <pattern>
-          <marker>
-            <token inflected="yes">ذلك</token>
-          <token regexp="yes" inflected="yes" postag="N.*;.?1.*;--.*" postag_regexp="yes">&wrong_masculine;</token>
-         </marker>
-        </pattern>
-        <message>الكلمة "\2"  مؤنثة، ضع اسم اشارة مؤنثة: 
-            <suggestion><match no="1" regexp_match="ذلك" regexp_replace="تلك"/>&nbsp;<match no="2"/></suggestion></message>
-        <example correction="تلك الكتف" type="incorrect"><marker>ذلك الكتف</marker>.</example>
-        <example correction="تلك كتفه" type="incorrect"><marker>ذلك كتفه</marker>.</example>
-        <example correction="وتلك الكتف" type="incorrect"><marker>وذلك الكتف</marker>.</example>
-      </rule>
      <!-- هذه القاعة متضمنة في القواعد السابقة، 
 
 <rule id="gender_0005_Sin" name="هذا السن">
@@ -240,27 +189,28 @@ USA
 -->
     <rulegroup id="gender_agreement_with_relative_pronouns" name="تطابق النوع مع الأسماء الموصولة">
       <rule id="gender_0010_alladhi" name="تطابق النوع مع الذي">
-        <pattern><marker>
+        <pattern>
           <token postag="N.*;M1.*" postag_regexp="yes"/>
-          <token>التي</token>
+          <marker>
+            <token>التي</token>
           </marker>
         </pattern>
-        <message>هل تقصد <suggestion><match no="1"/>&nbsp;الذي</suggestion>?
+        <message>هل تقصد <suggestion>الذي</suggestion>?
                 </message>
-        <example correction="القول الذي" type="incorrect"> <marker>القول التي</marker> سمعته </example>
-        <example correction="الطعام الذي" type="incorrect"> <marker>الطعام التي</marker> جلبناه </example>
+        <example correction="الذي" type="incorrect"> القول <marker>التي</marker> سمعته </example>
+        <example correction="الذي" type="incorrect"> الطعام <marker>التي</marker> جلبناه </example>
       </rule>
       <rule id="gender_0011_allati" name="تطابق النوع مع التي">
         <pattern>
-        <marker>
           <token postag="N.*;F1.*" postag_regexp="yes"/>
-          <token>الذي</token>
+          <marker>
+            <token>الذي</token>
           </marker>
         </pattern>
-        <message>هل تقصد <suggestion><match no="1"/>&nbsp;التي</suggestion>?
+        <message>هل تقصد <suggestion>التي</suggestion>?
                 </message>
-        <example correction="الوشاية التي" type="incorrect"><marker>الوشاية الذي</marker> سمعتها </example>
-        <example correction="الكتابة التي" type="incorrect"><marker>الكتابة الذي</marker> جلبناها </example>
+        <example correction="التي" type="incorrect"> الوشاية <marker>الذي</marker> سمعتها </example>
+        <example correction="التي" type="incorrect"> الكتابة <marker>الذي</marker> جلبناها </example>
       </rule>
     </rulegroup>
 <!--
@@ -274,7 +224,7 @@ USA
             <token>الأكبر</token>
           </marker>
         </pattern>
-        <message>تجب المطابقة في النوع لدخول (أل) على أفعل التفضيل 
+        <message>تجب المطابقة لدخول (أل) على أفعل التفضيل 
             <suggestion>هي الكبرى</suggestion>
         </message>
         <example correction="هي الكبرى" type="incorrect"> آسيا <marker>هي الأكبر</marker> بين القارات </example>
