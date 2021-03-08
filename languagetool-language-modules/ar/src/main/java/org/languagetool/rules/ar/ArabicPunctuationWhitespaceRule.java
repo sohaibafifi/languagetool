@@ -57,7 +57,7 @@ public class ArabicPunctuationWhitespaceRule extends Rule {
   }
 
   /**
-   * @deprecated use {@link #CommaWhitespaceRule(ResourceBundle, IncorrectExample, CorrectExample)} instead (deprecated since 3.3)
+   * @deprecated use {@link #ArabicPunctuationWhitespaceRule(ResourceBundle, IncorrectExample, CorrectExample)} instead (deprecated since 3.3)
    */
   public ArabicPunctuationWhitespaceRule(ResourceBundle messages) {
     this(messages, null, null);
@@ -77,6 +77,9 @@ public class ArabicPunctuationWhitespaceRule extends Rule {
 
   public String getCommaCharacter() {
     return ",";
+  }
+  public String getCommaCharacterArabic() {
+    return "،";
   }
 
   /**
@@ -111,14 +114,16 @@ public class ArabicPunctuationWhitespaceRule extends Rule {
       } else if (isWhitespace && isQuote(prevToken) && this.quotesWhitespaceCheck && prevPrevToken.equals(" ")) {
         msg = messages.getString("no_space_around_quotes");
         suggestionText = "";
-      } else if (!isWhitespace && prevToken.equals(getCommaCharacter())
+      } else if (!isWhitespace
+        && (prevToken.equals(getCommaCharacter()) || prevToken.equals(getCommaCharacterArabic()))
         && !isQuote(token)
         && !isHyphenOrComma(token)
         && !containsDigit(prevPrevToken)
         && !containsDigit(token)
-        && !",".equals(prevPrevToken)) {
+        && !getCommaCharacter().equals(prevPrevToken)
+        && !getCommaCharacterArabic().equals(prevPrevToken)) {
         msg = messages.getString("missing_space_after_comma");
-        suggestionText = getCommaCharacter() + " " + tokens[i].getToken();
+        suggestionText = getCommaCharacterArabic() + " " + tokens[i].getToken();
       } else if (prevWhite) {
         if (isRightBracket(token)) {
           boolean isException = token.equals("]") && prevToken.equals(" ") && prevPrevToken.equals("["); // "- [ ]" syntax e.g. on GitHub
@@ -126,15 +131,15 @@ public class ArabicPunctuationWhitespaceRule extends Rule {
             msg = messages.getString("no_space_before");
             suggestionText = token;
           }
-        } else if (token.equals(getCommaCharacter())) {
+        } else if (token.equals(getCommaCharacter()) || token.equals(getCommaCharacterArabic())) {
           msg = messages.getString("space_after_comma");
-          suggestionText = getCommaCharacter();
+          suggestionText = getCommaCharacterArabic();
           // exception for duplicated comma (we already have another rule for that)
-          if (i + 1 < tokens.length && getCommaCharacter().equals(tokens[i+1].getToken())) {
+          if (i + 1 < tokens.length && (getCommaCharacter().equals(tokens[i+1].getToken()) || getCommaCharacterArabic().equals(tokens[i+1].getToken()))) {
             msg = null;
           }
           if (i + 1 < tokens.length && !tokens[i+1].isWhitespace()) {
-            suggestionText = getCommaCharacter() + " ";
+            suggestionText = getCommaCharacterArabic() + " ";
           }
         } else if (token.equals(".") && !isDomain(tokens, i+1) && !isFileExtension(tokens, i+1)) {
           msg = messages.getString("no_space_before_dot");
@@ -146,6 +151,16 @@ public class ArabicPunctuationWhitespaceRule extends Rule {
             // commands like "./validate.sh"
             msg = null;
           }
+        } // arabic question mark
+        else if (token.equals("؟") || token.equals("?")) {
+          msg = messages.getString("no_space_before_dot");
+          suggestionText = "؟";
+          // exception case
+        } // arabic semi colon
+        else if (token.equals("؛") || token.equals(";")) {
+          msg = messages.getString("no_space_before_dot");
+          suggestionText = ";";
+          // exception case
         }
       }
       if (msg != null && ! isException(tokens, i) ) {
@@ -192,7 +207,7 @@ public class ArabicPunctuationWhitespaceRule extends Rule {
   private static boolean isHyphenOrComma(String str) {
     if (str.length() == 1) {
       char c = str.charAt(0);
-      if (c == '-' || c == ',') {
+      if (c == '-' || c == ',' || c == '،') {
         return true;
       }
     }
