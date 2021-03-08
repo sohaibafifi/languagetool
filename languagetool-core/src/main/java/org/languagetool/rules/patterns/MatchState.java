@@ -218,8 +218,8 @@ public class MatchState {
       Pattern pRegexMatch = match.getRegexMatch();
       String regexReplace = match.getRegexReplace();
       if (pRegexMatch != null) {
-        //         Strip Tashkeel before making formating string using match element;
-        if (!Objects.isNull(lang) && (Objects.equals(lang.getShortCode(), "ar")))
+        //         System.out.println(formattedString[0]);
+        if (Objects.equals(lang.getShortCode(), "ar"))
           formattedString[0] = StringTools.removeTashkeel(formattedString[0]);
 
         formattedString[0] = pRegexMatch.matcher(formattedString[0]).replaceAll(regexReplace);
