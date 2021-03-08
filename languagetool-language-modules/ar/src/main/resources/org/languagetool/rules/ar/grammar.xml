@@ -31,7 +31,7 @@ USA
     <!ENTITY horof_jar "في|من|إلى|على|عن|مع">
     <!ENTITY unbreak_proclitics "ال">
     <!ENTITY proclitics "و|ف|ال|وال|فال|ب|بال|وبال|ك|كال|وكال|فكال|ل|لل|ولل|فلل">
-    <!ENTITY undef_proclitics "و|ف|ب|ك|وب|فب|وك|فك">
+    <!ENTITY undef_proclitics "و|ف|ب|ك|">
     <!ENTITY verb_prefixes "ي|ت|ن|أ|سي|ست|سن|سأ">
     <!ENTITY verb6_prefixes "ا|ي|ت|ن|أ|سي|ست|سن|سأ">
     <!ENTITY conj "و|ف">
@@ -119,28 +119,28 @@ USA
       <rule id="gender_0001_hadha" name="تطابق النوع مع هذا">
         <pattern>
           <marker>
-            <token inflected="yes">هَذَا</token>
+            <token inflected="yes">هذا</token>
             <token postag="N.*;F1.*;--.*" postag_regexp="yes"/>
           </marker>
         </pattern>
-        <message>انتبه إلى اسم الإشارة للمذكر، ربما عليك أن تضع اسم إشارة مؤنثا <suggestion><match no="1" regexp_match="هذا" regexp_replace="هذه"/>&nbsp;<match no="2"/></suggestion>?
+        <message>انتبه إلى اسم الإشارة للمذكر، ربما عليك أن تضع اسم إشارة مؤنثا <suggestion>هذه&nbsp;<match no="2"/></suggestion>?
         </message>
         <example correction="هذه السلامة" type="incorrect"><marker>هذا السلامة</marker></example>
-        <example correction="وهذه السلامة" type="incorrect"><marker>وهذا السلامة</marker></example>
         <example correction="هذه سلامته"><marker>هذا سلامته</marker></example>
         <example correction="هذه سلامة" type="incorrect"><marker>هذا سلامة</marker></example>
       </rule>
       <rule id="gender_0002_hadhihi" name="تطابق النوع مع هذه">
         <pattern>
           <marker>
-            <token inflected="yes">هذه</token>
-            <token postag="N.*;M1.*;--.*" postag_regexp="yes"/>
-        </marker>
+            <token>هذه</token>
+          </marker>
+          <token postag="N.*;M1.*;--.*" postag_regexp="yes"/>
         </pattern>
-        <message>انتبه إلى اسم الإشارة للمؤنث، ربما عليك أن تضع اسم إشارة مذكرا <suggestion><match no="1" regexp_match="هذه" regexp_replace="هذا"/>&nbsp;\2</suggestion>?
+        <message>انتبه إلى اسم الإشارة للمؤنث، ربما عليك أن تضع اسم إشارة مذكرا <suggestion>هذا</suggestion>?
                 </message>
-        <example correction="هذا السلام" type="incorrect"><marker>هذه السلام</marker></example>
-        <example correction="هذا سلام" type="incorrect"><marker>هذه سلام</marker></example>
+        <example correction="هذا" type="incorrect"><marker>هذه</marker> السلام </example>
+        <!--                <example correction="هذه"><marker>هذا</marker> سلامته </example>-->
+        <example correction="هذا" type="incorrect"><marker>هذه</marker> سلام </example>
       </rule>
       <rule id="gender_0003_hadha" name="تطابق هذا مع الكلمات ملتبسة النوع">
         <pattern>
