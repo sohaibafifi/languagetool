@@ -548,21 +548,20 @@ USA
           <marker>
             <or>
               <token inflected="yes">قَامَ</token>
-              <token>القيام</token>
+              <token inflected="yes">قيام</token>
             </or>
             <token postag="NM.*;.*;-B.*" postag_regexp="yes"/>
           </marker>
         </pattern>
         <message>
-تعبير "القيام بـ" ركيك يستحسن تجن البه إلى تصريف المصدر الموالي، قل ضربت بدلا من القيام بالضرب.
+تعبير "القيام بـ" ركيك يستحسن تجنبه إلى تصريف المصدر الموالي، قل ضربت بدلا من القيام بالضرب.
 
 
-        <suggestion>الفعل من (<match no="2" regexp_match="^ب" regexp_replace=""/>)</suggestion>?
+        <suggestion>الفعل من (<match no="2" regexp_match="^ب" regexp_replace=""/>)</suggestion>
+                <suggestion><match no="2" regexp_match="^ب" regexp_replace=""/></suggestion>
                 </message>
-        <example correction="الفعل من (الضرب)">
-          <marker>القيام بالضرب</marker>
-        </example>
-        <example correction="الفعل من (شرب)" type="incorrect"><marker>قمت بشرب</marker> الماء </example>
+        <example correction="الفعل من (الضرب)|الضرب"> <marker>القيام بالضرب</marker></example>
+        <example correction="الفعل من (شرب)|شرب" type="incorrect"><marker>قمت بشرب</marker> الماء </example>
       </rule>
     </rulegroup>
 <!--
@@ -586,7 +585,7 @@ USA
         <pattern>
           <marker>
 
-			<token>لم</token>
+	<token>لم</token>
             <token postag="V..;.*f.[^0];---" postag_regexp="yes"/>
 
           </marker>
@@ -685,7 +684,7 @@ USA
             <token postag=".*;W.?.?" postag_regexp="yes"/>
           </marker>
         </pattern>
-        <message>يفضل أن يقال:
+        <message>عبارة "إلّا و" يستحسن أن تقال: 
             <suggestion>إلاّ <match no="2" regexp_match="^و" regexp_replace=""/></suggestion>
         </message>
         <example correction="إلاّ قال" type="incorrect"> ما تحدث <marker>إلا وقال</marker> خيرا </example>
