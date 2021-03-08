@@ -58,6 +58,20 @@ public class ArabicTagManager {
   private static final int VERB_FLAG_POS_ISTIQBAL = 13;
   private static final int VERB_FLAG_POS_PRONOUN = 14;
 
+  // CONSTANT for particle flags position
+  private static final int PARTICLE_TAG_LENGTH = 12;
+  private static final int PARTICLE_FLAG_POS_WORDTYPE = 0;
+  private static final int PARTICLE_FLAG_POS_CATEGORY = 1;
+
+  private static final int PARTICLE_FLAG_POS_GENDER = 4;
+  private static final int PARTICLE_FLAG_POS_NUMBER = 5;
+  private static final int PARTICLE_FLAG_POS_CASE = 6;
+  private static final int PARTICLE_FLAG_POS_INFLECT_MARK = 7;
+
+  private static final int PARTICLE_FLAG_POS_CONJ = 9;
+  private static final int PARTICLE_FLAG_POS_JAR = 10;
+  private static final int PARTICLE_FLAG_POS_PRONOUN = 11;
+
   public ArabicTagManager() {
   }
 
@@ -80,7 +94,7 @@ public class ArabicTagManager {
         tmp.setCharAt(postag.length() - 3, 'W');
         break;
       case "K":
-        if (postag.startsWith("N")) {
+        if (isNoun(postag)) {
           // the noun must be majrour
           if (isMajrour(postag))
             tmp.setCharAt(postag.length() - 2, 'K');
@@ -90,7 +104,7 @@ public class ArabicTagManager {
         } else return null;
         break;
       case "B":
-        if (postag.startsWith("N")) {
+        if (isNoun(postag)) {
           // the noun must be majrour
           if (isMajrour(postag))
             tmp.setCharAt(postag.length() - 2, 'B');
@@ -220,6 +234,9 @@ public class ArabicTagManager {
       } else if (isVerb(postag)) {
         tmp.setCharAt(VERB_FLAG_POS_PRONOUN, myflag);
       }
+//      else if (isStopWord(postag)) {
+//        tmp.setCharAt(PARTICLE_FLAG_POS_PRONOUN, myflag);
+//      }
     }
     return tmp.toString();
   }
@@ -243,7 +260,9 @@ public class ArabicTagManager {
    */
   public boolean isAttached(String postag) {
     return (isNoun(postag) && (postag.charAt(NOUN_FLAG_POS_PRONOUN) == 'H'))
-      || (isVerb(postag) && (postag.charAt(VERB_FLAG_POS_PRONOUN) == 'H'));
+      || (isVerb(postag) && (postag.charAt(VERB_FLAG_POS_PRONOUN) == 'H'))
+      //|| (isStopWord(postag) && (postag.charAt(PARTICLE_FLAG_POS_PRONOUN) == 'H'))
+      ;
   }
 
   /**
