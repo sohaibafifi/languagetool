@@ -8209,7 +8209,7 @@ END RULEGROUP Masdar errors
           </marker>
         </pattern>
         <message>يفضل أن يقال: 
-            <suggestion><match no="1" regexp_match="رزوق" regexp_replace="زروق"/></suggestion>
+            <suggestion><match no="1" regexp_match="رزوق" regexp_replace="زروق" case_conversion="notashkeel"/></suggestion>
         </message>
         <example correction="زروقي" type="incorrect"> ذهبت <marker>رزوقي</marker> فلان </example>
         <example correction="زروقي" type="incorrect"> ذهبت <marker>رزُوقي</marker> فلان </example>
