@@ -65,7 +65,7 @@ public final class CaseConversionHelper {
         break;
       case ALLLOWER:
         token = token.toLowerCase();
-        break;     
+         break;
       default:
         break;
     }

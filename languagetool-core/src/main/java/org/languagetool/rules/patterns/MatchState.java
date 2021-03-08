@@ -20,7 +20,10 @@
 package org.languagetool.rules.patterns;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
@@ -218,16 +221,10 @@ public class MatchState {
       Pattern pRegexMatch = match.getRegexMatch();
       String regexReplace = match.getRegexReplace();
       if (pRegexMatch != null) {
-        //         System.out.println(formattedString[0]);
-        if (Objects.equals(lang.getShortCode(), "ar"))
-          formattedString[0] = StringTools.removeTashkeel(formattedString[0]);
-
+              //        Add arabic support for diacritized matching and suggestion generation
+        if (lang.getShortCode() != null && lang.getShortCode().equals("ar"))
+             formattedString[0] = StringTools.removeTashkeel(formattedString[0]);
         formattedString[0] = pRegexMatch.matcher(formattedString[0]).replaceAll(regexReplace);
-        /*
-        if (lang.getShortCode() == "ar")
-          System.out.println(formattedString[0]);
-        */
-
       }
 
       String posTag = match.getPosTag();
