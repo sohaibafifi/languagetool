@@ -26,7 +26,7 @@ import java.util.HashMap;
  */
 public class ArabicTagManager {
 
-
+  //@deprecated variables, it must be used as Hashmap
   // CONSTANT for noun flags position
   private static final int NOUN_TAG_LENGTH = 12;
   private static final int NOUN_FLAG_POS_WORDTYPE = 0;
@@ -362,7 +362,7 @@ public class ArabicTagManager {
     return  getFlagPos2(postag, flagType);
   }
 
-
+ //@depcrecated 
   private int getFlagPos1(String postag, String flagType)
   {
    /*
@@ -478,7 +478,7 @@ public class ArabicTagManager {
     mapFlagPos.put("PARTICLE_TAG_LENGTH", 12);
     mapFlagPos.put("PARTICLE_WORDTYPE", 0);
     mapFlagPos.put("PARTICLE_CATEGORY", 1);
-//
+// FIXME: Add partical
 //    mapFlagPos.put("PARTICLE_GENDER", 4);
 //    mapFlagPos.put("PARTICLE_NUMBER", 5);
 //    mapFlagPos.put("PARTICLE_CASE", 6);
