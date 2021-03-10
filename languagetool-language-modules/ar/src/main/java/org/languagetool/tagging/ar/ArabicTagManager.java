@@ -149,14 +149,15 @@ public class ArabicTagManager {
    * @return true if have flag majrour
    */
   public boolean isMajrour(String postag) {
-    return (postag.charAt(6) == 'I') || (postag.charAt(6) == '-');
+    char flag = getFlag(postag, "CASE");
+    return (flag == 'I') || (flag == '-');
   }
 
   /**
    * @return add jar flag to noun
    */
   public String setJar(String postag, String jar) {
-    StringBuilder tmp = new StringBuilder(postag);
+
     char myflag = 0;
     if (isMajrour(postag)) {
       if (jar.equals("ب") || jar.equals("B"))
@@ -168,16 +169,15 @@ public class ArabicTagManager {
       else if (jar.equals("-") || jar.isEmpty())
         myflag = '-';
       if (myflag != 0)
-        tmp.setCharAt(NOUN_FLAG_POS_JAR, myflag);
+        postag = setFlag(postag, "JAR", myflag);
     }
-    return tmp.toString();
+    return postag;
   }
 
   /**
    * @return add definite flag to noun
    */
   public String setDefinite(String postag, String flag) {
-    StringBuilder tmp = new StringBuilder(postag);
     char myflag = 0;
     if (isNoun(postag) && isUnAttachedNoun(postag)) {
       if (flag.equals("ال")
@@ -189,16 +189,15 @@ public class ArabicTagManager {
       else if (flag.equals("-") || flag.isEmpty())
         myflag = '-';
       if (myflag != 0)
-        tmp.setCharAt(NOUN_FLAG_POS_PRONOUN, myflag);
+        postag = setFlag(postag, "PRONOUN", myflag);
     }
-    return tmp.toString();
+    return postag;
   }
 
   /**
    * @return add conjuction flag to noun
    */
   public String setConjunction(String postag, String flag) {
-    StringBuilder tmp = new StringBuilder(postag);
     char myflag = 0;
     if (flag.equals("و")
       || flag.equals("W")
@@ -209,36 +208,29 @@ public class ArabicTagManager {
     else if (flag.equals("-") || flag.isEmpty())
       myflag = '-';
     if (myflag != 0) {
-      if (isNoun(postag)) {
-        tmp.setCharAt(NOUN_FLAG_POS_CONJ, myflag);
-      } else if (isVerb(postag)) {
-        tmp.setCharAt(VERB_FLAG_POS_CONJ, myflag);
-      }
+      if (isNoun(postag) || isVerb(postag) )
+        postag = setFlag(postag, "CONJ", myflag);
     }
-    return tmp.toString();
+    return postag;
   }
 
   /**
    * @return add conjunction flag to noun
    */
   public String setPronoun(String postag, String flag) {
-    StringBuilder tmp = new StringBuilder(postag);
+
     char myflag = 0;
     if (flag.equals("ه")
       || flag.equals("H")
     )
       myflag = 'H';
     if (myflag != 0) {
-      if (isNoun(postag)) {
-        tmp.setCharAt(NOUN_FLAG_POS_PRONOUN, myflag);
-      } else if (isVerb(postag)) {
-        tmp.setCharAt(VERB_FLAG_POS_PRONOUN, myflag);
+      if (isNoun(postag) || isVerb(postag) ) {
+        postag = setFlag(postag, "PRONOUN", myflag);
       }
-//      else if (isStopWord(postag)) {
-//        tmp.setCharAt(PARTICLE_FLAG_POS_PRONOUN, myflag);
-//      }
+
     }
-    return tmp.toString();
+    return postag;
   }
 
   /**
