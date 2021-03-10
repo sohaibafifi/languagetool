@@ -81,7 +81,7 @@ public class ArabicTagger extends BaseTagger {
           continue;
         // get stem return a list, to generate some variants for stems.
         List<String> stemsList = getStem(striped, i, j);
-        List<String> tags = getTags(striped, i);
+        List<String> tags = getTags(striped, i, j);
 
         for (String stem : stemsList) {
           List<AnalyzedToken> taggerTokens;
@@ -203,10 +203,11 @@ public class ArabicTagger extends BaseTagger {
   }
 
 
-  private List<String> getTags(String word, int posStart) {
+  private List<String> getTags(String word, int posStart, int posEnd) {
     List<String> tags = new ArrayList<>();
     // extract tags from word
     String prefix = getPrefix(word, posStart);
+    String suffix = getSuffix(word, posEnd);
     // prefixes
     // first place
     if (prefix.startsWith("و") || prefix.startsWith("ف")) {
@@ -232,6 +233,28 @@ public class ArabicTagger extends BaseTagger {
     }
     // suffixes
     // TODO : suffixes if needed
+    if (suffix.equals("ك"))
+      tags.add("H");
+    else if (suffix.equals("كما"))
+      tags.add("H");
+    else if (suffix.equals("كم"))
+      tags.add("H");
+    else if (suffix.equals("كن"))
+      tags.add("H");
+    else if (suffix.equals("ه"))
+      tags.add("H");
+    else if (suffix.equals("ها"))
+      tags.add("H");
+    else if (suffix.equals("هما"))
+      tags.add("H");
+    else if (suffix.equals("هم"))
+      tags.add("H");
+    else if (suffix.equals("هن"))
+      tags.add("H");
+    else if (suffix.equals("نا"))
+      tags.add("H");
+    else if (suffix.equals("ني"))
+      tags.add("H");
     return tags;
   }
   
@@ -250,6 +273,9 @@ public class ArabicTagger extends BaseTagger {
 
   private String getPrefix(String word, int pos) {
     return word.substring(0, pos);
+  } private String getSuffix(String word, int pos) {
+//    return word.substring(0, pos, word.length()-1);
+    return word.substring(pos);
   }
 
   private List<String> getStem(String word, int posStart, int posEnd) {
