@@ -73,7 +73,7 @@ public class ArabicTagManager {
   private static final int PARTICLE_FLAG_POS_JAR = 10;
   private static final int PARTICLE_FLAG_POS_PRONOUN = 11;
 
-  private HashMap<String,Integer> mapFlagPos =new HashMap<String, Integer>();//Creating HashMap
+  private final HashMap<String,Integer> mapFlagPos =new HashMap<>();//Creating HashMap
 
   public ArabicTagManager() {
     loadHashmap();
@@ -88,7 +88,23 @@ public class ArabicTagManager {
     }
     return postag;
   }
-  public String addTag(String postag, String flag) {
+  public String addTag(String postag, String flagString) {
+//    StringBuilder tmp = new StringBuilder(postag);
+    // split flag into flag and flagtype
+    String[] flagTuple = flagString.split(";");
+    String flag = "";
+    String flagType = "";
+    if (flagTuple.length == 1)
+      flag = flagTuple[0];
+    if (flagTuple.length >= 2) {
+      flagType = flagTuple[0];
+      flag = flagTuple[1];
+    }
+   // System.out.printf("addTag: %s (%s,%s) %d\n",flagString, flag, flagType,flagTuple.length );
+
+    return addTag(postag, flagType, flag);
+  }
+  public String addTag(String postag, String flagType, String flag) {
 //    StringBuilder tmp = new StringBuilder(postag);
 
     switch (flag) {

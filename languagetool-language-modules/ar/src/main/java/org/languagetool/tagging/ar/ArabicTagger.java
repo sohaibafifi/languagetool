@@ -211,50 +211,50 @@ public class ArabicTagger extends BaseTagger {
     // prefixes
     // first place
     if (prefix.startsWith("و") || prefix.startsWith("ف")) {
-      tags.add("W");
+      tags.add("CONJ;W");
       prefix = prefix.replaceAll("^[وف]", "");
 
     }
     // second place
     if (prefix.startsWith("ك")) {
-      tags.add("K");
+      tags.add("JAR;K");
     } else if (prefix.startsWith("ل")) {
-      tags.add("L");
+      tags.add("JAR;L");
     } else if (prefix.startsWith("ب")) {
-      tags.add("B");
+      tags.add("JAR;B");
     } else if (prefix.startsWith("س")) {
-      tags.add("S");
+      tags.add("ISTIQBAL;S");
     }
     // last place
     if (prefix.endsWith("ال")
       || prefix.endsWith("لل")
     ) {
-      tags.add("D");
+      tags.add("PRONOUN;D");
     }
     // suffixes
     // TODO : suffixes if needed
     if (suffix.equals("ك"))
-      tags.add("H");
+      tags.add("PRONOUN;H");
     else if (suffix.equals("كما"))
-      tags.add("H");
+      tags.add("PRONOUN;H");
     else if (suffix.equals("كم"))
-      tags.add("H");
+      tags.add("PRONOUN;H");
     else if (suffix.equals("كن"))
-      tags.add("H");
+      tags.add("PRONOUN;H");
     else if (suffix.equals("ه"))
-      tags.add("H");
+      tags.add("PRONOUN;H");
     else if (suffix.equals("ها"))
-      tags.add("H");
+      tags.add("PRONOUN;H");
     else if (suffix.equals("هما"))
-      tags.add("H");
+      tags.add("PRONOUN;H");
     else if (suffix.equals("هم"))
-      tags.add("H");
+      tags.add("PRONOUN;H");
     else if (suffix.equals("هن"))
-      tags.add("H");
+      tags.add("PRONOUN;H");
     else if (suffix.equals("نا"))
-      tags.add("H");
+      tags.add("PRONOUN;H");
     else if (suffix.equals("ني"))
-      tags.add("H");
+      tags.add("PRONOUN;H");
     return tags;
   }
   
