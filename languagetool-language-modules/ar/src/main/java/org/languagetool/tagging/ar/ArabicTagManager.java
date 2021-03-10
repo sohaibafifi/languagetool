@@ -172,6 +172,20 @@ public class ArabicTagManager {
           return null;
         break;
     }
+    // case of Pronoun
+    if (flagType.equals("PRONOUN")
+//        && flag.equals("H")
+      && ! flag.isEmpty()
+      && ! flag.equals("D")
+//      && ! flag.equals("-")
+    )
+    {
+//      System.out.printf("Add tag %s [%s, %s]\n",postag, flagType,flag );
+//      postag = setFlag(postag, flagType, 'H');
+      postag = setFlag(postag, flagType, flag.charAt(0));
+//      System.out.printf("Add tag %s [%s, %s]\n",postag, flagType,flag );
+
+   }
     return postag;
 //    return tmp.toString();
   }
@@ -435,8 +449,8 @@ public class ArabicTagManager {
 
     /* test new function */
     int pos2 = getFlagPos2(postag, flagType);
-    if(pos != pos2)
-      System.out.printf("Pos1: %s %d %d\n",postag, pos,pos2);
+//    if(pos != pos2)
+//      System.out.printf("Pos1: %s %d %d\n",postag, pos,pos2);
     return pos;
   }
 

@@ -233,31 +233,67 @@ public class ArabicTagger extends BaseTagger {
     }
     // suffixes
     // TODO : suffixes if needed
-    if (suffix.equals("ك"))
-      tags.add("PRONOUN;H");
-    else if (suffix.equals("كما"))
-      tags.add("PRONOUN;H");
-    else if (suffix.equals("كم"))
-      tags.add("PRONOUN;H");
-    else if (suffix.equals("كن"))
-      tags.add("PRONOUN;H");
-    else if (suffix.equals("ه"))
-      tags.add("PRONOUN;H");
-    else if (suffix.equals("ها"))
-      tags.add("PRONOUN;H");
-    else if (suffix.equals("هما"))
-      tags.add("PRONOUN;H");
-    else if (suffix.equals("هم"))
-      tags.add("PRONOUN;H");
-    else if (suffix.equals("هن"))
-      tags.add("PRONOUN;H");
-    else if (suffix.equals("نا"))
-      tags.add("PRONOUN;H");
-    else if (suffix.equals("ني"))
-      tags.add("PRONOUN;H");
-    return tags;
+  /*  switch(suffix)
+    {
+//      case "ي" :
+//        tags.add("PRONOUN;a");
+//        break;
+      case "ني" :
+        tags.add("PRONOUN;b");
+        break;
+      case "نا" :
+        tags.add("PRONOUN;c");
+        break;
+      case "ك" :
+        tags.add("PRONOUN;d");
+        break;
+      case "كما" :
+        tags.add("PRONOUN;e");
+        break;
+      case "كم" :
+        tags.add("PRONOUN;f");
+        break;
+      case "كن" :
+        tags.add("PRONOUN;g");
+        break;
+      case "ه" :
+        tags.add("PRONOUN;H");
+        break;
+      case "ها" :
+        tags.add("PRONOUN;i");
+        break;
+      case "هما" :
+        tags.add("PRONOUN;j");
+        break;
+      case "هم" :
+        tags.add("PRONOUN;k");
+        break;
+      case "هن" :
+        tags.add("PRONOUN;n");
+    }*/
+
+    switch(suffix)
+    {
+//      case "ي" :
+      case "ني" :
+      case "نا" :
+      case "ك" :
+      case "كما" :
+      case "كم" :
+      case "كن" :
+      case "ه" :
+      case "ها" :
+      case "هما" :
+      case "هم" :
+      case "هن" :
+        tags.add("PRONOUN;H");
+        break;
+      //default:
+    }
+
+   return tags;
   }
-  
+
   /**
    * @return test if word has stopword tagging
    */
