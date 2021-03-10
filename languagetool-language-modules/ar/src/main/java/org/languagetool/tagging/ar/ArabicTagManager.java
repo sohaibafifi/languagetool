@@ -19,12 +19,13 @@
 package org.languagetool.tagging.ar;
 
 import java.util.List;
-
+import java.util.HashMap;
 /**
  * @author Taha Zerrouki
  * @since 5.0
  */
 public class ArabicTagManager {
+
 
   // CONSTANT for noun flags position
   private static final int NOUN_TAG_LENGTH = 12;
@@ -72,7 +73,10 @@ public class ArabicTagManager {
   private static final int PARTICLE_FLAG_POS_JAR = 10;
   private static final int PARTICLE_FLAG_POS_PRONOUN = 11;
 
+  private HashMap<String,Integer> mapFlagPos =new HashMap<String, Integer>();//Creating HashMap
+
   public ArabicTagManager() {
+    loadHashmap();
   }
 
   public String modifyPosTag(String postag, List<String> tags) {
@@ -354,17 +358,21 @@ public class ArabicTagManager {
     return "";
   }
 
+  private int getFlagPos(String postag, String flagType) {
+    return  getFlagPos2(postag, flagType);
+  }
 
-  private int getFlagPos(String tagString, String flagType)
+
+  private int getFlagPos1(String postag, String flagType)
   {
    /*
    return position of flag in the tag string accorging to word_type and tagstring
     */
     int pos = 0;
     String key = "";
-    if(isNoun(tagString))
+    if(isNoun(postag))
       key = "NOUN_FLAG_POS_"+flagType;
-    else if(isVerb(tagString))
+    else if(isVerb(postag))
       key = "VERB_FLAG_POS_"+flagType;
     if (key.equals("NOUN_TAG_LENGTH")) pos = NOUN_TAG_LENGTH;
     else if (key.equals("NOUN_FLAG_POS_WORDTYPE")) pos = NOUN_FLAG_POS_WORDTYPE;
@@ -408,6 +416,11 @@ public class ArabicTagManager {
     else if (key.equals("PARTICLE_FLAG_POS_CONJ")) pos = PARTICLE_FLAG_POS_CONJ;
     else if (key.equals("PARTICLE_FLAG_POS_JAR")) pos = PARTICLE_FLAG_POS_JAR;
     else if (key.equals("PARTICLE_FLAG_POS_PRONOUN")) pos = PARTICLE_FLAG_POS_PRONOUN;
+
+    /* test new function */
+    int pos2 = getFlagPos2(postag, flagType);
+    if(pos != pos2)
+      System.out.printf("Pos1: %s %d %d\n",postag, pos,pos2);
     return pos;
   }
 
@@ -424,6 +437,80 @@ public class ArabicTagManager {
     tmp.setCharAt(getFlagPos(postag, flagType), flag);
     return tmp.toString();
 
+  }
+
+
+  private void loadHashmap()
+  {
+    mapFlagPos.put("None", 0);
+    mapFlagPos.put("NOUN_TAG_LENGTH", 12);
+    mapFlagPos.put("NOUN_WORDTYPE", 0);
+    mapFlagPos.put("NOUN_CATEGORY", 1);
+
+    mapFlagPos.put("NOUN_GENDER", 4);
+    mapFlagPos.put("NOUN_NUMBER", 5);
+    mapFlagPos.put("NOUN_CASE", 6);
+    mapFlagPos.put("NOUN_INFLECT_MARK", 7);
+
+    mapFlagPos.put("NOUN_CONJ", 9);
+    mapFlagPos.put("NOUN_JAR", 10);
+    mapFlagPos.put("NOUN_PRONOUN", 11);
+
+    // CONSTANT for Verb flags position
+    mapFlagPos.put("VERB_TAG_LENGTH", 15);
+    mapFlagPos.put("VERB_WORDTYPE", 0);
+    mapFlagPos.put("VERB_CATEGORY", 1);
+    mapFlagPos.put("VERB_TRANS", 2);
+
+    mapFlagPos.put("VERB_GENDER", 4);
+    mapFlagPos.put("VERB_NUMBER", 5);
+    mapFlagPos.put("VERB_PERSON", 6);
+    mapFlagPos.put("VERB_INFLECT_MARK", 7);
+    mapFlagPos.put("VERB_TENSE", 8);
+    mapFlagPos.put("VERB_VOICE", 9);
+    mapFlagPos.put("VERB_CASE", 10);
+
+    mapFlagPos.put("VERB_CONJ", 12);
+    mapFlagPos.put("VERB_ISTIQBAL", 13);
+    mapFlagPos.put("VERB_PRONOUN", 14);
+
+    // CONSTANT for particle flags position
+    mapFlagPos.put("PARTICLE_TAG_LENGTH", 12);
+    mapFlagPos.put("PARTICLE_WORDTYPE", 0);
+    mapFlagPos.put("PARTICLE_CATEGORY", 1);
+//
+//    mapFlagPos.put("PARTICLE_GENDER", 4);
+//    mapFlagPos.put("PARTICLE_NUMBER", 5);
+//    mapFlagPos.put("PARTICLE_CASE", 6);
+//    mapFlagPos.put("PARTICLE_INFLECT_MARK", 7);
+//
+//    mapFlagPos.put("PARTICLE_CONJ", 9);
+//    mapFlagPos.put("PARTICLE_JAR", 10);
+//    mapFlagPos.put("PARTICLE_PRONOUN", 11);
+  }
+
+  private int getFlagPos2(String tagString, String flagType)
+  {
+   /*
+   return position of flag in the tag string accorging to word_type and tagstring
+    */
+//   String key = "";
+    int pos = 0;
+    String key = "";
+    if(isNoun(tagString))
+      key = "NOUN_"+flagType;
+    else if(isVerb(tagString))
+      key = "VERB_"+flagType;
+//   else if(isStopWord(tagString))
+//     key = "PARTICAL_"+flagType;
+    try {
+      pos = mapFlagPos.get(key);
+    }
+    catch (NullPointerException e) {
+     // System.out.printf("POS2: %s %s %s\n", tagString, flagType, key);
+      pos = 0;
+    }
+    return pos;
   }
 
 }
