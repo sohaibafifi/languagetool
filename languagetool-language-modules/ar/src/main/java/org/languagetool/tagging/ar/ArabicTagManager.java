@@ -245,24 +245,21 @@ public class ArabicTagManager {
    * @return true if have flag future
    */
   public boolean isFutureTense(String postag) {
-    return postag.startsWith("V") && postag.contains("f");
+    return isVerb(postag) && (getFlag(postag, "TENSE") == 'f');
   }
 
   /**
    * @return true if have flag is noun and has attached pronoun
    */
   public boolean isUnAttachedNoun(String postag) {
-    return postag.startsWith("N") && !postag.endsWith("H")&& !postag.endsWith("X");
+    return isNoun(postag) && !(getFlag(postag, "PRONOUN") == 'H')&& !postag.endsWith("X");
   }
 
   /**
    * @return true if have flag is noun/verb and has attached pronoun
    */
   public boolean isAttached(String postag) {
-    return (isNoun(postag) && (postag.charAt(NOUN_FLAG_POS_PRONOUN) == 'H'))
-      || (isVerb(postag) && (postag.charAt(VERB_FLAG_POS_PRONOUN) == 'H'))
-      //|| (isStopWord(postag) && (postag.charAt(PARTICLE_FLAG_POS_PRONOUN) == 'H'))
-      ;
+    return ((isNoun(postag) || (isVerb(postag))) && (getFlag(postag, "PRONOUN") == 'H'));
   }
 
   /**
@@ -290,24 +287,23 @@ public class ArabicTagManager {
    * @return true if have flag is noun and definite
    */
   public boolean isDefinite(String postag) {
-
-    return isNoun(postag) && (postag.charAt(NOUN_FLAG_POS_PRONOUN) == 'L');
+    return isNoun(postag) && (getFlag(postag, "PRONOUN") == 'L');
   }
 
   /**
    * @return true if the postag has a Jar
    */
   public boolean hasJar(String postag) {
-    return isNoun(postag) && (postag.charAt(NOUN_FLAG_POS_JAR) != '-');
+    return isNoun(postag) && (getFlag(postag, "JAR") != '-');
   }
 
   /**
    * @return true if the postag has a conjuction
    */
   public boolean hasConjunction(String postag) {
-
-    return (isNoun(postag) && (postag.charAt(NOUN_FLAG_POS_CONJ) != '-'))
-      || (isVerb(postag) && (postag.charAt(VERB_FLAG_POS_CONJ) != '-'));
+    char flag = getFlag(postag, "CONJ");
+    return (isNoun(postag) && ( flag != '-'))
+      || (isVerb(postag) && (flag != '-'));
   }
 
   /**
@@ -316,7 +312,7 @@ public class ArabicTagManager {
   public String getDefinitePrefix(String postag) {
     if (postag.isEmpty())
       return "";
-    if (isNoun(postag) && (postag.charAt(NOUN_FLAG_POS_PRONOUN) == 'L')) {
+    if (isNoun(postag) && (getFlag(postag, "PRONOUN") == 'L')) {
       if (hasJar(postag) && getJarPrefix(postag).equals("ل"))
         return "ل";
       else return "ال";
@@ -340,15 +336,6 @@ public class ArabicTagManager {
         return "ب";
     }
       return "";
-//    if (isNoun(postag)) {
-//      if (postag.charAt(NOUN_FLAG_POS_JAR) == 'L')
-//        return "ل";
-//      else if (postag.charAt(NOUN_FLAG_POS_JAR) == 'K')
-//        return "ك";
-//      else if (postag.charAt(NOUN_FLAG_POS_JAR) == 'B')
-//        return "ب";
-//    }
-//    return "";
   }
 
   /**
@@ -370,7 +357,6 @@ public class ArabicTagManager {
    /*
    return position of flag in the tag string accorging to word_type and tagstring
     */
-//   String key = "";
     int pos = 0;
     String key = "";
     if(isNoun(tagString))
