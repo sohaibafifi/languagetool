@@ -331,36 +331,110 @@ public class ArabicTagManager {
     if (postag.isEmpty())
       return "";
     if (isNoun(postag)) {
-      if (postag.charAt(NOUN_FLAG_POS_JAR) == 'L')
+      char flag = getFlag(postag, "JAR");
+      if ( flag == 'L')
         return "ل";
-      else if (postag.charAt(NOUN_FLAG_POS_JAR) == 'K')
+      else if ( flag == 'K')
         return "ك";
-      else if (postag.charAt(NOUN_FLAG_POS_JAR) == 'B')
+      else if (flag  == 'B')
         return "ب";
     }
-    return "";
+      return "";
+//    if (isNoun(postag)) {
+//      if (postag.charAt(NOUN_FLAG_POS_JAR) == 'L')
+//        return "ل";
+//      else if (postag.charAt(NOUN_FLAG_POS_JAR) == 'K')
+//        return "ك";
+//      else if (postag.charAt(NOUN_FLAG_POS_JAR) == 'B')
+//        return "ب";
+//    }
+//    return "";
   }
 
   /**
    * @return the Conjunction prefix letter
    */
   public String getConjunctionPrefix(String postag) {
-    int pos;
-    if (postag.isEmpty())
-      return "";
-    if (isNoun(postag))
-      pos = NOUN_FLAG_POS_CONJ;
-    else if (isVerb(postag))
-      pos = VERB_FLAG_POS_CONJ;
-    else
-      return "";
 
-    if (postag.charAt(pos) == 'F')
+    if (getFlag(postag, "CONJ") == 'F')
       return "ف";
-    else if (postag.charAt(pos) == 'W')
+    else if (getFlag(postag, "CONJ") == 'W')
       return "و";
 
     return "";
+  }
+
+
+  private int getFlagPos(String tagString, String flagType)
+  {
+   /*
+   return position of flag in the tag string accorging to word_type and tagstring
+    */
+//   String key = "";
+    int pos = 0;
+    String key = "";
+    if(isNoun(tagString))
+      key = "NOUN_FLAG_POS_"+flagType;
+    else if(isVerb(tagString))
+      key = "VERB_FLAG_POS_"+flagType;
+    if (key.equals("NOUN_TAG_LENGTH")) pos = NOUN_TAG_LENGTH;
+    else if (key.equals("NOUN_FLAG_POS_WORDTYPE")) pos = NOUN_FLAG_POS_WORDTYPE;
+    else if (key.equals("NOUN_FLAG_POS_CATEGORY")) pos = NOUN_FLAG_POS_CATEGORY;
+
+    else if (key.equals("NOUN_FLAG_POS_GENDER")) pos = NOUN_FLAG_POS_GENDER;
+    else if (key.equals("NOUN_FLAG_POS_NUMBER")) pos = NOUN_FLAG_POS_NUMBER;
+    else if (key.equals("NOUN_FLAG_POS_CASE")) pos = NOUN_FLAG_POS_CASE;
+    else if (key.equals("NOUN_FLAG_POS_INFLECT_MARK")) pos = NOUN_FLAG_POS_INFLECT_MARK;
+
+    else if (key.equals("NOUN_FLAG_POS_CONJ")) pos = NOUN_FLAG_POS_CONJ;
+    else if (key.equals("NOUN_FLAG_POS_JAR")) pos = NOUN_FLAG_POS_JAR;
+    else if (key.equals("NOUN_FLAG_POS_PRONOUN")) pos = NOUN_FLAG_POS_PRONOUN;
+
+    else if (key.equals("VERB_TAG_LENGTH")) pos = VERB_TAG_LENGTH;
+    else if (key.equals("VERB_FLAG_POS_WORDTYPE")) pos = VERB_FLAG_POS_WORDTYPE;
+    else if (key.equals("VERB_FLAG_POS_CATEGORY")) pos = VERB_FLAG_POS_CATEGORY;
+    else if (key.equals("VERB_FLAG_POS_TRANS")) pos = VERB_FLAG_POS_TRANS;
+
+    else if (key.equals("VERB_FLAG_POS_GENDER")) pos = VERB_FLAG_POS_GENDER;
+    else if (key.equals("VERB_FLAG_POS_NUMBER")) pos = VERB_FLAG_POS_NUMBER;
+    else if (key.equals("VERB_FLAG_POS_PERSON")) pos = VERB_FLAG_POS_PERSON;
+    else if (key.equals("VERB_FLAG_POS_INFLECT_MARK")) pos = VERB_FLAG_POS_INFLECT_MARK;
+    else if (key.equals("VERB_FLAG_POS_TENSE")) pos = VERB_FLAG_POS_TENSE;
+    else if (key.equals("VERB_FLAG_POS_VOICE")) pos = VERB_FLAG_POS_VOICE;
+    else if (key.equals("VERB_FLAG_POS_CASE")) pos = VERB_FLAG_POS_CASE;
+
+    else if (key.equals("VERB_FLAG_POS_CONJ")) pos = VERB_FLAG_POS_CONJ;
+    else if (key.equals("VERB_FLAG_POS_ISTIQBAL")) pos = VERB_FLAG_POS_ISTIQBAL;
+    else if (key.equals("VERB_FLAG_POS_PRONOUN")) pos = VERB_FLAG_POS_PRONOUN;
+
+    else if (key.equals("PARTICLE_TAG_LENGTH")) pos = PARTICLE_TAG_LENGTH;
+    else if (key.equals("PARTICLE_FLAG_POS_WORDTYPE")) pos = PARTICLE_FLAG_POS_WORDTYPE;
+    else if (key.equals("PARTICLE_FLAG_POS_CATEGORY")) pos = PARTICLE_FLAG_POS_CATEGORY;
+
+    else if (key.equals("PARTICLE_FLAG_POS_GENDER")) pos = PARTICLE_FLAG_POS_GENDER;
+    else if (key.equals("PARTICLE_FLAG_POS_NUMBER")) pos = PARTICLE_FLAG_POS_NUMBER;
+    else if (key.equals("PARTICLE_FLAG_POS_CASE")) pos = PARTICLE_FLAG_POS_CASE;
+    else if (key.equals("PARTICLE_FLAG_POS_INFLECT_MARK")) pos = PARTICLE_FLAG_POS_INFLECT_MARK;
+
+    else if (key.equals("PARTICLE_FLAG_POS_CONJ")) pos = PARTICLE_FLAG_POS_CONJ;
+    else if (key.equals("PARTICLE_FLAG_POS_JAR")) pos = PARTICLE_FLAG_POS_JAR;
+    else if (key.equals("PARTICLE_FLAG_POS_PRONOUN")) pos = PARTICLE_FLAG_POS_PRONOUN;
+    return pos;
+  }
+
+  private char getFlag(String postag, String flagType)
+  {
+    /* a flag value for flagtype from postag */
+    return postag.charAt(getFlagPos(postag, flagType));
+
+  }
+  private String setFlag(String postag, String flagType, char flag)
+  {
+    /* a flag value for flagtype from postag */
+    StringBuilder tmp = new StringBuilder(postag);
+    tmp.setCharAt(getFlagPos(postag, flagType), flag);
+    return tmp.toString();
+
   }
 
 }
