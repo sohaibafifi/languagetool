@@ -84,20 +84,20 @@ public class ArabicTagManager {
     }
     return postag;
   }
-
-  /* Add the flag to an encoded tag */
   public String addTag(String postag, String flag) {
-    StringBuilder tmp = new StringBuilder(postag);
+//    StringBuilder tmp = new StringBuilder(postag);
 
     switch (flag) {
       case "W":
-        tmp.setCharAt(postag.length() - 3, 'W');
+//        tmp.setCharAt(postag.length() - 3, 'W');
+        postag = setFlag(postag, "CONJ", 'W');
         break;
       case "K":
         if (isNoun(postag)) {
           // the noun must be majrour
           if (isMajrour(postag))
-            tmp.setCharAt(postag.length() - 2, 'K');
+            postag = setFlag(postag, "JAR", 'K');
+//            tmp.setCharAt(postag.length() - 2, 'K');
             // a prefix K but non majrour
           else return null;
 
@@ -107,8 +107,10 @@ public class ArabicTagManager {
         if (isNoun(postag)) {
           // the noun must be majrour
           if (isMajrour(postag))
-            tmp.setCharAt(postag.length() - 2, 'B');
-            // a prefix B but non majrour
+//            tmp.setCharAt(postag.length() - 2, 'B');
+          postag = setFlag(postag, "JAR", 'B');
+
+          // a prefix B but non majrour
           else return null;
 
         } else return null;
@@ -117,18 +119,24 @@ public class ArabicTagManager {
         if (isNoun(postag)) {
           // the noun must be majrour
           if (isMajrour(postag))
-            tmp.setCharAt(postag.length() - 2, 'L');
+            postag = setFlag(postag, "JAR", 'L');
+
+//          tmp.setCharAt(postag.length() - 2, 'L');
             // a prefix Lam but non majrour
           else return null;
 
         } else {// verb case
-          tmp.setCharAt(postag.length() - 2, 'L');
+          postag = setFlag(postag, "ISTIQBAL", 'L');
+
+//          tmp.setCharAt(postag.length() - 2, 'L');
         }
         break;
       case "D":
         // the noun must be not attached
         if (isUnAttachedNoun(postag))
-          tmp.setCharAt(postag.length() - 1, 'L');
+          postag = setFlag(postag, "PRONOUN", 'L');
+
+//          tmp.setCharAt(postag.length() - 1, 'L');
           // a prefix Lam but non majrour
         else return null;
         break;
@@ -136,16 +144,19 @@ public class ArabicTagManager {
         // َAdd S flag
         // if postag contains a future tag, TODO with regex
         if (isFutureTense(postag)) {
-          tmp.setCharAt(postag.length() - 2, 'S');
+//          tmp.setCharAt(postag.length() - 2, 'S');
+          postag = setFlag(postag, "ISTIQBAL", 'S');
+
         } else
           // a prefix Seen but non verb or future
           return null;
         break;
     }
-    return tmp.toString();
+    return postag;
+//    return tmp.toString();
   }
 
-  /**
+ /**
    * @return true if have flag majrour
    */
   public boolean isMajrour(String postag) {
