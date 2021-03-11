@@ -233,44 +233,44 @@ public class ArabicTagger extends BaseTagger {
     }
     // suffixes
     // TODO : suffixes if needed
-  /*  switch(suffix)
-    {
-//      case "ي" :
-//        tags.add("PRONOUN;a");
+//    switch(suffix)
+//    {
+////      case "ي" :
+////        tags.add("PRONOUN;a");
+////        break;
+//      case "ني" :
+//        tags.add("PRONOUN;b");
 //        break;
-      case "ني" :
-        tags.add("PRONOUN;b");
-        break;
-      case "نا" :
-        tags.add("PRONOUN;c");
-        break;
-      case "ك" :
-        tags.add("PRONOUN;d");
-        break;
-      case "كما" :
-        tags.add("PRONOUN;e");
-        break;
-      case "كم" :
-        tags.add("PRONOUN;f");
-        break;
-      case "كن" :
-        tags.add("PRONOUN;g");
-        break;
-      case "ه" :
-        tags.add("PRONOUN;H");
-        break;
-      case "ها" :
-        tags.add("PRONOUN;i");
-        break;
-      case "هما" :
-        tags.add("PRONOUN;j");
-        break;
-      case "هم" :
-        tags.add("PRONOUN;k");
-        break;
-      case "هن" :
-        tags.add("PRONOUN;n");
-    }*/
+//      case "نا" :
+//        tags.add("PRONOUN;c");
+//        break;
+//      case "ك" :
+//        tags.add("PRONOUN;d");
+//        break;
+//      case "كما" :
+//        tags.add("PRONOUN;e");
+//        break;
+//      case "كم" :
+//        tags.add("PRONOUN;f");
+//        break;
+//      case "كن" :
+//        tags.add("PRONOUN;g");
+//        break;
+//      case "ه" :
+//        tags.add("PRONOUN;H");
+//        break;
+//      case "ها" :
+//        tags.add("PRONOUN;i");
+//        break;
+//      case "هما" :
+//        tags.add("PRONOUN;j");
+//        break;
+//      case "هم" :
+//        tags.add("PRONOUN;k");
+//        break;
+//      case "هن" :
+//        tags.add("PRONOUN;n");
+//    }
 
     switch(suffix)
     {

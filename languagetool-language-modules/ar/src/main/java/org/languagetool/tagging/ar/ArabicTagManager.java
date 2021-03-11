@@ -238,7 +238,14 @@ public class ArabicTagManager {
     }
     return postag;
   }
+public String unifyPronounTag(String postag)
+{
+  char flag = getFlag(postag, "PRONOUN");
+  if(isAttached(postag))
+    postag = setFlag(postag, "PRONOUN", 'H');
 
+  return postag;
+}
   /**
    * @return add conjuction flag to noun
    */
@@ -386,6 +393,61 @@ public class ArabicTagManager {
       return "و";
 
     return "";
+  }
+  /**
+   * @return if have a flag which is a noun and has pronoun, return the suffix letters for this case
+   */
+  public String getPronounSuffix(String postag) {
+    if (postag.isEmpty())
+      return "";
+    char flag = getFlag(postag, "PRONOUN");
+    String suffix = "";
+    switch(flag) {
+
+      case  'b' :
+        suffix =  "ني" ;
+        break;
+
+      case  'c' :
+        suffix =  "نا" ;
+        break;
+
+      case  'd' :
+        suffix =  "ك" ;
+        break;
+      case  'e' :
+        suffix =  "كما" ;
+
+        break;
+
+      case  'f' :
+        suffix =  "كم" ;
+        break;
+
+      case  'g' :
+        suffix =  "كن" ;
+        break;
+
+      case  'H' :
+        suffix =  "ه" ;
+        break;
+
+      case  'i' :
+        suffix =  "ها" ;
+        break;
+
+      case  'j' :
+        suffix =  "هما" ;
+        break;
+
+      case  'k' :
+        suffix =  "هم" ;
+        break;
+      case  'n' :
+        suffix =  "هن" ;
+
+    }
+    return suffix;
   }
 
   private int getFlagPos(String postag, String flagType) {

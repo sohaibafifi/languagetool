@@ -8086,6 +8086,7 @@ END RULEGROUP Masdar errors
     <message>الفعل أفاض متعد بحرف الجر في، وليس متعديا بنفسه. يفضل أن يقال:
 
   <suggestion><match no="1"  postag="(V.*)(-|H)" postag_replace="$1-" postag_regexp="yes">أَفَاضَ</match>&nbsp;في<match no="1"  regexp_match="(.*)((&verb_enclitics;)$)|(.*)((&verb_enclitics;)?$)" regexp_replace="$2"/></suggestion>
+  <!--  <suggestion><match no="1"  postag="(V.*)(-|H)" postag_replace="$1-" postag_regexp="yes">أَفَاضَ</match>&nbsp;<match no="1"  postag="(V.*)(.)" postag_replace="PRD;- - -;- -$2" postag_regexp="yes">في</match></suggestion>-->
 </message>
     <example correction="أفاض في" type="incorrect"><marker>أفاض</marker> الحديث </example>
     <example correction="أفاض فيها" type="incorrect"><marker>أفاضها</marker> بالحديث </example>
