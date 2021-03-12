@@ -203,6 +203,10 @@ public class ArabicTagger extends BaseTagger {
   }
 
 
+//  public List<String> getTags(String word) {
+//    return getTags(word, 0, word.length());
+//  }
+
   private List<String> getTags(String word, int posStart, int posEnd) {
     List<String> tags = new ArrayList<>();
     // extract tags from word

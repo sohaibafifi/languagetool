@@ -516,13 +516,13 @@ public String unifyPronounTag(String postag)
     return pos;
   }
 
-  private char getFlag(String postag, String flagType)
+  public char getFlag(String postag, String flagType)
   {
     /* a flag value for flagtype from postag */
     return postag.charAt(getFlagPos(postag, flagType));
 
   }
-  private String setFlag(String postag, String flagType, char flag)
+  public String setFlag(String postag, String flagType, char flag)
   {
     /* a flag value for flagtype from postag */
     StringBuilder tmp = new StringBuilder(postag);
@@ -570,6 +570,7 @@ public String unifyPronounTag(String postag)
     mapFlagPos.put("PARTICLE_TAG_LENGTH", 12);
     mapFlagPos.put("PARTICLE_WORDTYPE", 0);
     mapFlagPos.put("PARTICLE_CATEGORY", 1);
+    mapFlagPos.put("PARTICLE_OPTION", 2);
 // FIXME: Add partical
 //    mapFlagPos.put("PARTICLE_GENDER", 4);
 //    mapFlagPos.put("PARTICLE_NUMBER", 5);
@@ -579,6 +580,7 @@ public String unifyPronounTag(String postag)
 //    mapFlagPos.put("PARTICLE_CONJ", 9);
 //    mapFlagPos.put("PARTICLE_JAR", 10);
 //    mapFlagPos.put("PARTICLE_PRONOUN", 11);
+    mapFlagPos.put("PARTICLE_PRONOUN", 10);
   }
 
   private int getFlagPos2(String tagString, String flagType)
@@ -593,8 +595,8 @@ public String unifyPronounTag(String postag)
       key = "NOUN_"+flagType;
     else if(isVerb(tagString))
       key = "VERB_"+flagType;
-//   else if(isStopWord(tagString))
-//     key = "PARTICAL_"+flagType;
+   else if(isStopWord(tagString))
+     key = "PARTICLE_"+flagType;
     try {
       pos = mapFlagPos.get(key);
     }
