@@ -178,8 +178,9 @@ public class VerbTransRuleTest {
 /* generate a new form according to a specific postag*/
   private String generateNewForm(String word, String posTag, char flag)
   {
-    //      // generate new preposition word form
+    //      // generate new from word form
     String newposTag = tagmanager.setFlag(posTag, "PRONOUN", flag);
+    // FIXME: remove the specific flag for option D
     if (flag != '-')
     newposTag = tagmanager.setFlag(newposTag, "OPTION", 'D');
     // generate the new preposition according to modified postag
