@@ -2,3 +2,6 @@
 # like احتاجه => احتاج إليه
 # verbs must be written with tashkeel
 أَفَاضَ
+أفاض
+try
+
