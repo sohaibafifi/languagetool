@@ -103,16 +103,16 @@ public class ArabicTransVerbRule extends Rule {
       String tokenStr = token.getToken();
 
       isSentenceStart = prevTokenIndex == 1;
-      System.out.printf("ArabicTransVerbRule: verb %s prepostion %s\n", prevTokenStr,
-        tokenStr);
+      //System.out.printf("ArabicTransVerbRule: verb %s preposition %s\n", prevTokenStr,
+        //tokenStr);
       if(prevTokenStr != null) {
         // test if the first token is a verb
         boolean is_attached_verb_transitive = isAttachedTransitiveVerb(prevToken);
         // test if the preposition token is suitable for verb token (previous)
-        boolean is_right_preposition = isRightPrepostion(prevTokenStr, tokenStr);
+        boolean is_right_preposition = isRightPreposition(prevTokenStr, tokenStr);
 
-        System.out.printf("ArabicTransVerbRule: verb %b prepostion %b\n", is_attached_verb_transitive,
-          is_right_preposition);
+        //System.out.printf("ArabicTransVerbRule: verb %b preposition %b\n", is_attached_verb_transitive,
+          //is_right_preposition);
         // the verb is attached and the next token is not the suitable preposition
         // we give the coorect new form
         if (is_attached_verb_transitive && !is_right_preposition) {
@@ -120,54 +120,19 @@ public class ArabicTransVerbRule extends Rule {
           String verb = getCorrectVerbForm(tokens[prevTokenIndex]);
           String preposition = getCorrectPrepositionForm(token, prevToken);
 
-          System.out.printf("ArabicTransVerbRule: verb %s prepostion %s =>  verb %s prepostion %s\n", prevTokenStr,
+          System.out.printf("ArabicTransVerbRule: verb %s preposition %s =>  verb %s preposition %s\n", prevTokenStr,
             tokenStr, verb, preposition);
           String replacement = verb + " " + preposition;
-          String msg = "Tetststs Use <suggestion>" + replacement + "</suggestion> instead of '" + prevTokenStr + "' if the following " +
-            "word starts with a vowel sound, e.g. 'an article', 'an hour'.";
+          String msg = "قل <suggestion>" + replacement + "</suggestion> بدلا من '" + prevTokenStr + "' لأنّ الفعل " +
+            " متعد بحرف  .";
           RuleMatch match = new RuleMatch(
             this, sentence, tokens[prevTokenIndex].getStartPos(), tokens[prevTokenIndex].getEndPos(),
-            tokens[prevTokenIndex].getStartPos(), token.getEndPos(), msg, "Wrong article");
+            tokens[prevTokenIndex].getStartPos(), token.getEndPos(), msg, "خطأ في الفعل المتعدي بحرف");
           ruleMatches.add(match);
 
         }
       }
 
-     /* if (!isSentenceStart) {
-        equalsA = "a".equals(prevTokenStr);
-        equalsAn = "an".equals(prevTokenStr);
-      } else {
-      	equalsA = "a".equalsIgnoreCase(prevTokenStr);
-        equalsAn = "an".equalsIgnoreCase(prevTokenStr);
-      }
-
-      if (equalsA || equalsAn) {
-        Determiner determiner = getCorrectDeterminerFor(token);
-        String msg = null;
-        if (equalsA && determiner == Determiner.AN) {
-          String replacement = StringTools.startsWithUppercase(prevTokenStr) ? "An" : "an";
-          msg = "Use <suggestion>" + replacement + "</suggestion> instead of '" + prevTokenStr + "' if the following "+
-                  "word starts with a vowel sound, e.g. 'an article', 'an hour'.";
-        } else if (equalsAn && determiner == Determiner.A) {
-          String replacement = StringTools.startsWithUppercase(prevTokenStr) ? "A" : "a";
-          msg = "Use <suggestion>" + replacement + "</suggestion> instead of '" + prevTokenStr + "' if the following "+
-                  "word doesn't start with a vowel sound, e.g. 'a sentence', 'a university'.";
-        }
-        if (msg != null) {
-          RuleMatch match = new RuleMatch(
-              this, sentence, tokens[prevTokenIndex].getStartPos(), tokens[prevTokenIndex].getEndPos(),
-                  tokens[prevTokenIndex].getStartPos(), token.getEndPos(), msg, "Wrong article");
-          ruleMatches.add(match);
-        }
-      }
-      String nextToken = "";
-      if (i + 1 < tokens.length) {
-        nextToken = tokens[i + 1].getToken();
-      }
-      if (token.hasPosTag("DT")) {
-        prevTokenIndex = i;
-      }else
-        */
       if (isAttachedTransitiveVerb(token)) {
           prevTokenIndex = i;
       }
@@ -259,7 +224,7 @@ public class ArabicTransVerbRule extends Rule {
         if(getWordsRequiringA().contains(verbLemma)) {
           rightPostags.add(verbPostag);
 
-          System.out.printf("ArabicTransVerbRule:(isAttachedTransitiveVerb) verb lemma %s, postag %s\n", verbLemma, verbPostag);
+          //System.out.printf("ArabicTransVerbRule:(isAttachedTransitiveVerb) verb lemma %s, postag %s\n", verbLemma, verbPostag);
           return true;
         }
       }
@@ -270,10 +235,10 @@ public class ArabicTransVerbRule extends Rule {
 
   }
 
-  private static boolean isRightPrepostion(String verbToken, String nextToken)
+  private static boolean isRightPreposition(String verbToken, String nextToken)
   {
-    // test if the next token  is the suitable preposition for the previous token as verbtoken
-    return (nextToken.equals("في") ||  nextToken.equals("in"));
+    //FIXME: test if the next token  is the suitable preposition for the previous token as verbtoken
+    return (nextToken.equals("في"));
   }
   private  String getCorrectVerbForm(AnalyzedTokenReadings token)
   {
@@ -330,7 +295,7 @@ public class ArabicTransVerbRule extends Rule {
     String postag = "PR-;---;---";
     String prevpostag = prevtoken.getReadings().get(0).getPOSTag();
     char flag = tagmanager.getFlag(prevpostag,"PRONOUN");
-    System.out.printf("ArabicTransVerbRule:(generateAttachedNewForm) %s %s %c\n",lemma, postag, flag );
+    //System.out.printf("ArabicTransVerbRule:(generateAttachedNewForm) %s %s %c\n",lemma, postag, flag );
     return generateNewForm(lemma, postag,flag);
   }
 }
