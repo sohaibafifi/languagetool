@@ -150,8 +150,8 @@ public class ArabicTransVerbRule extends AbstractSimpleReplaceRule2 {
         boolean is_attached_verb_transitive = isAttachedTransitiveVerb(prevToken);
         // test if the preposition token is suitable for verb token (previous)
         List<String> prepositions = getProperPrepositionForTransitiveVerb(prevToken);
-        System.out.printf("ArabicTransVerbRule:(match) verb %b prepositions %s\n", prevToken,
-          Arrays.toString(prepositions.toArray()));
+        //System.out.printf("ArabicTransVerbRule:(match) verb %b prepositions %s\n", prevToken,
+         // Arrays.toString(prepositions.toArray()));
 
 //        boolean is_right_preposition = isRightPreposition(prevTokenStr, tokenStr, prepositions);
         boolean is_right_preposition = isRightPreposition(token, prepositions);
@@ -169,8 +169,8 @@ public class ArabicTransVerbRule extends AbstractSimpleReplaceRule2 {
 //          String preposition = getCorrectPrepositionForm(token, prevToken);
           String preposition = getCorrectPrepositionForm(newprepostion, prevToken);
 
-          System.out.printf("ArabicTransVerbRule: verb %s preposition %s =>  verb %s preposition %s\n", prevTokenStr,
-            tokenStr, verb, preposition);
+          //System.out.printf("ArabicTransVerbRule: verb %s preposition %s =>  verb %s preposition %s\n", prevTokenStr,
+            //tokenStr, verb, preposition);
           String replacement = verb + " " + preposition;
           String msg = "قل <suggestion>" + replacement + "</suggestion> بدلا من '" + prevTokenStr + "' لأنّ الفعل " +
             " متعد بحرف  .";
@@ -257,8 +257,8 @@ public class ArabicTransVerbRule extends AbstractSimpleReplaceRule2 {
         // The lemma is found in the dictionnary file
         if (verbLemmaMatch != null) {
           replacements = Arrays.asList(verbLemmaMatch.getSuggestion().split("\\|"));
-          System.out.printf("AravicTransVerbRule: (isAttachedTransitiveVerb) wrong word: %s, suggestion: %s\n",
-            verbLemma, Arrays.toString(replacements.toArray()));
+          //System.out.printf("AravicTransVerbRule: (isAttachedTransitiveVerb) wrong word: %s, suggestion: %s\n",
+           // verbLemma, Arrays.toString(replacements.toArray()));
           return replacements;
         }
       }
