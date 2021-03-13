@@ -26,6 +26,7 @@ import org.languagetool.AnalyzedTokenReadings;
 import org.languagetool.language.Arabic;
 import org.languagetool.tagging.BaseTagger;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -36,12 +37,17 @@ import java.util.Locale;
 public class ArabicTagger extends BaseTagger {
 
   private final ArabicTagManager tagmanager = new ArabicTagManager();
+  private  boolean newStylePronounTag = false;
 
   public ArabicTagger() {
     super("/ar/arabic.dict", new Locale("ar"));
   }
 
-
+  /* a temporary attribute to be compatible with existing pronoun tag style */
+  public void enableNewStylePronounTag()
+  {
+    newStylePronounTag = true;
+  }
   @Override
   public List<AnalyzedTokenReadings> tag(List<String> sentenceTokens) {
     List<AnalyzedTokenReadings> tokenReadings = new ArrayList<>();
@@ -237,45 +243,11 @@ public class ArabicTagger extends BaseTagger {
     }
     // suffixes
     // TODO : suffixes if needed
-//    switch(suffix)
-//    {
-////      case "ي" :
-////        tags.add("PRONOUN;a");
-////        break;
-//      case "ني" :
-//        tags.add("PRONOUN;b");
-//        break;
-//      case "نا" :
-//        tags.add("PRONOUN;c");
-//        break;
-//      case "ك" :
-//        tags.add("PRONOUN;d");
-//        break;
-//      case "كما" :
-//        tags.add("PRONOUN;e");
-//        break;
-//      case "كم" :
-//        tags.add("PRONOUN;f");
-//        break;
-//      case "كن" :
-//        tags.add("PRONOUN;g");
-//        break;
-//      case "ه" :
-//        tags.add("PRONOUN;H");
-//        break;
-//      case "ها" :
-//        tags.add("PRONOUN;i");
-//        break;
-//      case "هما" :
-//        tags.add("PRONOUN;j");
-//        break;
-//      case "هم" :
-//        tags.add("PRONOUN;k");
-//        break;
-//      case "هن" :
-//        tags.add("PRONOUN;n");
-//    }
-
+    boolean NewStyle;
+    NewStyle= true;
+//    NewStyle = false;
+  if (!newStylePronounTag)
+  {
     switch(suffix)
     {
 //      case "ي" :
@@ -294,6 +266,49 @@ public class ArabicTagger extends BaseTagger {
         break;
       //default:
     }
+  }
+    else // if newStyle
+    {
+    switch(suffix)
+    {
+//      case "ي" :
+//        tags.add("PRONOUN;a");
+//        break;
+      case "ني" :
+        tags.add("PRONOUN;b");
+        break;
+      case "نا" :
+        tags.add("PRONOUN;c");
+        break;
+      case "ك" :
+        tags.add("PRONOUN;d");
+        break;
+      case "كما" :
+        tags.add("PRONOUN;e");
+        break;
+      case "كم" :
+        tags.add("PRONOUN;f");
+        break;
+      case "كن" :
+        tags.add("PRONOUN;g");
+        break;
+      case "ه" :
+        tags.add("PRONOUN;H");
+        break;
+      case "ها" :
+        tags.add("PRONOUN;i");
+        break;
+      case "هما" :
+        tags.add("PRONOUN;j");
+        break;
+      case "هم" :
+        tags.add("PRONOUN;k");
+        break;
+      case "هن" :
+        tags.add("PRONOUN;n");
+    }
+    }
+
 
    return tags;
   }

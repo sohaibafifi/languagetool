@@ -68,6 +68,7 @@ public class ArabicTransVerbRule extends AbstractSimpleReplaceRule2 {
   public ArabicTransVerbRule(ResourceBundle messages) {
     super(messages, new Arabic());
     tagger = new ArabicTagger();
+    tagger.enableNewStylePronounTag();
     tokenizer = new ArabicWordTokenizer();
     tagmanager = new ArabicTagManager();
     synthesizer = new ArabicSynthesizer(new Arabic());
@@ -305,7 +306,10 @@ public class ArabicTransVerbRule extends AbstractSimpleReplaceRule2 {
     // generate the new preposition according to modified postag
     AnalyzedToken prepAToken = new AnalyzedToken(word, newposTag, word);
 //    String newWord = Arrays.toString(synthesizer.synthesize(prepAToken, newposTag));
-    String newWord = synthesizer.synthesize(prepAToken, newposTag)[0];
+    String [] newwordList = synthesizer.synthesize(prepAToken, newposTag);
+    String newWord = "";
+    if (newwordList.length != 0)
+       newWord= newwordList[0];
 
     return newWord;
 

@@ -8072,8 +8072,9 @@ END RULEGROUP Masdar errors
  END RULEGROUP transitive_verbs_indirect_tobe_direct
 -->
     <rulegroup id="transitive_verbs_direct_tobe_indirect" name="المتعدي  بنفسه تصحيحه متعد بحرف">
+
  <!-- trans_404_AfAD_AlHdyth أفَاضَ الحديثَ -->
-  <rule id="trans_404_AfAD_AlHdyth" name="أفاض الحديث">
+ <!--   <rule id="trans_404_AfAD_AlHdyth" name="أفاض الحديث">
     <antipattern>
         <token inflected="yes" skip="1">أَفَاضَ</token>
         <token regexp="yes">&forms_fi;</token>
@@ -8085,9 +8086,9 @@ END RULEGROUP Masdar errors
     </pattern>
     <message>الفعل أفاض متعد بحرف الجر في، وليس متعديا بنفسه. يفضل أن يقال:
 
-  <suggestion><match no="1"  postag="(V.*)(-|H)" postag_replace="$1-" postag_regexp="yes">أَفَاضَ</match>&nbsp;في<match no="1"  regexp_match="(.*)((&verb_enclitics;)$)|(.*)((&verb_enclitics;)?$)" regexp_replace="$2"/></suggestion>
+  <suggestion><match no="1"  postag="(V.*)(-|H)" postag_replace="$1-" postag_regexp="yes">أَفَاضَ</match>&nbsp;في<match no="1"  regexp_match="(.*)((&verb_enclitics;)$)|(.*)((&verb_enclitics;)?$)" regexp_replace="$2"/></suggestion>-->
   <!--  <suggestion><match no="1"  postag="(V.*)(-|H)" postag_replace="$1-" postag_regexp="yes">أَفَاضَ</match>&nbsp;<match no="1"  postag="(V.*)(.)" postag_replace="PRD;- - -;- -$2" postag_regexp="yes">في</match></suggestion>-->
-</message>
+ <!--</message>
     <example correction="أفاض في" type="incorrect"><marker>أفاض</marker> الحديث </example>
     <example correction="أفاض فيها" type="incorrect"><marker>أفاضها</marker> بالحديث </example>
     <example correction="أفاضوا فيه" type="incorrect"><marker>أفاضوه</marker> الحديث </example>
@@ -8096,8 +8097,7 @@ END RULEGROUP Masdar errors
     <example type="correct"> أفاض في الشرح </example>
     <example type="correct"> أفاض  الأستاذ في الشرح </example>
   </rule>
-
-
+-->
 <!-- trans_422_tfAda تفادى -->
   <rule id="trans_422_tfAda" name="تفادى">
    <antipattern>
