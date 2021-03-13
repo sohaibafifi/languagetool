@@ -17,7 +17,8 @@
  * USA
  */
 package org.languagetool.rules.ar;
-
+import com.fasterxml.jackson.databind.JsonSerializer;
+import org.languagetool.rules.AbstractSimpleReplaceRule2;
 import org.languagetool.AnalyzedSentence;
 import org.languagetool.AnalyzedToken;
 import org.languagetool.AnalyzedTokenReadings;
@@ -29,10 +30,7 @@ import org.languagetool.tagging.ar.ArabicTagger;
 import org.languagetool.tokenizers.ArabicWordTokenizer;
 import org.languagetool.tools.StringTools;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import static org.languagetool.rules.ar.ArabicTransVerbData.getWordsRequiringA;
@@ -49,19 +47,26 @@ import static org.languagetool.rules.ar.ArabicTransVerbData.getWordsRequiringAn;
  * 
  * @author Daniel Naber
  */
-public class ArabicTransVerbRule extends Rule {
-  private ArabicTagger tagger;
-  private ArabicTagManager tagmanager;
-  private ArabicWordTokenizer tokenizer;
-  private ArabicSynthesizer synthesizer;
+//public class ArabicTransVerbRule extends Rule {
+public class ArabicTransVerbRule extends AbstractSimpleReplaceRule2 {
+  private final ArabicTagger tagger;
+  private final ArabicTagManager tagmanager;
+  private final ArabicWordTokenizer tokenizer;
+  private final ArabicSynthesizer synthesizer;
+  public static final String AR_VERB_TRANS_INDIRECT_REPLACE = "AR_VERB_TRANSITIVE_IINDIRECT";
 
-  enum Determiner {
-    A, AN, A_OR_AN, UNKNOWN
-  }
+  private static List<Map<String, SuggestionWithMessage>> wrongWords;
 
-  private static final Pattern cleanupPattern = Pattern.compile("[^αa-zA-Z0-9.;,:']");
+  private static final String FILE_NAME = "/ar/verb_trans_to_untrans2.txt";
+  private static final Locale AR_LOCALE = new Locale("ar");
+//  enum Determiner {
+//    A, AN, A_OR_AN, UNKNOWN
+//  }
+
+ // private static final Pattern cleanupPattern = Pattern.compile("[^αa-zA-Z0-9.;,:']");
 
   public ArabicTransVerbRule(ResourceBundle messages) {
+    super(messages, new Arabic());
     tagger = new ArabicTagger();
     tokenizer = new ArabicWordTokenizer();
     tagmanager = new ArabicTagManager();
@@ -71,26 +76,60 @@ public class ArabicTransVerbRule extends Rule {
     setLocQualityIssueType(ITSIssueType.Misspelling);
     addExamplePair(Example.wrong("The train arrived <marker>a hour</marker> ago."),
                    Example.fixed("The train arrived <marker>an hour</marker> ago."));
+
+    // get wrong words from resource file
+    wrongWords = getWrongWords(false);
+
   }
 
   @Override
   public String getId() {
-    return "Arabic_Verb_Transitive_to_Untransitive";
+    return AR_VERB_TRANS_INDIRECT_REPLACE;
   }
 
   @Override
   public String getDescription() {
-    return "Use of 'a' vs. 'an'";
+    return "َTransitive verbs corrected to indirect transitive";
+  }
+
+//  @Override
+//  public int estimateContextForSureMatch() {
+//    return 1;
+//  }
+
+  @Override
+
+  public final List<String> getFileNames() {
+    return Collections.singletonList(FILE_NAME);
+
   }
 
   @Override
-  public int estimateContextForSureMatch() {
-    return 1;
+  public String getShort() {
+    return "أفعال متعدية بحرف، يخطئ في تعديتها";
   }
 
+  @Override
+
+  public String getMessage() {
+    return "'$match' الفعل خاطئ في التعدية بحرف: $suggestions";
+  }
+
+  @Override
+  public String getSuggestionsSeparator() {
+    return " أو ";
+  }
+
+  @Override
+  public Locale getLocale() {
+    return AR_LOCALE;
+  }
   @Override
   public RuleMatch[] match(AnalyzedSentence sentence) {
     List<RuleMatch> ruleMatches = new ArrayList<>();
+    if (wrongWords.size() == 0) {
+      return toRuleMatchArray(ruleMatches);
+    }
     AnalyzedTokenReadings[] tokens = sentence.getTokensWithoutWhitespace();
     int prevTokenIndex = 0;
     boolean isSentenceStart;
@@ -109,7 +148,12 @@ public class ArabicTransVerbRule extends Rule {
         // test if the first token is a verb
         boolean is_attached_verb_transitive = isAttachedTransitiveVerb(prevToken);
         // test if the preposition token is suitable for verb token (previous)
-        boolean is_right_preposition = isRightPreposition(prevTokenStr, tokenStr);
+        List<String> prepositions = getProperPrepositionForTransitiveVerb(prevToken);
+        System.out.printf("ArabicTransVerbRule:(match) verb %b prepositions %s\n", prevToken,
+          Arrays.toString(prepositions.toArray()));
+
+//        boolean is_right_preposition = isRightPreposition(prevTokenStr, tokenStr, prepositions);
+        boolean is_right_preposition = isRightPreposition(token, prepositions);
 
         //System.out.printf("ArabicTransVerbRule: verb %b preposition %b\n", is_attached_verb_transitive,
           //is_right_preposition);
@@ -118,7 +162,11 @@ public class ArabicTransVerbRule extends Rule {
         if (is_attached_verb_transitive && !is_right_preposition) {
 //      if( is_attached_verb_transitive && ! is_right_preposition) {
           String verb = getCorrectVerbForm(tokens[prevTokenIndex]);
-          String preposition = getCorrectPrepositionForm(token, prevToken);
+          // generate suggestion according to suggested prepositions
+          //FIXME: test all suggestions
+          String newprepostion = prepositions.get(0);
+//          String preposition = getCorrectPrepositionForm(token, prevToken);
+          String preposition = getCorrectPrepositionForm(newprepostion, prevToken);
 
           System.out.printf("ArabicTransVerbRule: verb %s preposition %s =>  verb %s preposition %s\n", prevTokenStr,
             tokenStr, verb, preposition);
@@ -143,112 +191,107 @@ public class ArabicTransVerbRule extends Rule {
     return toRuleMatchArray(ruleMatches);
   }
 
-  /**
-   * Adds "a" or "an" to the English noun. Used for suggesting the proper form of the indefinite article.
-   * For the rare cases where both "a" and "an" are considered okay (e.g. for "historical"), "a" is returned.
-   * @param origWord Word that needs an article.
-   * @return String containing the word with a determiner, or just the word if the word is an abbreviation.
-   */
-  public String suggestAorAn(String origWord) {
-    AnalyzedTokenReadings token = new AnalyzedTokenReadings(new AnalyzedToken(origWord, null, null), 0);
-    Determiner determiner = getCorrectDeterminerFor(token);
-    if (determiner == Determiner.A || determiner == Determiner.A_OR_AN) {
-      return "a " + StringTools.lowercaseFirstCharIfCapitalized(origWord);
-    } else if (determiner == Determiner.AN) {
-      return "an " + StringTools.lowercaseFirstCharIfCapitalized(origWord);
-    } else {
-      return origWord;
-    }
-  }
+  private boolean isAttachedTransitiveVerb(AnalyzedTokenReadings mytoken) {
+    String word = mytoken.getToken();
+    List<AnalyzedToken> verbTokenList = mytoken.getReadings();
 
-  static Determiner getCorrectDeterminerFor(AnalyzedTokenReadings token) {
-    String word = token.getToken();
-    Determiner determiner = Determiner.UNKNOWN;
-    String[] parts = word.split("[-']");  // for example, in "one-way" only "one" is relevant
-    if (parts.length >= 1 && !parts[0].equalsIgnoreCase("a")) {  // avoid false alarm on "A-levels are..."
-      word = parts[0];
-    }
-    if (token.isWhitespaceBefore() || !"-".equals(word)) { // e.g., 'a- or anti- are prefixes'
-      word = cleanupPattern.matcher(word).replaceAll("");         // e.g. >>an "industry party"<<
-      if (StringTools.isEmpty(word)) {
-        return Determiner.UNKNOWN;
-      }
-    }
-    if (getWordsRequiringA().contains(word.toLowerCase()) || getWordsRequiringA().contains(word)) {
-      determiner = Determiner.A;
-    }
-    if (getWordsRequiringAn().contains(word.toLowerCase()) || getWordsRequiringAn().contains(word)) {
-      if (determiner == Determiner.A) {
-        determiner = Determiner.A_OR_AN;   // e.g. for 'historical'
-      } else {
-        determiner = Determiner.AN;
-      }
-    }
-    if (determiner == Determiner.UNKNOWN) {
-      char tokenFirstChar = word.charAt(0);
-      if (StringTools.isAllUppercase(word) || StringTools.isMixedCase(word)) {
-        // we don't know how all-uppercase words (often abbreviations) are pronounced,
-        // so never complain about these
-        determiner = Determiner.UNKNOWN;
-      } else if (isVowel(tokenFirstChar)) {
-        determiner = Determiner.AN;
-      } else {
-        determiner = Determiner.A;
-      }
-    }
-    return determiner;
-  }
+//    // keep the suitable postags
+//    List<String> rightPostags = new ArrayList<String>();
+//    List<String> replacements = new ArrayList<>();
 
-  private static boolean isVowel(char c) {
-    char lc = Character.toLowerCase(c);
-    return lc == 'a' || lc == 'e' || lc == 'i' || lc == 'o' || lc == 'u';
-  }
-
-
-  private static boolean isAttachedTransitiveVerb(AnalyzedTokenReadings mytoken)
-  {
-    String word =  mytoken.getToken();
-   List<AnalyzedToken> verbTokenList = mytoken.getReadings();
-
-    // keep the suitable postags
-    List<String> rightPostags = new  ArrayList<String>();
-
-    for(AnalyzedToken verbTok: verbTokenList)
-    {
+    for (AnalyzedToken verbTok : verbTokenList) {
       String verbLemma = verbTok.getLemma();
       String verbPostag = verbTok.getPOSTag();
+
       // if postag is attached
       // test if verb is in the verb list
       if (verbPostag != null)// && verbPostag.endsWith("H"))
       {
-        if(getWordsRequiringA().contains(verbLemma)) {
-          rightPostags.add(verbPostag);
-
-          //System.out.printf("ArabicTransVerbRule:(isAttachedTransitiveVerb) verb lemma %s, postag %s\n", verbLemma, verbPostag);
+        //lookup in WrongWords
+//      String crt = verbLemma;
+        SuggestionWithMessage verbLemmaMatch = wrongWords.get(wrongWords.size() - 1).get(verbLemma);
+        // The lemma is found in the dictionnary file
+        if (verbLemmaMatch != null)
           return true;
-        }
+
+//        if (verbLemmaMatch != null) {
+//          replacements = Arrays.asList(verbLemmaMatch.getSuggestion().split("\\|"));
+//          System.out.printf("AravicTransVerbRule: (isAttachedTransitiveVerb) wrong word: %s, suggestion: %s\n",
+//            verbLemma, Arrays.toString(replacements.toArray()));
+//          return !replacements.isEmpty();
+//        }
+        // to be removed
+//        if(getWordsRequiringA().contains(verbLemma)) {
+//          rightPostags.add(verbPostag);
+
+        //System.out.printf("ArabicTransVerbRule:(isAttachedTransitiveVerb) verb lemma %s, postag %s\n", verbLemma, verbPostag);
+//          return true;
+//        }
       }
 
     }
     return false;
-//    return (getWordsRequiringA().contains(word));
-
   }
 
-  private static boolean isRightPreposition(String verbToken, String nextToken)
+  /* if the word is a transitive verb, we got proper preposition inorder to test it*/
+    private List<String> getProperPrepositionForTransitiveVerb(AnalyzedTokenReadings mytoken) {
+    String word = mytoken.getToken();
+    List<AnalyzedToken> verbTokenList = mytoken.getReadings();
+
+    // keep the suitable postags
+    List<String> rightPostags = new ArrayList<String>();
+    List<String> replacements = new ArrayList<>();
+
+    for (AnalyzedToken verbTok : verbTokenList) {
+      String verbLemma = verbTok.getLemma();
+      String verbPostag = verbTok.getPOSTag();
+
+      // if postag is attached
+      // test if verb is in the verb list
+      if (verbPostag != null)// && verbPostag.endsWith("H"))
+      {
+        //lookup in WrongWords
+//      String crt = verbLemma;
+        SuggestionWithMessage verbLemmaMatch = wrongWords.get(wrongWords.size() - 1).get(verbLemma);
+        // The lemma is found in the dictionnary file
+        if (verbLemmaMatch != null) {
+          replacements = Arrays.asList(verbLemmaMatch.getSuggestion().split("\\|"));
+          System.out.printf("AravicTransVerbRule: (isAttachedTransitiveVerb) wrong word: %s, suggestion: %s\n",
+            verbLemma, Arrays.toString(replacements.toArray()));
+          return replacements;
+        }
+      }
+
+
+    }
+    return replacements;
+  }
+
+  private static boolean isRightPreposition(AnalyzedTokenReadings nextToken, List<String> prepositionList)
   {
     //FIXME: test if the next token  is the suitable preposition for the previous token as verbtoken
-    return (nextToken.equals("في"));
+//    List<AnalyzedToken> verbTokenList = nextToken.getReadings().get(0).getLemma();
+
+    String nextTokenStr = nextToken.getReadings().get(0).getLemma();
+//    String nextTokenStr = nextToken.getToken();
+    return (prepositionList.contains(nextTokenStr));
+//    return (nextToken.equals("في"));
+  }
+  private static boolean isRightPreposition( String verbToken, String nextToken, List<String> prepositionList)
+  {
+    //FIXME: test if the next token  is the suitable preposition for the previous token as verbtoken
+    return (prepositionList.contains(nextToken));
+//    return (nextToken.equals("في"));
   }
   private  String getCorrectVerbForm(AnalyzedTokenReadings token)
   {
 //    return "verben";
     return generateUnattachedNewForm(token);
   }
-  private String getCorrectPrepositionForm(AnalyzedTokenReadings token, AnalyzedTokenReadings prevtoken)
+  private String getCorrectPrepositionForm(String prepositionLemma, AnalyzedTokenReadings prevtoken)
   {
 
-    return generateAttachedNewForm(token, prevtoken);
+    return generateAttachedNewForm(prepositionLemma, prevtoken);
   };
 
   /* generate a new form according to a specific postag*/
@@ -261,7 +304,8 @@ public class ArabicTransVerbRule extends Rule {
       newposTag = tagmanager.setFlag(newposTag, "OPTION", 'D');
     // generate the new preposition according to modified postag
     AnalyzedToken prepAToken = new AnalyzedToken(word, newposTag, word);
-    String newWord = Arrays.toString(synthesizer.synthesize(prepAToken, newposTag));
+//    String newWord = Arrays.toString(synthesizer.synthesize(prepAToken, newposTag));
+    String newWord = synthesizer.synthesize(prepAToken, newposTag)[0];
 
     return newWord;
 
@@ -286,12 +330,13 @@ public class ArabicTransVerbRule extends Rule {
   }
 
   /* generate a new form according to a specific postag, this form is Attached*/
-  private String generateAttachedNewForm(AnalyzedTokenReadings token, AnalyzedTokenReadings prevtoken)
+  private String generateAttachedNewForm(String prepositionLemma, AnalyzedTokenReadings prevtoken)
   {
     //FIXME ; generate multiple cases
 //    String lemma = token.getReadings().get(0).getLemma();
 //    String postag = token.getReadings().get(0).getPOSTag();
-    String lemma = "في";
+//    String lemma = "في";
+    String lemma = prepositionLemma;
     String postag = "PR-;---;---";
     String prevpostag = prevtoken.getReadings().get(0).getPOSTag();
     char flag = tagmanager.getFlag(prevpostag,"PRONOUN");

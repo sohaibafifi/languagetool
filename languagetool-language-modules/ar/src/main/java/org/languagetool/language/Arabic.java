@@ -128,6 +128,7 @@ public class Arabic extends Language implements AutoCloseable {
       new ArabicHunspellSpellerRule(messages, userConfig),
       //new ArabicCommaWhitespaceRule(messages),
       //new ArabicDoublePunctuationRule(messages),
+      new ArabicTransVerbRule(messages),
       new ArabicPunctuationWhitespaceRule(messages),
       new LongSentenceRule(messages, userConfig, -1, false),
       new ArabicWordRepeatRule(messages),

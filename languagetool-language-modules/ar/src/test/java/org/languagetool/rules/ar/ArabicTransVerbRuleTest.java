@@ -27,7 +27,7 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static org.languagetool.rules.ar.ArabicTransVerbRule.Determiner;
+//import static org.languagetool.rules.ar.ArabicTransVerbRule.Determiner;
 
 public class ArabicTransVerbRuleTest {
 
@@ -51,6 +51,7 @@ public class ArabicTransVerbRuleTest {
     assertIncorrect("لقد أفاضت من الحديث");
     assertIncorrect("لقد أفاضت الحديث");
     assertIncorrect("كان أفاضها الحديث");
+    assertIncorrect("إذ استعجل الأمر");
   }
 
   private void assertCorrect(String sentence) throws IOException {
@@ -88,18 +89,18 @@ public class ArabicTransVerbRuleTest {
 //    assertEquals(Determiner.UNKNOWN, getDeterminerFor("camelCase"));
   }
 
-  private Determiner getDeterminerFor(String word) {
-    AnalyzedTokenReadings token = new AnalyzedTokenReadings(new AnalyzedToken(word, "fake-postag", "fake-lemma"), 0);
-    return rule.getCorrectDeterminerFor(token);
-  }
+//  private Determiner getDeterminerFor(String word) {
+//    AnalyzedTokenReadings token = new AnalyzedTokenReadings(new AnalyzedToken(word, "fake-postag", "fake-lemma"), 0);
+//    return rule.getCorrectDeterminerFor(token);
+//  }
 
-  @Test
-  public void testGetCorrectDeterminerForException() throws IOException {
-    try {
-      rule.getCorrectDeterminerFor(null);
-      fail();
-    } catch (NullPointerException ignored) {}
-  }
+//  @Test
+//  public void testGetCorrectDeterminerForException() throws IOException {
+//    try {
+//      rule.getCorrectDeterminerFor(null);
+//      fail();
+//    } catch (NullPointerException ignored) {}
+//  }
 
   @Test
   public void testPositions() throws IOException {
