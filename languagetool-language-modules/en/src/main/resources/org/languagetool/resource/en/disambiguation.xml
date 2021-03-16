@@ -2711,7 +2711,7 @@ Incorrectly touched. <example type="untouched">Incorrect grammar. Those present 
         </pattern>
         <disambig action="ignore_spelling"/>
     </rule>
-    <rule name="cc's" id="CC_VBZ">
+    <!--<rule name="cc's" id="CC_VBZ">
         <pattern>
             <marker>
                 <token>cc</token>
@@ -2721,7 +2721,7 @@ Incorrectly touched. <example type="untouched">Incorrect grammar. Those present 
         <disambig action="replace"><wd pos="VBZ" lemma="cc"/></disambig>
         <example type="untouched">I cc you.</example>
         <example type="ambiguous" inputform="cc[cc/NN,cc/VB,cc/VBP]" outputform="cc[cc/VBZ]">He <marker>cc</marker>'s me.</example>
-    </rule>
+    </rule>-->
     <rule name="are + VBG/NN -&gt; VBG" id="ARE_VBG_NN">
         <pattern>
             <token>'re</token>
@@ -11359,14 +11359,14 @@ Incorrectly touched. <example type="untouched">Incorrect grammar. Those present 
             <disambig action="replace"><wd pos="NNS"/><wd pos="NNS"/></disambig>
         </rule>
 
-        <rule id="FIN_DE_SIÈCLE" name="fin de siècle">
+        <!--<rule id="FIN_DE_SIÈCLE" name="fin de siècle">
             <pattern>
                 <token>fin</token>
                 <token>de</token>
                 <token>siècle</token>
             </pattern>
             <disambig action="replace"><wd pos="NN"/><wd pos="NN"/><wd pos="NN"/></disambig>
-        </rule>
+        </rule>-->
 
         <rule id="FOLIE_DE_GRANDEUR" name="folie de grandeur">
             <pattern>
@@ -11486,7 +11486,7 @@ Incorrectly touched. <example type="untouched">Incorrect grammar. Those present 
             <disambig action="replace"><wd pos="NN:U"/><wd pos="NN:U"/><wd pos="NN:U"/><wd pos="NN:U"/></disambig>
         </rule>
 
-        <rule id="JEU_D_ESPRIT" name="jeu d'esprit">
+        <!--<rule id="JEU_D_ESPRIT" name="jeu d'esprit">
             <pattern>
                 <token>jeu</token>
                 <token>d</token>
@@ -11503,7 +11503,7 @@ Incorrectly touched. <example type="untouched">Incorrect grammar. Those present 
                 <token spacebefore="no">esprit</token>
             </pattern>
             <disambig action="replace"><wd pos="NNS"/><wd pos="NNS"/><wd pos="NNS"/><wd pos="NNS"/></disambig>
-        </rule>
+        </rule>-->
 
         <rule id="JEUNESSE_DORÉE" name="jeunesse dorée">
             <pattern>
@@ -11851,6 +11851,21 @@ Incorrectly touched. <example type="untouched">Incorrect grammar. Those present 
             <pattern>
                 <token>a</token>
                 <token>cappella</token>
+            </pattern>
+            <disambig action="add"><wd pos="RB"/><wd pos="RB"/></disambig>
+        </rule>
+        
+        <rule id="IN_VITRO_ADJECTIVE" name="in vitro (adjective)">
+            <pattern>
+                <token>in</token>
+                <token>vitro</token>
+            </pattern>
+            <disambig action="replace"><wd pos="JJ"/><wd pos="JJ"/></disambig>
+        </rule>
+        <rule id="IN_VITRO_ADVERB" name="in vitro (adverb)">
+            <pattern>
+                <token>in</token>
+                <token>vitro</token>
             </pattern>
             <disambig action="add"><wd pos="RB"/><wd pos="RB"/></disambig>
         </rule>
@@ -14329,4 +14344,274 @@ Incorrectly touched. <example type="untouched">Incorrect grammar. Those present 
         </pattern>
         <disambig action="remove" postag="DT"/>
     </rule>
+    
+    <rulegroup id="IGNORE_SPELLING_MULTIWORDS" name="ignore spelling multiwords">
+        <rule>
+            <pattern>
+                <token>a</token>
+                <token>cappella</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>a</token>
+                <token>fortiori</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>a</token>
+                <token>posteriori</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>a</token>
+                <token>priori</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>ab</token>
+                <token>initio</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>al</token>
+                <token>dente</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>al</token>
+                <token>fresco</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>bona</token>
+                <token>fide</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>bona</token>
+                <token>fides</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>cc</token>
+                <token>'d'</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>cordon</token>
+                <token>bleu</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token regexp="yes">pm|rsvp|dm</token>
+                <token>'d</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>ejusdem</token>
+                <token>generis</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>ex</token>
+                <token>cathedra</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>ex</token>
+                <token>gratia</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>ex</token>
+                <token>officio</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>ex</token>
+                <token>parte</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>ex</token>
+                <token>post</token>
+                <token>facto</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>fin</token>
+                <token>de</token>
+                <token>siècle</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>jeu</token>
+                <token>d</token>
+                <token>'</token>
+                <token>esprit</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>grand</token>
+                <token>mal</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>in</token>
+                <token>loco</token>
+                <token>parentis</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>in</token>
+                <token>memoriam</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>in</token>
+                <token>situ</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>in</token>
+                <token>vitro</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>inter</token>
+                <token>vivos</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>mano</token>
+                <token>a</token>
+                <token>mano</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>memento</token>
+                <token>mori</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token regexp="yes">partis?</token>
+                <token>pris</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>prima</token>
+                <token>facie</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>rosehip</token>
+                <token>tea</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>salade</token>
+                <token>niçoise</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>sotto</token>
+                <token>voce</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>sub</token>
+                <token>rosa</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>summa</token>
+                <token>cum</token>
+                <token>laude</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>ultra</token>
+                <token>vires</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>viva</token>
+                <token>voce</token>
+            </pattern>
+            <disambig action="ignore_spelling"/>
+        </rule>
+    </rulegroup>
+    
 </rules>

@@ -357,6 +357,7 @@ public abstract class AbstractEnglishSpellerRule extends MorfologikSpellerRule {
     s.put("Differently-abled", Arrays.asList("Differently abled"));
     s.put("Ppl", Arrays.asList("People"));
     s.put("constits", Arrays.asList("consists"));
+    s.put("ect", Arrays.asList("etc"));
     s.put("fastly", Arrays.asList("fast"));
     s.put("carrie", Arrays.asList("carry"));
     s.put("bare-bone", Arrays.asList("bare-bones", "bare-boned"));
@@ -843,4 +844,11 @@ public abstract class AbstractEnglishSpellerRule extends MorfologikSpellerRule {
       this.forms = forms;
     }
   }
+  
+  // Do not tokenize new words from spelling.txt... 
+  // Multi-token words should be in multiwords.txt
+  protected boolean tokenizeNewWords() {
+    return false;
+  }
+  
 }
