@@ -131,7 +131,7 @@ public class RuleMatchesAsJsonSerializer {
     g.writeStringField("version", JLanguageTool.VERSION);
     g.writeStringField("buildDate", JLanguageTool.BUILD_DATE);
     g.writeNumberField("apiVersion", API_VERSION);
-    g.writeBooleanField("premium", JLanguageTool.isPremiumVersion());
+    g.writeBooleanField("premium", Premium.isPremiumVersion());
     if (showPremiumHint) {
       g.writeStringField("premiumHint", PREMIUM_HINT);
     }
@@ -182,7 +182,7 @@ public class RuleMatchesAsJsonSerializer {
         }
         writeReplacements(g, match);
         g.writeNumberField("offset", match.getFromPos());
-      g.writeNumberField("length", match.getToPos()-match.getFromPos());
+        g.writeNumberField("length", match.getToPos()-match.getFromPos());
         writeContext(g, match, text, contextTools);
         g.writeObjectFieldStart("type");
         g.writeStringField("typeName", match.getType().toString());
@@ -220,7 +220,7 @@ public class RuleMatchesAsJsonSerializer {
 
   private String cleanSuggestion(String s) {
     if (lang != null) {
-      return lang.toAdvancedTypography(s.replaceAll("<suggestion>", lang.getOpeningDoubleQuote()).replaceAll("</suggestion>", lang.getClosingDoubleQuote()));
+      return lang.toAdvancedTypography(s); //.replaceAll("<suggestion>", lang.getOpeningDoubleQuote()).replaceAll("</suggestion>", lang.getClosingDoubleQuote())
     } else {
       return s.replace("<suggestion>", "\"").replace("</suggestion>", "\"");
     }
@@ -277,7 +277,7 @@ public class RuleMatchesAsJsonSerializer {
   private void writeRule(JsonGenerator g, RuleMatch match) throws IOException {
     g.writeObjectFieldStart("rule");
     Rule rule = match.getRule();
-    g.writeStringField("id", rule.getId());
+    g.writeStringField("id", match.getSpecificRuleId()); // rule.getId()
     if (rule instanceof AbstractPatternRule) {
       AbstractPatternRule pRule = (AbstractPatternRule) rule;
       if (pRule.getSubId() != null) {
@@ -297,13 +297,16 @@ public class RuleMatchesAsJsonSerializer {
       g.writeStartObject();
       if (match.getUrl() != null) {
         g.writeStringField("value", match.getUrl().toString());
-      } else {
+      } else if (rule.getUrl() != null) {
         g.writeStringField("value", rule.getUrl().toString());
       }
       g.writeEndObject();
       g.writeEndArray();
     }
     writeCategory(g, rule.getCategory());
+    if (Premium.isPremiumVersion()) {
+      g.writeBooleanField("isPremium", Premium.get().isPremiumRule(rule));
+    }
     if (rule.getTags().size() > 0) {
       g.writeArrayFieldStart("tags");
       for (Tag tag : rule.getTags()) {
@@ -317,10 +320,8 @@ public class RuleMatchesAsJsonSerializer {
   private void writeCategory(JsonGenerator g, Category category) throws IOException {
     g.writeObjectFieldStart("category");
     CategoryId catId = category.getId();
-    if (catId != null) {
-      g.writeStringField("id", catId.toString());
-      g.writeStringField("name", category.getName());
-    }
+    g.writeStringField("id", catId.toString());
+    g.writeStringField("name", category.getName());
     g.writeEndObject();
   }
 

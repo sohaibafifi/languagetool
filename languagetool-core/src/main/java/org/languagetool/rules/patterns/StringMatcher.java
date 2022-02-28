@@ -20,7 +20,6 @@ package org.languagetool.rules.patterns;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Sets;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.languagetool.tools.InterruptibleCharSequence;
@@ -34,12 +33,15 @@ import java.util.stream.Stream;
 /**
  * An object encapsulating a text pattern and the way it's matched (case-sensitivity / regular expression),
  * plus some optimizations over standard regular expression matching.
+ * @since 5.3
  */
-@ApiStatus.Internal
 public abstract class StringMatcher {
+  
   final String pattern;
   final boolean caseSensitive;
   final boolean isRegExp;
+  
+  public final static int MAX_MATCH_LENGTH = 250;
 
   private StringMatcher(String pattern, boolean isRegExp, boolean caseSensitive) {
     this.pattern = pattern;
@@ -58,6 +60,14 @@ public abstract class StringMatcher {
    * @return whether the given string is accepted by this matcher.
    */
   public abstract boolean matches(String s);
+
+  /**
+   * Create a case-sensitive regexp matcher.
+   * @since 5.6
+   */
+  public static StringMatcher regexp(String pattern) {
+    return create(pattern, true, true);
+  }
 
   public static StringMatcher create(String pattern, boolean isRegExp, boolean caseSensitive) {
     return create(pattern, isRegExp, caseSensitive, Function.identity());
@@ -88,6 +98,9 @@ public abstract class StringMatcher {
 
           @Override
           public boolean matches(String s) {
+            if (s.length() > MAX_MATCH_LENGTH) {
+              return false;
+            }
             return Arrays.binarySearch(sorted, s, String.CASE_INSENSITIVE_ORDER) >= 0;
           }
         };
@@ -100,6 +113,9 @@ public abstract class StringMatcher {
 
         @Override
         public boolean matches(String s) {
+          if (s.length() > MAX_MATCH_LENGTH) {
+            return false;
+          }
           return set.contains(s);
         }
       };
@@ -119,6 +135,9 @@ public abstract class StringMatcher {
 
       @Override
       public boolean matches(String s) {
+        if (s.length() > MAX_MATCH_LENGTH) {
+          return false;
+        }
         if (substrings != null && !substrings.matches(s, caseSensitive)) return false;
         if (substringsAreSufficient) return true;
         return compiled.matcher(new InterruptibleCharSequence(s)).matches();
@@ -136,6 +155,9 @@ public abstract class StringMatcher {
 
       @Override
       public boolean matches(String s) {
+        if (s.length() > MAX_MATCH_LENGTH) {
+          return false;
+        }
         return caseSensitive ? s.equals(pattern) : s.equalsIgnoreCase(pattern);
       }
     };
@@ -156,7 +178,7 @@ public abstract class StringMatcher {
       }
 
       @Override
-      Substrings handleOr(Substrings left, Substrings right) {
+      Substrings handleOr(List<Substrings> components) {
         return UNKNOWN;
       }
 
@@ -197,8 +219,8 @@ public abstract class StringMatcher {
       }
 
       @Override
-      Stream<String> handleOr(Stream<String> left, Stream<String> right) {
-        return Stream.concat(left, right);
+      Stream<String> handleOr(List<Stream<String>> components) {
+        return components.stream().flatMap(Function.identity());
       }
 
       @Override
@@ -249,17 +271,18 @@ public abstract class StringMatcher {
     }
 
     T disjunction() {
-      T result = concatenation();
+      List<T> components = new ArrayList<>();
+      components.add(concatenation());
       while (true) {
         if (pos >= regexp.length() || regexp.charAt(pos) != '|') {
-          return result;
+          return components.size() == 1 ? components.get(0) : handleOr(components);
         }
         pos++;
-        result = handleOr(result, concatenation());
+        components.add(concatenation());
       }
     }
 
-    abstract T handleOr(T left, T right);
+    abstract T handleOr(List<T> components);
 
     abstract T handleConcatenation(T left, T right);
 
@@ -363,9 +386,10 @@ public abstract class StringMatcher {
           }
         }
       }
-      return options == null
-             ? unknown()
-             : options.stream().map(c -> charLiteral(c)).reduce(this::handleOr).orElseThrow(() -> TooComplexRegexp.INSTANCE);
+      if (options == null) return unknown();
+      List<T> components = options.stream().map(c -> charLiteral(c)).collect(Collectors.toList());
+      if (components.isEmpty()) throw TooComplexRegexp.INSTANCE;
+      return components.size() == 1 ? components.get(0) : handleOr(components);
     }
 
     private T charLiteral(@Nullable Character c) {

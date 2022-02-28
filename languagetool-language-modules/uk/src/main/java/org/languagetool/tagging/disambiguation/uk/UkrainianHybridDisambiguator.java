@@ -46,7 +46,7 @@ import org.languagetool.tagging.uk.PosTagHelper;
  */
 
 public class UkrainianHybridDisambiguator extends AbstractDisambiguator {
-  private static final String LAST_NAME_TAG = ":lname";
+  private static final String LAST_NAME_TAG = ":prop:lname";
   private static final Pattern INITIAL_REGEX = Pattern.compile("[А-ЯІЇЄҐ]\\.");
   private static final Pattern INANIM_VKLY = Pattern.compile("noun:inanim:.:v_kly.*");
   private static final Pattern PLURAL_NAME = Pattern.compile("noun:anim:p:.*:fname.*");
@@ -87,6 +87,7 @@ public class UkrainianHybridDisambiguator extends AbstractDisambiguator {
 
   @Override
   public AnalyzedSentence preDisambiguate(AnalyzedSentence input) {
+    simpleDisambiguator.removeRareForms(input);
     removeVmis(input);
     retagFemNames(input);
     retagInitials(input);
@@ -95,7 +96,6 @@ public class UkrainianHybridDisambiguator extends AbstractDisambiguator {
     removePluralForNames(input);
     removeLowerCaseHomonymsForAbbreviations(input);
     removeLowerCaseBadForUpperCaseGood(input);
-    simpleDisambiguator.removeRareForms(input);
     disambiguateSt(input);
 
     return input;
@@ -137,6 +137,7 @@ public class UkrainianHybridDisambiguator extends AbstractDisambiguator {
           }
           // Олег П'ятниця
           else if( LemmaHelper.isCapitalized(nameToken.getCleanToken())
+              && ! PosTagHelper.hasPosTagPart(nameToken, ":prop")
               && PosTagHelper.hasPosTagStart(tokens[i], animPropTagPrefix + ":fname") ) {
             for (AnalyzedToken analyzedToken : nameToken) {
               nameToken.removeReading(analyzedToken, ruleApplied);
@@ -260,7 +261,7 @@ public class UkrainianHybridDisambiguator extends AbstractDisambiguator {
     for (int i = 1; i < tokens.length; i++) {
       List<AnalyzedToken> analyzedTokens = tokens[i].getReadings();
 
-      if( ! PosTagHelper.hasPosTag(analyzedTokens, Pattern.compile("noun:inanim:.:v_kly.*") )
+      if( ! PosTagHelper.hasPosTag(analyzedTokens, Pattern.compile("noun:inanim:.:v_kly(?!.*:geo).*") )
           || likelyVklyContext(tokens, i) )
         continue;
 
@@ -547,7 +548,7 @@ TODO:
       lnamePosTag = lnamePosTag.replaceAll(":(alt|ua_\\d{4}|xp\\d)", "");
 
       String initialsToken = initialsReadings.getAnalyzedToken(0).getToken();
-      AnalyzedToken newToken = new AnalyzedToken(initialsToken, lnamePosTag.replace(LAST_NAME_TAG, ":"+initialType+":abbr"), initialsToken);
+      AnalyzedToken newToken = new AnalyzedToken(initialsToken, lnamePosTag.replace(LAST_NAME_TAG, ":nv:abbr:prop:"+initialType), initialsToken);
       newToken.setWhitespaceBefore(initialsReadings.isWhitespaceBefore());
       newTokens.add(newToken);
     }

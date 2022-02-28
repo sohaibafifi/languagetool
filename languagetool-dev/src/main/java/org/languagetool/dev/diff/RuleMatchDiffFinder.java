@@ -25,6 +25,7 @@ import org.languagetool.tools.StringTools;
 import java.io.*;
 import java.net.URLEncoder;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Find diffs between runs of command-line LT. Matches with the same rule id, doc title, line, column
@@ -37,6 +38,8 @@ public class RuleMatchDiffFinder {
   private static final String MARKER_END = "</span>";
   private static final int IFRAME_MAX = -1;
 
+  private boolean fullMode;
+
   List<RuleMatchDiff> getDiffs(List<LightRuleMatch> l1, List<LightRuleMatch> l2) {
     System.out.println("Comparing result 1 (" + l1.size() + " matches) to result 2 (" + l2.size() + " matches), step 1");
     //debugList("List 1", l1);
@@ -48,10 +51,10 @@ public class RuleMatchDiffFinder {
       LightRuleMatch oldMatch = oldMatches.get(key);
       if (oldMatch != null) {
         if (!oldMatch.getSuggestions().equals(match.getSuggestions()) ||
-            !oldMatch.getMessage().equals(match.getMessage()) ||
-            oldMatch.getStatus() != match.getStatus() ||
-            //!Objects.equals(oldMatch.getSubId(), match.getSubId()) ||   -- sub id change = other sub-rule added or removed, this is usually not relevant
-            !oldMatch.getCoveredText().equals(match.getCoveredText())) {
+          !oldMatch.getMessage().equals(match.getMessage()) ||
+          oldMatch.getStatus() != match.getStatus() ||
+          //!Objects.equals(oldMatch.getSubId(), match.getSubId()) ||   -- sub id change = other sub-rule added or removed, this is usually not relevant
+          !oldMatch.getCoveredText().equals(match.getCoveredText())) {
           result.add(RuleMatchDiff.modified(oldMatch, match));
         }
       } else {
@@ -73,7 +76,7 @@ public class RuleMatchDiffFinder {
           for (RuleMatchDiff addedMatch : addedMatches) {
             LightRuleMatch tmp = addedMatch.getNewMatch();
             boolean overlaps = tmp.getColumn() < match.getColumn() + match.getCoveredText().length() &&
-                               tmp.getColumn() + tmp.getCoveredText().length() > match.getColumn();
+              tmp.getColumn() + tmp.getCoveredText().length() > match.getColumn();
             if (overlaps && !tmp.getFullRuleId().equals(match.getFullRuleId())) {
               /*System.out.println(tmp + "\noverlaps\n" + match);
               System.out.println("tmp " + tmp.getTitle());
@@ -135,7 +138,7 @@ public class RuleMatchDiffFinder {
     return map;
   }
 
-  private void printDiffs(List<RuleMatchDiff> diffs, FileWriter fw, String langCode, String date) throws IOException {
+  private void printDiffs(List<RuleMatchDiff> diffs, FileWriter fw, String langCode, String date, String filename, String ruleId) throws IOException {
     fw.write("Diffs found: " + diffs.size());
     if (diffs.size() > 0) {
       RuleMatchDiff diff1 = diffs.get(0);
@@ -145,6 +148,13 @@ public class RuleMatchDiffFinder {
         fw.write(". Category: " + diff1.getNewMatch().getCategoryName());
       }
     }
+    if (fullMode) {
+      fw.write(". <a href='../" + langCode + "/" + filename + "'>Today's list</a>");
+    } else {
+      fw.write(". <a href='../" + langCode + "_full/" + filename + "'>Full list</a>");
+    }
+    String shortRuleId = ruleId.replaceFirst("^.* / ", "").replaceFirst("\\[[0-9]+\\]", "");
+    fw.write(".  " + getAnalyticsLink(shortRuleId, langCode));
     fw.write("<br>\n");
     printTableBegin(fw);
     int iframeCount = 0;
@@ -173,24 +183,35 @@ public class RuleMatchDiffFinder {
         iframeCount += printMessage(fw, oldMatch, newMatch, diff.getReplaces(), diff.getReplacedBy(), langCode, date, diff.getStatus(), iframeCount);
         printMarkerCol(fw, oldMatch, newMatch);
         if (oldMatch.getSuggestions().equals(newMatch.getSuggestions())) {
-          fw.write("  <td>" + oldMatch.getSuggestions() + "</td>\n");
+          fw.write("<td>");
+          fw.write(oldMatch.getSuggestions().stream().map(k -> showTrimSpace(k)).collect(Collectors.joining(", ")));
+          fw.write("</td>\n");
         } else {
-          fw.write("  <td>" +
-            "  <tt>old:</tt> " + showTrimSpace(oldMatch.getSuggestions()) + "<br>\n" +
-            "  <tt>new:</tt> " + showTrimSpace(newMatch.getSuggestions()) +
-            "</td>\n");
+          fw.write("<td>\n");
+          fw.write("  <tt>old: </tt>" + oldMatch.getSuggestions().stream().map(k -> showTrimSpace(k)).collect(Collectors.joining(", ")));
+          fw.write("  <br>");
+          fw.write("  <tt>new: </tt>" + newMatch.getSuggestions().stream().map(k -> showTrimSpace(k)).collect(Collectors.joining(", ")));
+          fw.write("</td>\n");
         }
-        fw.write("</tr>\n");
       } else {
         LightRuleMatch match = diff.getOldMatch() != null ? diff.getOldMatch() : diff.getNewMatch();
         printRuleIdCol(fw, null, match);
         iframeCount += printMessage(fw, match, null, diff.getReplaces(), diff.getReplacedBy(), langCode, date, diff.getStatus(), iframeCount);
         printMarkerCol(fw, null, match);
-        fw.write("  <td>" + match.getSuggestions() + "</td>\n");
-        fw.write("</tr>\n");
+        fw.write("  <td>" + match.getSuggestions().stream().map(k -> showTrimSpace(k)).collect(Collectors.joining(", ")) + "</td>\n");
       }
+      fw.write("</tr>\n");
     }
     printTableEnd(fw);
+  }
+
+  private String getAnalyticsLink(String ruleId, String langCode) {
+    String shortId = ruleId.replaceFirst("\\[[0-9]+\\]", "");
+    String shortLangCode = langCode.replaceFirst("-.*", "");
+    return "[<a href='https://internal1.languagetool.org/grafana/d/BY_CNDHGz/rule-events-analysis?orgId=1&var-rule_id=" +
+      shortId + "&from=now-30d&var-language=" + shortLangCode + "' target='grafana' title='Grafana'>g</a>/" +
+      "<a href='https://analytics.languagetoolplus.com/matomo/index.php?module=Widgetize&action=iframe&secondaryDimension=eventName&moduleToWidgetize=Events&actionToWidgetize=getAction&idSite=18&period=day&date=yesterday&flat=1&filter_column=label&show_dimensions=1&filter_pattern=" +
+      shortId + "' target='disables' title='disables in Matomo'>m</a>]";
   }
 
   private String cleanSource(String ruleSource) {
@@ -231,78 +252,94 @@ public class RuleMatchDiffFinder {
   }
 
   private int printMessage(FileWriter fw, LightRuleMatch oldMatch, LightRuleMatch newMatch,
-                            LightRuleMatch replaces, LightRuleMatch replacedBy, String langCode, String date,
-                            RuleMatchDiff.Status status, int iframeCount) throws IOException {
+                           LightRuleMatch replaces, LightRuleMatch replacedBy, String langCode, String date,
+                           RuleMatchDiff.Status status, int iframeCount) throws IOException {
     fw.write("  <td>");
     String message;
+    boolean canOverlap;
     if (newMatch == null) {
       fw.write(oldMatch.getMessage());
       message = oldMatch.getMessage();
+      canOverlap = canOverlap(oldMatch);
     } else if (oldMatch.getMessage().equals(newMatch.getMessage())) {
       fw.write(oldMatch.getMessage());
       message = oldMatch.getMessage();
+      canOverlap = canOverlap(oldMatch);
     } else {
       //System.out.println("old: " + oldMatch.getMessage());
       //System.out.println("new: " + newMatch.getMessage());
       fw.write(
         "<tt>old:</tt> " + showTrimSpace(oldMatch.getMessage()) + "<br>\n" +
-        "<tt>new:</tt> " + showTrimSpace(newMatch.getMessage()));
+          "<tt>new:</tt> " + showTrimSpace(newMatch.getMessage()));
       message = newMatch.getMessage();
+      canOverlap = canOverlap(newMatch);
     }
-    fw.write("  <br><span class='sentence'>" + escapeSentence(oldMatch.getContext()) + "</span>");
+    fw.write("  <br><span class='sentence'>" + showTrimSpace(escapeSentence(oldMatch.getContext())) + "</span>");
     boolean withIframe = false;
     if (status == RuleMatchDiff.Status.ADDED || status == RuleMatchDiff.Status.MODIFIED) {
       int markerFrom = oldMatch.getContext().indexOf(MARKER_START);
       int markerTo = oldMatch.getContext().replace(MARKER_START, "").indexOf(MARKER_END);
       String params = "sentence=" + enc(oldMatch.getContext().replace(MARKER_START, "").replace(MARKER_END, ""), 300) +
-              "&rule_id=" + enc(oldMatch.getFullRuleId()) +
-              "&filename=" + enc(cleanSource(oldMatch.getRuleSource())) +
-              "&message=" + enc(message, 300) +
-              "&suggestions=" + enc(oldMatch.getSuggestions(), 300) +
-              "&marker_from=" + markerFrom +
-              "&marker_to=" + markerTo +
-              "&language=" + enc(langCode) +
-              "&day=" + enc(date);
+        "&rule_id=" + enc(oldMatch.getFullRuleId()) +
+        "&filename=" + enc(cleanSource(oldMatch.getRuleSource())) +
+        "&message=" + enc(message, 300) +
+        "&suggestions=" + enc(String.join(", ", oldMatch.getSuggestions()), 300) +
+        "&marker_from=" + markerFrom +
+        "&marker_to=" + markerTo +
+        "&language=" + enc(langCode) +
+        "&day=" + enc(date);
       if (iframeCount > IFRAME_MAX) {
         // rendering 2000 iframes into a page isn't fun...
         fw.write("    <a target='regression_feedback' href=\"https://languagetoolplus.com/regression/button?" + params + "\">FA?</a>\n\n");
       } else {
         fw.write("    <iframe scrolling=\"no\" style=\"border: none; width: 165px; height: 30px\"\n" +
-                "src=\"https://languagetoolplus.com/regression/button?" +
-                //"src=\"http://127.0.0.1:8000/regression/button" +
-                params + "\"></iframe>\n\n");
+          "src=\"https://languagetoolplus.com/regression/button?" +
+          //"src=\"http://127.0.0.1:8000/regression/button" +
+          params + "\"></iframe>\n\n");
         withIframe = true;
       }
     }
     if (replaces != null) {
-      fw.write("<br><br><i>Maybe replaces old match:</i><br>");
-      fw.write(replaces.getMessage());
-      fw.write("  <br><span class='sentence'>" + escapeSentence(replaces.getContext()) + "</span>");
-      fw.write("  <br><span class='suggestions'>Suggestions: " + replaces.getSuggestions() + "</span>");
-      fw.write("  <br><span class='id'>" + replaces.getFullRuleId() + "</span>");
+      if (canOverlap) {
+        // can be ignored, sentence length rule can overlap other matches
+      } else {
+        fw.write("<br><br><i>Maybe replaces old match:</i><br>");
+        fw.write(replaces.getMessage());
+        fw.write("  <br><span class='sentence'>" + escapeSentence(replaces.getContext()) + "</span>");
+        fw.write("  <br><span class='suggestions'>Suggestions: " + replaces.getSuggestions() + "</span>");
+        fw.write("  <br><span class='id'>" + replaces.getFullRuleId() + "</span>");
+      }
     }
     if (replacedBy != null) {
-      fw.write("<br><br><i>Maybe replaced by new match:</i><br>");
-      fw.write(replacedBy.getMessage());
-      fw.write("  <br><span class='sentence'>" + escapeSentence(replacedBy.getContext()) + "</span>");
-      fw.write("  <br><span class='suggestions'>Suggestions: " + replacedBy.getSuggestions() + "</span>");
-      fw.write("  <br><span class='id'>" + replacedBy.getFullRuleId() + "</span>\n");
+      if (canOverlap(replacedBy)) {
+        // can be ignored, sentence length rule can overlap other matches
+      } else {
+        fw.write("<br><br><i>Maybe replaced by new match:</i><br>");
+        fw.write(replacedBy.getMessage());
+        fw.write("  <br><span class='sentence'>" + escapeSentence(replacedBy.getContext()) + "</span>");
+        fw.write("  <br><span class='suggestions'>Suggestions: " + replacedBy.getSuggestions() + "</span>");
+        fw.write("  <br><span class='id'>" + replacedBy.getFullRuleId() + "</span>\n");
+      }
     }
     fw.write("  </td>\n");
     return withIframe ? 1 : 0;
   }
 
-  private String escapeSentence(String s)  {
-    return StringTools.escapeHTML(s).
-            replace("&lt;span class='marker'&gt;", "<span class='marker'>").
-            replace("&lt;/span&gt;", "</span>");
+  private boolean canOverlap(LightRuleMatch match) {
+    return match.getRuleId().equals("TOO_LONG_SENTENCE") || match.getRuleId().equals("TOO_LONG_SENTENCE_DE");
   }
 
-  private String enc(String s)  {
+  private String escapeSentence(String s) {
+    return StringTools.escapeHTML(s).
+      replace("&lt;span class='marker'&gt;", "<span class='marker'>").
+      replace("&lt;/span&gt;", "</span>");
+  }
+
+  private String enc(String s) {
     return enc(s, Integer.MAX_VALUE);
   }
 
-  private String enc(String s, int maxLen)  {
+  private String enc(String s, int maxLen) {
     try {
       return URLEncoder.encode(StringUtils.abbreviate(s, maxLen), "utf-8");
     } catch (UnsupportedEncodingException e) {
@@ -311,6 +348,7 @@ public class RuleMatchDiffFinder {
   }
 
   private String showTrimSpace(String s) {
+    s = s.replaceAll("\n", "<span class='whitespace'>\\\\n</span>");
     s = s.replaceFirst("^\\s", "<span class='whitespace'>&nbsp;</span>");
     s = s.replaceFirst("\\s$", "<span class='whitespace'>&nbsp;</span>");
     s = s.replaceAll("\u00A0", "<span class='nbsp' title='non-breaking space'>&nbsp;</span>");
@@ -321,7 +359,7 @@ public class RuleMatchDiffFinder {
     fw.write("<table class='sortable_table'>\n");
     fw.write("<thead>\n");
     fw.write("<tr>\n");
-    fw.write("  <th>Change</th>\n");
+    fw.write("  <th style='width:60px'>Change</th>\n");
     fw.write("  <th>File</th>\n");
     fw.write("  <th class='small'>Rule ID</th>\n");
     fw.write("  <th>Message and Text</th>\n");
@@ -338,9 +376,14 @@ public class RuleMatchDiffFinder {
   }
 
   private void run(LightRuleMatchParser parser, File file1, File file2, File outputDir, String langCode, String date) throws IOException {
-    List<LightRuleMatch> l1 = parser.parseOutput(file1);
-    List<LightRuleMatch> l2 = parser.parseOutput(file2);
-    String title = "Comparing " + file1.getName() + " to "  + file2.getName();
+    if (file1.getName().equals("empty.json")) {
+      fullMode = true;
+    }
+    LightRuleMatchParser.JsonParseResult jsonParseResult1 = parser.parseOutput(file1);
+    List<LightRuleMatch> l1 = jsonParseResult1.result;
+    LightRuleMatchParser.JsonParseResult jsonParseResult2 = parser.parseOutput(file2);
+    List<LightRuleMatch> l2 = jsonParseResult2.result;
+    String title = "Comparing " + file1.getName() + " to " + file2.getName();
     System.out.println(title);
     List<RuleMatchDiff> diffs = getDiffs(l1, l2);
     diffs.sort((k, j) -> {
@@ -360,14 +403,15 @@ public class RuleMatchDiffFinder {
     Map<String, List<RuleMatchDiff>> keyToDiffs = groupDiffs(diffs);
     List<OutputFile> outputFiles = new ArrayList<>();
     for (Map.Entry<String, List<RuleMatchDiff>> entry : keyToDiffs.entrySet()) {
-      File outputFile = new File(outputDir, "result_" + entry.getKey().replaceAll("/" , "_").replaceAll("[\\s_]+", "_") + ".html");
+      String filename = "result_" + entry.getKey().replaceAll("/", "_").replaceAll("[\\s_]+", "_") + ".html";
+      File outputFile = new File(outputDir, filename);
       if (entry.getValue().size() > 0) {
         outputFiles.add(new OutputFile(outputFile, entry.getValue()));
       }
       try (FileWriter fw = new FileWriter(outputFile)) {
         System.out.println("Writing result to " + outputFile);
         printHeader(title, fw);
-        printDiffs(entry.getValue(), fw, langCode, date);
+        printDiffs(entry.getValue(), fw, langCode, date, filename, entry.getKey());
         printFooter(fw);
       }
     }
@@ -381,6 +425,8 @@ public class RuleMatchDiffFinder {
       fw.write("  <td>REM</td>");
       fw.write("  <td>MOD</td>");
       fw.write("  <td>Source</td>");
+      fw.write("  <td title='Picky'>P</td>");
+      fw.write("  <td title='temp_off'>T</td>");
       fw.write("  <td>ID</td>");
       fw.write("  <td>Message of first match</td>");
       fw.write("</tr>");
@@ -398,8 +444,24 @@ public class RuleMatchDiffFinder {
         fw.write("<td>");
         fw.write(file.replaceFirst("result_", "").replaceFirst("_.*", ""));
         fw.write("</td>");
+        if (outputFile.items.size() > 0 && outputFile.items.get(0).getNewMatch() != null) {
+          fw.write("<td>" + (outputFile.items.get(0).getNewMatch().getTags().contains("picky") ? "p" : "") + "</td>");
+        } else if (outputFile.items.size() > 0 && outputFile.items.get(0).getOldMatch() != null) {
+          fw.write("<td>" + (outputFile.items.get(0).getOldMatch().getTags().contains("picky") ? "p" : "") + "</td>");
+        } else {
+          fw.write("<td></td>");
+        }
+        if (outputFile.items.size() > 0 && outputFile.items.get(0).getNewMatch() != null) {
+          fw.write("<td>" + (outputFile.items.get(0).getNewMatch().getStatus() == LightRuleMatch.Status.temp_off ? "t" : "") + "</td>");
+        } else if (outputFile.items.size() > 0 && outputFile.items.get(0).getOldMatch() != null) {
+          fw.write("<td>" + (outputFile.items.get(0).getOldMatch().getStatus() == LightRuleMatch.Status.temp_off ? "t" : "") + "</td>");
+        } else {
+          fw.write("<td></td>");
+        }
         fw.write("<td>");
-        fw.write("  <a href='" + file + "'>" + file.replaceFirst("result_.*?_", "").replace(".html", "") + "</a>");
+        String id = file.replaceFirst("result_.*?_", "").replace(".html", "");
+        fw.write("  <a href='" + file + "'>" + id + "</a>");
+        fw.write("  " + getAnalyticsLink(id, langCode));
         fw.write("</td>");
         if (outputFile.items.size() > 0 && outputFile.items.get(0).getNewMatch() != null) {
           fw.write("<td class='msg'>" + escapeSentence(outputFile.items.get(0).getNewMatch().getMessage()) + "</td>");
@@ -412,6 +474,10 @@ public class RuleMatchDiffFinder {
       }
       fw.write("</tbody>");
       fw.write("</table>\n\n");
+      fw.write("<br><table class='meta'>\n");
+      fw.write("  <tr><td>Old API:</td> <td>" + jsonParseResult1.buildDates + "</td></tr>\n");
+      fw.write("  <tr><td>New API:</td> <td>" + jsonParseResult2.buildDates + "</td></tr>\n");
+      fw.write("</table>\n");
       printFooterForIndex(fw);
     }
   }
@@ -419,6 +485,7 @@ public class RuleMatchDiffFinder {
   static class OutputFile {
     File file;
     List<RuleMatchDiff> items;
+
     OutputFile(File file, List<RuleMatchDiff> items) {
       this.file = file;
       this.items = items;
@@ -427,7 +494,7 @@ public class RuleMatchDiffFinder {
 
   private Map<String, List<RuleMatchDiff>> groupDiffs(List<RuleMatchDiff> diffs) {
     Map<String, List<RuleMatchDiff>> keyToDiffs = new TreeMap<>();
-    String key = "";
+    String key;
     String prevKey = "";
     List<RuleMatchDiff> l = new ArrayList<>();
     for (RuleMatchDiff diff : diffs) {
@@ -460,13 +527,14 @@ public class RuleMatchDiffFinder {
     fw.write("    td { vertical-align: top; }\n");
     fw.write("    .small { font-size: small }\n");
     fw.write("    .sentence { color: #666; }\n");
-    fw.write("    .marker { text-decoration: underline; }\n");
+    fw.write("    .marker { text-decoration: underline; background-color: rgba(200, 200, 200, 0.4) }\n");
     fw.write("    .source { color: #999; }\n");
     fw.write("    .status { color: #999; }\n");
-    fw.write("    .whitespace { background-color: #ccc; }\n");
-    fw.write("    .nbsp { background-color: #ccc; }\n");
+    fw.write("    .whitespace { background-color: rgba(200, 200, 200, 0.3) }\n");
+    fw.write("    .nbsp { background-color: rgba(200, 200, 200, 0.3) }\n");
     fw.write("    .id { color: #666; }\n");
     fw.write("    .msg { color: #666; }\n");
+    fw.write("    .meta { color: #666; }\n");
     fw.write("  </style>\n");
     fw.write("</head>\n");
     fw.write("<body>\n\n");
@@ -476,7 +544,6 @@ public class RuleMatchDiffFinder {
     fw.write("<script>\n" +
       "var tf = new TableFilter(document.querySelector('.sortable_table'), {\n" +
       "    base_path: 'https://unpkg.com/tablefilter@0.7.0/dist/tablefilter/',\n" +
-      "    col_0: 'select',\n" +
       "    col_1: 'select',\n" +
       "    auto_filter: { delay: 100 },\n" +
       "    grid_layout: false,\n" +
@@ -499,6 +566,7 @@ public class RuleMatchDiffFinder {
       "    col_2: 'none',\n" +
       "    col_3: 'none',\n" +
       "    col_4: 'select',\n" +
+      "    col_5: 'none',\n" +
       "    grid_layout: false,\n" +
       "    col_types: ['number', 'number', 'number', 'number', 'string', 'string'],\n" +
       "    extensions: [{ name: 'sort' }]\n" +
@@ -519,15 +587,22 @@ public class RuleMatchDiffFinder {
     return id;
   }
 
+  private static void printUsageAndExit() {
+    System.out.println("Usage: " + RuleMatchDiffFinder.class.getSimpleName() + " <matches1> <matches2> <resultDir> <date>");
+    System.out.println(" <matches1> and <matches2> are text outputs of different versions of org.languagetool.dev.dumpcheck.SentenceSourceChecker run on the same input");
+    System.out.println("                           or JSON outputs from org.languagetool.dev.httpchecker.HttpApiSentenceChecker");
+    System.exit(1);
+  }
+
   public static void main(String[] args) throws IOException {
     RuleMatchDiffFinder diffFinder = new RuleMatchDiffFinder();
     LightRuleMatchParser parser = new LightRuleMatchParser();
+    if (args.length == 0) {
+      printUsageAndExit();
+    }
     if (args[0].contains("XX") && args[1].contains("XX") && args[2].contains("XX")) {
       if (args.length != 4) {
-        System.out.println("Usage: " + RuleMatchDiffFinder.class.getSimpleName() + " <matches1> <matches2> <resultDir> <date>");
-        System.out.println(" <matches1> and <matches2> are text outputs of different versions of org.languagetool.dev.dumpcheck.SentenceSourceChecker run on the same input");
-        System.out.println("                           or JSON outputs from org.languagetool.dev.httpchecker.HttpApiSentenceChecker");
-        System.exit(1);
+        printUsageAndExit();
       }
       System.out.println("Running in multi-file mode, replacing 'XX' in filenames with lang codes...");
       String file1 = args[0];
@@ -540,7 +615,7 @@ public class RuleMatchDiffFinder {
         if (file.length() >= varPos + 1) {
           StringBuilder tempName = new StringBuilder(file).replace(varPos, varPos + 2, "XX");
           if (tempName.toString().equals(templateName)) {
-            String langCode = file.substring(varPos, varPos+2);
+            String langCode = file.substring(varPos, varPos + 2);
             String tempNameNew = file.replace(".old", ".new");
             File newFile = new File(dir, tempNameNew);
             if (!newFile.exists()) {
@@ -548,8 +623,8 @@ public class RuleMatchDiffFinder {
             }
             System.out.println("==== " + file + " =================================");
             File oldFile = new File(dir, file);
-            String outputFile = file3.replace("XX", langCode);
-            diffFinder.run(parser, oldFile, newFile, new File(outputFile), langCode, date);
+            String outputDir = file3.replace("XX", langCode);
+            diffFinder.run(parser, oldFile, newFile, new File(outputDir), langCode, date);
           }
         }
       }

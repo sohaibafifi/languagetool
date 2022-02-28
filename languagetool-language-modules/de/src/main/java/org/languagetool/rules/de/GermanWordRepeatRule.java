@@ -48,6 +48,10 @@ public class GermanWordRepeatRule extends WordRepeatRule {
       csToken("Bora")
     ),
     Arrays.asList(
+      csToken("Miu"),
+      csToken("Miu")
+    ),
+    Arrays.asList(
       token("Moin"),
       token("Moin")
     ),
@@ -68,6 +72,14 @@ public class GermanWordRepeatRule extends WordRepeatRule {
       token("ha")
     ),
     Arrays.asList(
+      token("teils"),
+      token("teils")
+    ),
+    Arrays.asList(
+      token("Marsch"),
+      token("Marsch")
+    ),
+    Arrays.asList(
       token("hip"),
       token("hip"),
       token("hurra")
@@ -83,6 +95,10 @@ public class GermanWordRepeatRule extends WordRepeatRule {
     Arrays.asList(
       token("bla"),
       token("bla")
+    ),
+    Arrays.asList(
+      token("blah"),
+      token("blah")
     ),
     Arrays.asList(
       token("oh"),
@@ -211,10 +227,23 @@ public class GermanWordRepeatRule extends WordRepeatRule {
       new PatternTokenBuilder().csToken("der").matchInflectedForms().build()
     ),
     Arrays.asList(// "Alle die die"
-      tokenRegex("alle"),
+      tokenRegex("alle|nur|obwohl|lediglich|für|zwar|aber"),
       new PatternTokenBuilder().csToken("die").build(),
-      new PatternTokenBuilder().csToken("die").setSkip(-1).build(),
-      new PatternTokenBuilder().posRegex("UNKNOWN|VER:.*").build()
+      new PatternTokenBuilder().csToken("die").build()
+    ),
+    Arrays.asList(// "Haben die die Elemente ..."
+      posRegex("PKT|SENT_START|KON:NEB"),
+      tokenRegex("haben|hatten"),
+      new PatternTokenBuilder().csToken("die").build(),
+      new PatternTokenBuilder().csToken("die").build(),
+      posRegex(".*SUB.*PLU.*|UNKNOWN")
+    ),
+    Arrays.asList(// "und ob die die Währungen ..."
+      posRegex("PKT|SENT_START|KON:NEB"),
+      tokenRegex("ob|falls"),
+      new PatternTokenBuilder().csToken("die").build(),
+      new PatternTokenBuilder().csToken("die").build(),
+      posRegex(".*SUB.*PLU.*|UNKNOWN")
     ),
     Arrays.asList(// "Das Haus, in das das Kind läuft."
       csToken(","),
@@ -238,6 +267,10 @@ public class GermanWordRepeatRule extends WordRepeatRule {
     Arrays.asList(// "Er muss sein Essen essen"
       csToken("Essen"),
       csToken("essen")
+    ),
+    Arrays.asList(
+      tokenRegex("^[_]+$"),
+      tokenRegex("^[_]+$")
     )
   );
   private final Supplier<List<DisambiguationPatternRule>> antiPatterns;

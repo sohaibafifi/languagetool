@@ -39,7 +39,7 @@ class SortedTextRules {
   List<Integer> minToCheckParagraph;
   List<List<String>> textLevelRules;
 
-  SortedTextRules (SwJLanguageTool langTool, Configuration config, Set<String> disabledRulesUI) {
+  SortedTextRules (SwJLanguageTool lt, Configuration config, Set<String> disabledRulesUI) {
     minToCheckParagraph = new ArrayList<>(OfficeTools.NUMBER_TEXTLEVEL_CACHE);
     textLevelRules = new ArrayList<>(OfficeTools.NUMBER_TEXTLEVEL_CACHE);
     minToCheckParagraph.add(0,0);
@@ -50,18 +50,18 @@ class SortedTextRules {
       textLevelRules.add(i, new ArrayList<>());
       debugMode = OfficeTools.DEBUG_MODE_SR;
     }
-    List<Rule> rules = langTool.getAllActiveOfficeRules();
+    List<Rule> rules = lt.getAllActiveOfficeRules();
     int numParasToCheck = config.getNumParasToCheck();
     for (Rule rule : rules) {
-      if (rule instanceof TextLevelRule && !langTool.getDisabledRules().contains(rule.getId()) 
+      if (rule instanceof TextLevelRule && !lt.getDisabledRules().contains(rule.getId()) 
           && !disabledRulesUI.contains(rule.getId())) {
         insertRule(((TextLevelRule) rule).minToCheckParagraph(), numParasToCheck, rule.getId());
       }
     }
     if (debugMode) {
-      MessageHandler.printToLogFile("Number different minToCheckParagraph: " + minToCheckParagraph.size());
+      MessageHandler.printToLogFile("SortedTextRules: Number different minToCheckParagraph: " + minToCheckParagraph.size());
       for ( int i = 0; i < minToCheckParagraph.size(); i++) {
-        MessageHandler.printToLogFile("minToCheckParagraph: " + minToCheckParagraph.get(i));
+        MessageHandler.printToLogFile("SortedTextRules: minToCheckParagraph: " + minToCheckParagraph.get(i));
         for (int j = 0; j < textLevelRules.get(i).size(); j++) {
           MessageHandler.printToLogFile("RuleId: " + textLevelRules.get(i).get(j));
         }
@@ -106,17 +106,15 @@ class SortedTextRules {
   /**
    * Activate the text level rules for a specified cache 
    */
-  public void activateTextRulesByIndex(int nCache, SwJLanguageTool langTool) {
+  public void activateTextRulesByIndex(int nCache, SwJLanguageTool lt) {
     for (int i = 0; i < textLevelRules.size(); i++) {
       if (i == nCache) {
         for (String ruleId : textLevelRules.get(i)) {
-          langTool.enableRule(ruleId);
-//          MessageHandler.printToLogFile("Cache: " + i + ", Rule enabled: " + ruleId);
+          lt.enableRule(ruleId);
         }
       } else {
         for (String ruleId : textLevelRules.get(i)) {
-          langTool.disableRule(ruleId);
-//          MessageHandler.printToLogFile("Cache: " + i + ", Rule disabled: " + ruleId);
+          lt.disableRule(ruleId);
         }
       }
     }
@@ -125,10 +123,10 @@ class SortedTextRules {
   /**
    * Reactivate the text level rules which was deactivated for a specified cache 
    */
-  public void reactivateTextRules(SwJLanguageTool langTool) {
+  public void reactivateTextRules(SwJLanguageTool lt) {
     for (List<String> textRules : textLevelRules) {
       for (String ruleId : textRules) {
-        langTool.enableRule(ruleId);
+        lt.enableRule(ruleId);
       }
     }
   }

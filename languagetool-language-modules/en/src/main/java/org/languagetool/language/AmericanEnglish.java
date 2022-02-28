@@ -28,11 +28,13 @@ import org.languagetool.rules.Rule;
 import org.languagetool.rules.en.AmericanReplaceRule;
 import org.languagetool.rules.en.MorfologikAmericanSpellerRule;
 import org.languagetool.rules.en.UnitConversionRuleUS;
+import org.languagetool.rules.spelling.SpellingCheckRule;
 import org.languagetool.rules.spelling.SymSpellRule;
 import org.languagetool.rules.spelling.suggestions.SuggestionsChanges;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -51,9 +53,14 @@ public class AmericanEnglish extends English {
   @Override
   public List<Rule> getRelevantRules(ResourceBundle messages, UserConfig userConfig, Language motherTongue, List<Language> altLanguages) throws IOException {
     List<Rule> rules = new ArrayList<>(super.getRelevantRules(messages, userConfig, motherTongue, altLanguages));
-    rules.add(new AmericanReplaceRule(messages));
+    rules.add(new AmericanReplaceRule(messages, "/en/en-US/replace.txt"));
     rules.add(new UnitConversionRuleUS(messages));
     return rules;
+  }
+
+  @Override
+  public SpellingCheckRule createDefaultSpellingRule(ResourceBundle messages) throws IOException {
+      return new MorfologikAmericanSpellerRule(messages, this, null, Collections.emptyList());
   }
 
   @Override
@@ -66,4 +73,5 @@ public class AmericanEnglish extends English {
     }
     return rules;
   }
+
 }

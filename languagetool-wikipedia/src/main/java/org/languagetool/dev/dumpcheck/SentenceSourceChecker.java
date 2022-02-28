@@ -20,10 +20,7 @@ package org.languagetool.dev.dumpcheck;
 
 import org.apache.commons.cli.*;
 import org.apache.commons.lang3.StringUtils;
-import org.languagetool.JLanguageTool;
-import org.languagetool.Language;
-import org.languagetool.Languages;
-import org.languagetool.MultiThreadedJLanguageTool;
+import org.languagetool.*;
 import org.languagetool.rules.CategoryId;
 import org.languagetool.rules.Rule;
 import org.languagetool.rules.RuleMatch;
@@ -129,6 +126,8 @@ public class SentenceSourceChecker {
             .desc("Skip this many sentences from input before actually checking sentences").build());
     options.addOption(Option.builder().longOpt("print-duration")
             .desc("Print the duration of analysis in milliseconds").build());
+    options.addOption(Option.builder().longOpt("nerUrl").argName("url").hasArg()
+            .desc("URL of a named entity recognition service").build());
     try {
       CommandLineParser parser = new DefaultParser();
       return parser.parse(options, args);
@@ -159,7 +158,12 @@ public class SentenceSourceChecker {
     int sentencesToSkip = options.hasOption("skip") ? Integer.parseInt(options.getOptionValue("skip")) : 0;
     Language lang = Languages.getLanguageForShortCode(langCode);
     Language motherTongue = motherTongueCode != null ? Languages.getLanguageForShortCode(motherTongueCode) : null;
-    MultiThreadedJLanguageTool lt = new MultiThreadedJLanguageTool(lang, motherTongue);
+    GlobalConfig globalConfig = new GlobalConfig();
+    if (options.hasOption("nerUrl")) {
+      System.out.println("Using NER service: " + options.getOptionValue("nerUrl"));
+      globalConfig.setNERUrl(options.getOptionValue("nerUrl"));
+    }
+    MultiThreadedJLanguageTool lt = new MultiThreadedJLanguageTool(lang, motherTongue, -1, globalConfig, null);
     lt.setCleanOverlappingMatches(false);
     if (languageModelDir != null) {
       lt.activateLanguageModelRules(languageModelDir);
@@ -223,6 +227,7 @@ public class SentenceSourceChecker {
     int ruleMatchCount = 0;
     int sentenceCount = 0;
     int skipCount = 0;
+    int ignoredCount = 0;
     boolean skipMessageShown = false;
     try {
       if (propFile != null) {
@@ -257,6 +262,7 @@ public class SentenceSourceChecker {
           throw new RuntimeException("Check failed on sentence: " + StringUtils.abbreviate(sentence.getText(), 250), e);
         }
       }
+      ignoredCount = mixingSource.getIgnoredCount();
     } catch (DocumentLimitReachedException | ErrorLimitReachedException e) {
       System.out.println(getClass().getSimpleName() + ": " + e);
     } finally {
@@ -265,6 +271,8 @@ public class SentenceSourceChecker {
         float matchesPerSentence = (float)ruleMatchCount / sentenceCount;
         System.out.printf(lang + ": %d total matches\n", ruleMatchCount);
         System.out.printf(Locale.ENGLISH, lang + ": ø%.2f rule matches per sentence\n", matchesPerSentence);
+        System.out.printf(Locale.ENGLISH, lang + ": %d input lines ignored (e.g. not between %d and %d chars or at least %d tokens)\n", ignoredCount, 
+          SentenceSource.MIN_SENTENCE_LENGTH, SentenceSource.MAX_SENTENCE_LENGTH, SentenceSource.MIN_SENTENCE_TOKEN_COUNT);
         if (options.hasOption("print-duration")) {
           System.out.println("The analysis took " + (System.currentTimeMillis() - startTime) + "ms");
         }

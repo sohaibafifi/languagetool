@@ -1,4 +1,162 @@
 #Catalan multiwords file used for chunking
+#separatorRegExp=[\t;]
+Narendra Modi;NPMSSP0
+Recep Tayyip Erdoğan;NPMSSP0
+Recep Tayyip Erdogan;NPMSSP0
+Dmitri Medvédev;NPMSSP0
+Borís Ieltsin;NPMSSP0
+Víktor Ianukóvitx;NPMSSP0
+Volodímir Zelenski;NPMSSP0
+Bernard Shaw;NPMSSP0
+Madame Pompadour;NPFSSP0
+Madame de Pompadour;NPFSSP0
+Rodrigo Rato;NPMSSP0
+Josep Maria de Sagarra;NPMSSP0
+Ansu Fati;NPMSSP0
+von Clausewitz;NPCNSP0
+Leroy Merlin;NPCNO00
+Tahrir al-Xam;NPMSO00
+Al-Xabab;NPMSO00
+Nursultan Nazarbàiev;NPMSSP0
+Pablo Casado;NPMSSP0
+Anne Applebaum;NPFSSP0
+cara o creu;NCMS000
+amb tota seguretat;LOC_ADV
+ciutat balneari;NCFS000
+ciutats balneari;NCFP000
+casa refugi;NCFS000
+cases refugi;NCFP000
+blat xeixa;NCMS000
+José Ramón;NPMSSP0
+bus llançadora;NCMS000
+busos llançadora;NCMP000
+autobús llançadora;NCMS000
+autobusos llançadora;NCMP000
+Ficus religiosa;NCCN000
+au va;I
+fins a cert punt;LOC_ADV
+fins a un cert punt;LOC_ADV
+escriptura devanagari;NCFS000
+peix espasa;NCMS000
+peixos espasa;NCMP000
+a escruix;LOC_ADV
+de filis;LOC_ADV
+a redossa;LOC_ADV
+a rapis;LOC_ADV
+de reculons;LOC_ADV
+de tranuita;LOC_ADV
+a les enfosques;LOC_ADV 
+Cyber Monday;NCMN000
+v. tr.;NCMN000
+v. intr.;NCMN000
+John Maynard Keynes;NPMSSP0
+Carl Schmitt;NPMSSP0
+El Ejido;NPMSG00
+home orquestra;NCMS000
+homes orquestra;NCMP000
+tren llançadora;NCMS000
+trens llançadora;NCMP000
+Dom Ruinart;NCMN000
+Dom Pérignon;NCMN000
+a la carbonara;LOC_ADV
+Catalunya Exprés;NPMNO00
+acid jazz;NCMS000
+on line;AQOCNO
+off line;AQOCNO
+American Heritage;NPCNO00
+Motion Picture Association;NPFSO00
+verd menta;NCMS000
+Unidas Podemos;NPCNO00
+Unides Podem;NPCNO00
+da-li que da-li;LOC_ADV
+Yolanda Díaz;NPFSSP0
+cambra menjador;NCFS000
+sensu amplo	LOC_ADV
+sensu latissimo	LOC_ADV
+sensu strictissimo	LOC_ADV
+Jennifer Lopez	NPFSSP0
+síndrome de savant	NCFS000
+síndrome del savant	NCFS000
+The Soprano	NPMSO00
+Els Soprano	NPMSO00
+call center	NPMS000
+call centers	NPMP000
+call centre	NPMS000
+call centres	NPMP000
+penitenciaria apostòlica	NCFS000
+Penitenciaria Apostòlica	NCFS000
+Save the Children	NPMSO00
+llibreria cafè	NCFS000
+llibreria café	NCFS000
+llibreria cafeteria	NCFS000
+Bora Bora	NPFSG00
+casa quarter	NCFS000
+cases quarter	NCFP000
+herba alfals	NCFS000
+Philip Roth	NPMSSP0
+Dorothy Parker	NPFSSP0
+Omar Sharif	NPMSSP0
+Luis Buñuel	NPMSSP0
+David Lean	NPMSSP0
+cotxe patrulla	NCMS000
+cotxes patrulla	NCMP000
+La Monte Young	NPMSSP0
+Mazinger Z	NPMNSP0
+Mazinger Zeta	NPMNSP0
+greatest hits	NCMP000
+Julian Barnes	NPMSSP0
+Ursula von der Leyen	NPFSSP0
+Next Generation	NPCNO00
+Ramon Tremosa	NPMSSP0
+Jens Weidmann	NPMSSP0
+a remà	LOC_ADV
+El Tatano	NPMSO00
+Beppe Grillo	NPMSSP0
+Alí Babà	NPMSSP0
+App Store	NPFSO00
+Sinn Féin	NPMSO00
+Tate Gallery	NPFSO00
+Human Rights Watch	NPCSO00
+Jeu de Paume	NPMSO00
+Imperial College	NPMSO00
+Galerías Preciados	NPCNO00
+institut escola	NCMS000
+instituts escola	NCMP000
+Pony Express	NPMSO00
+Clara Ponsatí	NPFSSP0
+ARN polimerasa	NCFS000
+Green Bay Packers	NPMPO00
+Mies van der Rohe	NPMSSP0
+van der Rohe	NPMSSP0
+cinéma vérité	NCMS000
+casa castell	NCFS000
+casa-castell	NCFS000
+Setembre Negre	NPMSO00
+Premis Octubre	NPMPO00
+Octubre CCC	NPMSO00
+Centre Octubre	NPMSO00
+Octubre Centre de Cultura Contemporània	NPMSO00
+a tiri i baldiri	LOC_ADV
+dragó de Komodo	NCMS000
+dragons de Komodo	NCMP000
+Microsoft Corporation	NPFSO00
+Florentino Pérez	NPMSSP0
+pro tempore	LOC_ADV
+amb més freqüència	LOC_ADV
+Ricky Rubio	NPMS000
+jo et flic	LOC_ADV
+a la pul pul	LOC_ADV
+de pul en pul	LOC_ADV
+amb corruixes	LOC_ADV
+de corruixes	LOC_ADV
+amb presses i corruixes	LOC_ADV
+de cop sobte	LOC_ADV
+Liam Neeson	NPMSSP0
+a mal borràs	LOC_ADV
+al devora	LOC_PREP
+Force India	NPCNO00
+Sahara Force India	NPCNO00
+Google Meet	NPCNO00
 fin de siècle	NCMS000
 arquitecte urbanista	NCMS000
 arquitecta urbanista	NCFS000
@@ -573,6 +731,7 @@ Ceské Budejovice	NPCNG00
 Chiang Mai	NPCNG00
 Chiang Rai	NPCNG00
 Champions League	NPFSO00
+Europa League	NPFNO00
 Ciudad Juárez	NPCNG00
 Ciudad Real	NPCNG00
 Colúmbia Britànica	NPCNG00
@@ -1106,6 +1265,7 @@ a tota hora	LOC_ADV
 a tota ultrança	LOC_ADV
 a totes hores	LOC_ADV
 a tot estirar	LOC_ADV
+a tot allargar	LOC_ADV
 a través d'	LOC_PREP
 a través de	LOC_PREP
 a trencajunts	LOC_ADV
@@ -1180,7 +1340,7 @@ amb caràcter de	LOC_PREP
 amb freqüència	LOC_ADV
 amb prou feines	LOC_ADV
 amb referència a	LOC_PREP
-amb tot i	LOC_PREP
+#amb tot i	LOC_PREP
 ante meridiem	LOC_ADV
 annus horribilis	NCMS000
 ara com ara	LOC_ADV
@@ -1321,7 +1481,7 @@ de bell antuvi	LOC_ADV
 de bon antuvi	LOC_ADV
 de bell nou	LOC_ADV
 de bell principi	LOC_ADV
-de biaix	LOC_ADV
+#de biaix	LOC_ADV
 de bo de bo	LOC_ADV
 de bocadents	LOC_ADV
 de bocaterrosa	LOC_ADV
@@ -1360,8 +1520,9 @@ de por d'	LOC_PREP
 de por de	LOC_PREP
 de pressa	LOC_ADV
 de primer antuvi	LOC_ADV
-de prop	LOC_ADV
+#de prop	LOC_ADV
 de lluny	LOC_ADV
+de lluny estant;LOC_ADV
 de puntelles	LOC_ADV
 de puntelletes	LOC_ADV
 de puntetes	LOC_ADV
@@ -1401,6 +1562,7 @@ de visu	LOC_ADV
 de viu en viu	LOC_ADV
 de viva veu	LOC_ADV
 déjà vu	NCMS000
+déjà vécu	NCMS000
 del cert	LOC_ADV
 del tot	LOC_ADV
 delirium tremens	NCMN000
@@ -1547,8 +1709,6 @@ ex nunc	LOC_ADV
 ex-alt càrrec	NCCS000
 alt càrrec	NCCS000
 ex-alts càrrecs	NCMP000
-fa molt poc	LOC_ADV
-fa poc	LOC_ADV
 fair play	NCMS000
 fast food	NCMS000
 femme fatale	NCFS000
@@ -1603,7 +1763,7 @@ ball espectacle	NCMS000
 raïm moscatell	NCMS000
 grosso modo	LOC_ADV
 gràcies a	LOC_PREP
-habeas corpus	NCMS000
+habeas corpus	NCMP000
 heavy metal	NCMS000
 herriko taberna	NCFS000
 herriko tabernes	NCFP000
@@ -1644,8 +1804,6 @@ lato sensu	LOC_ADV
 lingua franca	NCFS000
 lignum crucis	NCMN000
 llevat que	LOC_CONJ
-lluny d'	LOC_PREP
-lluny de	LOC_PREP
 long play	NCMN000
 ma non troppo	LOC_ADV
 making of	NCMS000
@@ -1774,6 +1932,8 @@ R+D	NCFS000
 rock and roll	NCMS000
 rock & roll	NCMS000
 rigor mortis	NCMS000
+frigor mortis	NCMN000
+livor mortis	NCMN000
 rhythm and blues	NCMS000
 sancta sanctorum	NCMS000
 schola cantorum	NCFS000
@@ -1871,7 +2031,7 @@ vulgues no vulgues	LOC_ADV
 #noms oficials municipis valencians que difereixen del nom valencià i que tenen més d'una paraula
 #
 Rincón de Ademuz	NPMSG00
-Alcocer de Planes	NPCSG00
+#Alcocer de Planes	NPCSG00
 Algar de Palancia	NPCSG00
 Algimia de Alfara	NPCSG00
 Algimia de Almonacid	NPCSG00

@@ -61,7 +61,7 @@ public class HunspellRule extends SpellingCheckRule {
   protected static final String FILE_EXTENSION = ".dic";
 
   private volatile boolean needsInit = true;
-  protected volatile Hunspell hunspell = null;
+  protected volatile HunspellDictionary hunspell = null;
 
   private static final Logger logger = LoggerFactory.getLogger(HunspellRule.class);
   private static final ConcurrentLinkedQueue<String> activeChecks = new ConcurrentLinkedQueue<>();
@@ -177,6 +177,7 @@ public class HunspellRule extends SpellingCheckRule {
       int misspelledButEnglish = 0;
       for (int i = 0; i < tokens.length; i++) {
         String word = tokens[i];
+        int dashCorr = 0;
         if ((ignoreWord(Arrays.asList(tokens), i) || ignoreWord(word)) && !isProhibited(cutOffDot(word))) {
           prevStartPos = len;
           len += word.length() + 1;
@@ -187,6 +188,14 @@ public class HunspellRule extends SpellingCheckRule {
             misspelledButEnglish++;
           }
           String cleanWord = word.endsWith(".") ? word.substring(0, word.length() - 1) : word;
+          if (word.startsWith("-")) {
+            if (!isMisspelled(cleanWord.substring(1)) || cleanWord.matches("-+")) {
+              len += word.length() + 1;
+              continue;
+            } else {
+              dashCorr++;
+            }
+          }
           if (i > 0 && prevStartPos != -1) {
             String prevWord = tokens[i-1];
             boolean ignoreSplitting = false;
@@ -198,7 +207,7 @@ public class HunspellRule extends SpellingCheckRule {
               // "thanky ou" -> "thank you"
               String sugg1a = prevWord.substring(0, prevWord.length()-1);
               String sugg1b = cutOffDot(prevWord.substring(prevWord.length()-1) + word);
-              if (!isMisspelled(sugg1a) && !isMisspelled(sugg1b)) {
+              if (!isMisspelled(sugg1a) && !isMisspelled(sugg1b) && acceptSuggestion(sugg1a + " " + sugg1b)) {
                 RuleMatch rm = createWrongSplitMatch(sentence, ruleMatches, len, cleanWord, sugg1a, sugg1b, prevStartPos);
                 if (rm != null) {
                   ruleMatches.add(rm);
@@ -207,7 +216,7 @@ public class HunspellRule extends SpellingCheckRule {
               // "than kyou" -> "thank you"
               String sugg2a = prevWord + word.charAt(0);
               String sugg2b = cutOffDot(word.substring(1));
-              if (!isMisspelled(sugg2a) && !isMisspelled(sugg2b)) {
+              if (!isMisspelled(sugg2a) && !isMisspelled(sugg2b) && acceptSuggestion(sugg2a + " " + sugg2b)) {
                 RuleMatch rm = createWrongSplitMatch(sentence, ruleMatches, len, cleanWord, sugg2a, sugg2b, prevStartPos);
                 if (rm != null) {
                   ruleMatches.add(rm);
@@ -217,14 +226,19 @@ public class HunspellRule extends SpellingCheckRule {
           }
           
           RuleMatch ruleMatch = new RuleMatch(this, sentence,
-            len, len + cleanWord.length(),
+            len + dashCorr, len + cleanWord.length(),
             messages.getString("spelling"),
             messages.getString("desc_spelling_short"));
           ruleMatch.setType(RuleMatch.Type.UnknownWord);
+          String cleanWord2 = cleanWord.substring(dashCorr);
           if (userConfig == null || userConfig.getMaxSpellingSuggestions() == 0 || ruleMatches.size() <= userConfig.getMaxSpellingSuggestions()) {
             ruleMatch.setLazySuggestedReplacements(() -> {
               try {
-                return calcSuggestions(word, cleanWord);
+                List<SuggestedReplacement> sugg = calcSuggestions(word, cleanWord2);
+                if (isFirstItemHighConfidenceSuggestion(word, sugg)) {
+                  sugg.get(0).setConfidence(HIGH_CONFIDENCE);
+                }
+                return sugg;
               } catch (IOException e) {
                 throw new RuntimeException(e);
               }
@@ -252,7 +266,7 @@ public class HunspellRule extends SpellingCheckRule {
             }
           }
         }
-        prevStartPos = len;
+        prevStartPos = len + dashCorr;
         len += word.length() + 1;
       }
     } finally {
@@ -263,7 +277,7 @@ public class HunspellRule extends SpellingCheckRule {
     /*if (sentence.getErrorLimitReached()) {
       return toRuleMatchArray(Collections.emptyList());
     }*/
-    if (language.getShortCode().equals("de")) {
+    /*if (language.getShortCode().equals("de")) {
       for (RuleMatch ruleMatch : ruleMatches) {
         int i = 1;
         for (String repl : ruleMatch.getSuggestedReplacements()) {
@@ -274,8 +288,29 @@ public class HunspellRule extends SpellingCheckRule {
           i++;
         }
       }
-    }
+    }*/
     return toRuleMatchArray(ruleMatches);
+  }
+
+  protected boolean acceptSuggestion(String suggestion) {
+    return true;
+  }
+
+  boolean isFirstItemHighConfidenceSuggestion(String word, List<SuggestedReplacement> sugg) {
+    // finds cases like "HAus", where "Haus" is surely the proper suggestion:
+    if (sugg.size() > 0 &&
+        !word.equals("IPs") &&
+        word.equalsIgnoreCase(sugg.get(0).getReplacement()) &&
+        word.matches("[A-Z][A-Z]\\p{javaLowerCase}+") &&
+        language.getShortCode().equals("de")) {
+      System.out.println("speller high conf case: " + word + "; " + sugg.get(0).getReplacement() + "; " + language.getShortCodeWithCountryAndVariant());
+      if (word.endsWith("s") && StringUtils.isAllUpperCase(sugg.get(0).getReplacement())) {
+        // e.g. "DMs" could mean plural of "DM"
+        return false;
+      }
+      return true;
+    }
+    return false;
   }
 
   private boolean isEnglish(String word) throws IOException {
@@ -297,6 +332,10 @@ public class HunspellRule extends SpellingCheckRule {
   }
 
   private List<SuggestedReplacement> calcSuggestions(String word, String cleanWord) throws IOException {
+    List<SuggestedReplacement> onlySuggestions = getOnlySuggestions(cleanWord);
+    if (!onlySuggestions.isEmpty()) {
+      return onlySuggestions;
+    }
     List<SuggestedReplacement> suggestions = SuggestedReplacement.convert(getSuggestions(cleanWord));
     if (word.endsWith(".")) {
       int pos = 1;
@@ -333,6 +372,7 @@ public class HunspellRule extends SpellingCheckRule {
         suggestions.addAll(additionalSuggestions);
       }
     }
+    suggestions = suggestions.stream().filter(k -> acceptSuggestion(k.getReplacement())).collect(Collectors.toList());
     suggestions = filterDupes(filterSuggestions(suggestions));
     // Find potentially missing compounds with privacy-friendly logging: we only log a single unknown word with no
     // meta data and only if it's made up of two valid words, similar to the "UNKNOWN" logging in
@@ -454,13 +494,13 @@ public class HunspellRule extends SpellingCheckRule {
         hunspell = null;
       } else {
         affPath = Paths.get(path + ".aff");
-        hunspell = Hunspell.getInstance(Paths.get(path + ".dic"), affPath);
+        hunspell = Hunspell.getDictionary(Paths.get(path + ".dic"), affPath);
         addIgnoreWords();
       }
     } else if (new File(shortDicPath + ".dic").exists()) {
       // for dynamic languages
       affPath = Paths.get(shortDicPath + ".aff");
-      hunspell = Hunspell.getInstance(Paths.get(shortDicPath + ".dic"), affPath);
+      hunspell = Hunspell.getDictionary(Paths.get(shortDicPath + ".dic"), affPath);
     }
     if (affPath != null) {
       try(Scanner sc = new Scanner(affPath)){
@@ -485,8 +525,6 @@ public class HunspellRule extends SpellingCheckRule {
   }
 
   private void addIgnoreWords() throws IOException {
-    wordsToBeIgnored.add(SpellingCheckRule.LANGUAGETOOL);
-    wordsToBeIgnored.add(SpellingCheckRule.LANGUAGETOOLER);
     URL ignoreUrl = JLanguageTool.getDataBroker().getFromResourceDirAsUrl(getIgnoreFileName());
     List<String> ignoreLines = Resources.readLines(ignoreUrl, StandardCharsets.UTF_8);
     for (String ignoreLine : ignoreLines) {
@@ -494,6 +532,15 @@ public class HunspellRule extends SpellingCheckRule {
         wordsToBeIgnored.add(ignoreLine);
       }
     }
+  }
+
+  @Override
+  protected boolean isInIgnoredSet(String word) {
+    return super.isInIgnoredSet(word) ||
+           // We don't add these words to the main set to prevent startsWithIgnoredWord honoring them,
+           // and thus to avoid the bogus "LanguageToolaccount" suggestion in AgreementRuleTest.
+           // A better way might be nice.
+           SpellingCheckRule.LANGUAGETOOL.equals(word) || SpellingCheckRule.LANGUAGETOOLER.equals(word);
   }
 
   private static String getDictionaryPath(String dicName,

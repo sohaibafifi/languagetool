@@ -21,7 +21,6 @@ package org.languagetool.synthesis;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.languagetool.AnalyzedToken;
-import org.languagetool.Languages;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -31,7 +30,7 @@ import static org.hamcrest.core.Is.is;
 
 public class GermanSynthesizerTest {
 
-  private final GermanSynthesizer synthesizer = new GermanSynthesizer(Languages.getLanguageForShortCode("de"));
+  private final GermanSynthesizer synthesizer = GermanSynthesizer.INSTANCE;
 
   @Ignore("for interactive debugging only")
   @Test
@@ -46,6 +45,9 @@ public class GermanSynthesizerTest {
 
   @Test
   public void testSynthesize() throws IOException {
+    assertThat(synth("123", "_spell_number_"), is("[einhundertdreiundzwanzig]"));
+    assertThat(synth("Zug", "SUB:DAT:SIN:MAS"), is("[Zug]"));
+    assertThat(synth("Tisch", "SUB:DAT:SIN:MAS"), is("[Tisch]"));
     assertThat(synth("Buschfeuer", "SUB:GEN:SIN:NEU"), is("[Buschfeuers]"));
     assertThat(synth("Äußerung", "SUB:NOM:PLU:FEM"), is("[Äußerungen]"));
     assertThat(synth("Äußerung", "SUB:NOM:PLU:MAS"), is("[]"));
@@ -67,7 +69,7 @@ public class GermanSynthesizerTest {
   @Test
   public void testMorfologikBug() throws IOException {
     // see https://github.com/languagetool-org/languagetool/issues/586
-    assertThat(synth("anfragen", "VER:1:PLU:KJ1:SFT:NEB"), is("[anfragen, Anfragen]"));
+    assertThat(synth("anfragen", "VER:1:PLU:KJ1:SFT:NEB"), is("[anfragen]"));
   }
 
   private String synth(String word, String posTag) throws IOException {

@@ -37,13 +37,13 @@ import org.languagetool.rules.RuleMatch;
 
 public class TokenAgreementPrepNounRuleTest {
 
-  private JLanguageTool langTool;
+  private JLanguageTool lt;
   private TokenAgreementPrepNounRule rule;
 
   @Before
   public void setUp() throws IOException {
     rule = new TokenAgreementPrepNounRule(TestTools.getMessages("uk"));
-    langTool = new JLanguageTool(new Ukrainian());
+    lt = new JLanguageTool(new Ukrainian());
   }
   
   @Test
@@ -88,18 +88,16 @@ public class TokenAgreementPrepNounRuleTest {
     assertEmptyMatch("За його словами Україна – це країна...");
     
     assertEmptyMatch("славетних од цареві");
+    assertEmptyMatch("А шляхом тим була");
 
     assertEquals(1, ruleMatch("що, незважаючи стислі терміни візиту").length);
 
     assertEmptyMatch("залежно що вважати перемогою");
 
-    //TODO: temporary until we have a better logic
-    assertEmptyMatch("при їх опублікуванні");
-    assertEquals(1, ruleMatch("при їх опублікування").length);
-
     assertEmptyMatch("окрім як українці");
     assertEmptyMatch("за двісті метрів");
     assertEmptyMatch("від мінус 1 до плюс 1");
+    assertEmptyMatch("від мінус $1 до плюс 1");
     assertEmptyMatch("до мінус сорока град");
     assertEmptyMatch("до мінус шістдесяти");
     assertEmptyMatch("через років 10");
@@ -120,6 +118,9 @@ public class TokenAgreementPrepNounRuleTest {
     assertEmptyMatch("ні до чого доброго силові дії не призведуть");
     
     assertEmptyMatch("у святая святих");
+
+    assertEmptyMatch("станом на зараз виконавча влада");
+    
 //    assertEmptyMatch("Імена від Андрій до Юрій");  // називний між від і до рідко зустрічається але такий виняток ховає багато помилок 
 
 //    assertEmptyMatch("як у Конана Дойла")).length); //TODO
@@ -161,16 +162,10 @@ public class TokenAgreementPrepNounRuleTest {
     assertEquals(1, ruleMatch("в п'ятьом людям").length);
     assertEquals(1, ruleMatch("в понад п'ятьом людям").length);
 
-    AnalyzedSentence analyzedSentence = langTool.getAnalyzedSentence("завдяки їх вдалим трюкам");
+    AnalyzedSentence analyzedSentence = lt.getAnalyzedSentence("О дівчина!");
     RuleMatch[] match = rule.match(analyzedSentence);
     assertEquals(1, match.length);
     List<String> suggestedReplacements = match[0].getSuggestedReplacements();
-    assertTrue("Did not find «їхній»: " + suggestedReplacements, suggestedReplacements.contains("їхнім"));
-
-    analyzedSentence = langTool.getAnalyzedSentence("О дівчина!");
-    match = rule.match(analyzedSentence);
-    assertEquals(1, match.length);
-    suggestedReplacements = match[0].getSuggestedReplacements();
     assertTrue("Did not find кличний «дівчино»: " + suggestedReplacements, suggestedReplacements.contains("дівчино"));
 
     matches = ruleMatch("по церковним канонам");
@@ -213,7 +208,13 @@ public class TokenAgreementPrepNounRuleTest {
     matches = ruleMatch("згідно з документа");
     assertEquals(1, matches.length);
 
+    matches = ruleMatch("згідно зі змінам");
+    assertEquals(1, matches.length);
+
     matches = ruleMatch("зацікавлених у ви користанні");
+    assertEquals(1, matches.length);
+
+    matches = ruleMatch("без правда");
     assertEquals(1, matches.length);
 
     // TODO: ignored due to adj:v_zna "мінський"
@@ -248,16 +249,58 @@ public class TokenAgreementPrepNounRuleTest {
   }
 
   @Test
+  public void testRulePronPos() throws IOException {
+    assertEmptyMatch("повернесть до них-таки.");
+
+    assertEmptyMatch("колега поруч сонним виглядає");
+    
+    //TODO: temporary until we have a better logic
+    assertEmptyMatch("при їх опублікуванні");
+    assertEmptyMatch("всупереч їх рекомендаціям");
+    assertEmptyMatch("на їх користь стягнуто");
+    assertEmptyMatch("не всупереч, а тому, що він має");
+    assertEmptyMatch("у його (лікаря) присутності");
+    assertEquals(1, ruleMatch("до їх").length);
+    
+    assertEmptyMatch("Під його, без перебільшення, мудрим");
+    assertEmptyMatch("до її, так би мовити, санітарного стану");
+    assertEmptyMatch("в його, судячи з інтер’єру, службовому кабінеті");
+    
+    assertEmptyMatch("вплив на її або його здоров'я");
+    assertEmptyMatch("щодо його \"лікування\":");
+    
+    assertEquals(1, ruleMatch("вище за їх?").length);
+//    assertEquals(1, ruleMatch("займався в їх помаленьку").length);
+    assertEquals(1, ruleMatch("про їх говорилося").length);
+
+    //  AnalyzedSentence analyzedSentence = lt.getAnalyzedSentence("завдяки їх вдалим трюкам");
+    AnalyzedSentence analyzedSentence = lt.getAnalyzedSentence("завдяки їх.");
+    RuleMatch[] match = rule.match(analyzedSentence);
+    assertEquals(1, match.length);
+    List<String> suggestedReplacements = match[0].getSuggestedReplacements();
+    assertTrue("Did not find «їхній»: " + suggestedReplacements, suggestedReplacements.contains("їхнім"));
+
+    assertEmptyMatch("при її, м’яко кажучи, невеликій популярності");
+    assertEmptyMatch("через її, м’яко кажучи, невелику популярність");
+    
+    assertEquals(1, ruleMatch("при його ж заняттів").length);
+  }
+  
+  @Test
   public void testRuleFlexibleOrder() throws IOException {
 
     assertEquals(1, ruleMatch("по бодай маленьким справам").length);
     assertEquals(1, ruleMatch("по смішно маленьким справам").length);
+
+    assertEquals(1, ruleMatch("через, м’яко кажучи, невеликої популярності").length);
 
     assertEmptyMatch("спиралося на місячної давнини рішення");
 
     assertEmptyMatch("На середньої довжини шубу");
 
     assertEmptyMatch("При різного роду процесах");
+
+    assertEquals(1, ruleMatch("завдяки його прийомі").length);
 
     assertEmptyMatch("по лише їм цікавих місцях");
     assertEquals(1, ruleMatch("по лише їм цікавим місцям").length);
@@ -288,10 +331,13 @@ public class TokenAgreementPrepNounRuleTest {
     
     assertEquals(1, ruleMatch("кинулися до мені перші з них").length);
     assertEquals(1, ruleMatch("Замість лимону можна брати").length);
+    
+    //TODO:
+//    assertEmptyMatch("не завдяки, а всупереч політиці, яку проводила влада");
   }
 
   private RuleMatch[] ruleMatch(String text) throws IOException {
-    return rule.match(langTool.getAnalyzedSentence(text));
+    return rule.match(lt.getAnalyzedSentence(text));
   }
   
   private void assertEmptyMatch(String text) throws IOException {
@@ -349,6 +395,7 @@ public class TokenAgreementPrepNounRuleTest {
     assertFalse(LemmaHelper.isCapitalized("П'ЯТНИЦЯ"));
     assertTrue(LemmaHelper.isCapitalized("EuroGas"));
     assertTrue(LemmaHelper.isCapitalized("Рясна-2"));
+    assertFalse(LemmaHelper.isCapitalized("ДБЗПТЛ"));
   }
 
 }

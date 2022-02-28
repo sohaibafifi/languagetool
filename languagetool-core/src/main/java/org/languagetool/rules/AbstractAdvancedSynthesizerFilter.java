@@ -48,20 +48,39 @@ public abstract class AbstractAdvancedSynthesizerFilter extends RuleFilter {
   @Override
   public RuleMatch acceptRuleMatch(RuleMatch match, Map<String, String> arguments, int patternTokenPos,
       AnalyzedTokenReadings[] patternTokens) throws IOException {
+    
+    //if (match.getSentence().getText().contains("Das ist wider der Vernunft")) {
+    //  int ii=0;
+    //  ii++;
+    //}
 
     String postagSelect = getRequired("postagSelect", arguments);
     String lemmaSelect = getRequired("lemmaSelect", arguments);
-
     String postagFromStr = getRequired("postagFrom", arguments);
-    int postagFrom;
     String lemmaFromStr = getRequired("lemmaFrom", arguments);
-    int lemmaFrom;
-    postagFrom = Integer.parseInt(postagFromStr);
+    
+    int postagFrom = 0;
+    if (postagFromStr.equals("marker")) {
+      while (postagFrom < patternTokens.length && patternTokens[postagFrom].getStartPos() < match.getFromPos()) {
+        postagFrom++;
+      }
+      postagFrom++;
+    } else {
+      postagFrom = Integer.parseInt(postagFromStr);
+    }
     if (postagFrom < 1 || postagFrom > patternTokens.length) {
       throw new IllegalArgumentException("AdvancedSynthesizerFilter: Index out of bounds in "
           + match.getRule().getFullId() + ", value: " + postagFromStr);
     }
-    lemmaFrom = Integer.parseInt(lemmaFromStr);
+    int lemmaFrom = 0;
+    if (lemmaFromStr.equals("marker")) {
+      while (lemmaFrom < patternTokens.length && patternTokens[lemmaFrom].getStartPos() < match.getFromPos()) {
+        lemmaFrom++;
+      }
+      lemmaFrom++;
+    } else {
+      lemmaFrom = Integer.parseInt(lemmaFromStr);
+    }
     if (lemmaFrom < 1 || lemmaFrom > patternTokens.length) {
       throw new IllegalArgumentException("AdvancedSynthesizerFilter: Index out of bounds in "
           + match.getRule().getFullId() + ", value: " + lemmaFromStr);
@@ -73,7 +92,7 @@ public abstract class AbstractAdvancedSynthesizerFilter extends RuleFilter {
     String originalPostag = getAnalyzedToken(patternTokens[lemmaFrom - 1], lemmaSelect).getPOSTag();
     String desiredPostag = getAnalyzedToken(patternTokens[postagFrom - 1], postagSelect).getPOSTag();
     
-    if (desiredPostag==null) {
+    if (desiredPostag == null) {
       throw new IllegalArgumentException("AdvancedSynthesizerFilter: undefined POS tag");
     }
 
@@ -91,7 +110,7 @@ public abstract class AbstractAdvancedSynthesizerFilter extends RuleFilter {
       RuleMatch newMatch = new RuleMatch(match.getRule(), match.getSentence(), match.getFromPos(), match.getToPos(),
           match.getMessage(), match.getShortMessage());
       newMatch.setType(match.getType());
-      List<String> replacementsList = new ArrayList<String>();
+      List<String> replacementsList = new ArrayList<>();
 
       boolean suggestionUsed = false;
       for (String r : match.getSuggestedReplacements()) {
@@ -132,12 +151,12 @@ public abstract class AbstractAdvancedSynthesizerFilter extends RuleFilter {
     if (aMatcher.matches() && bMatcher.matches()) {
       for (int i = 1; i <= aMatcher.groupCount(); i++) {
         String groupStr = aMatcher.group(i);
-        String toReplace = "\\\\a" + String.valueOf(i);
+        String toReplace = "\\\\a" + i;
         result = result.replaceAll(toReplace, groupStr);
       }
       for (int i = 1; i <= bMatcher.groupCount(); i++) {
         String groupStr = bMatcher.group(i);
-        String toReplace = "\\\\b" + String.valueOf(i);
+        String toReplace = "\\\\b" + i;
         result = result.replaceAll(toReplace, groupStr);
       }
     }

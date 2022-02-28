@@ -20,9 +20,7 @@ package org.languagetool.rules.de;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.languagetool.JLanguageTool;
-import org.languagetool.Languages;
-import org.languagetool.TestTools;
+import org.languagetool.*;
 import org.languagetool.language.GermanyGerman;
 import org.languagetool.rules.RuleMatch;
 
@@ -30,8 +28,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import static junit.framework.TestCase.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
 
 public class AgreementRuleTest {
 
@@ -45,6 +44,33 @@ public class AgreementRuleTest {
   }
 
   @Test
+  public void testGetCategoriesCausingError() {
+    AnalyzedTokenReadings tokenDetMasSin = new AnalyzedTokenReadings(new AnalyzedToken("der", "ART:DEF:NOM:SIN:MAS", "der"));
+    AnalyzedTokenReadings tokenDetFemSin = new AnalyzedTokenReadings(new AnalyzedToken("die", "ART:DEF:NOM:SIN:FEM", "der"));
+    AnalyzedTokenReadings tokenDetFemPlu = new AnalyzedTokenReadings(new AnalyzedToken("die", "ART:DEF:NOM:PLU:FEM", "der"));
+    AnalyzedTokenReadings tokenSubNeuSin = new AnalyzedTokenReadings(new AnalyzedToken("Haus", "SUB:NOM:SIN:NEU", "Haus"));
+    AnalyzedTokenReadings tokenSubFemPlu = new AnalyzedTokenReadings(new AnalyzedToken("Frauen", "SUB:NOM:PLU:FEM", "Frau"));
+    AnalyzedTokenReadings tokenSubGenFemPlu = new AnalyzedTokenReadings(new AnalyzedToken("Frauen", "SUB:GEN:PLU:FEM", "Frau"));
+
+    List<String> res1 = rule.getCategoriesCausingError(tokenDetFemPlu, tokenSubGenFemPlu);
+    assertThat(res1.size(), is(1));
+    assertTrue(res1.get(0).contains("Kasus"));
+
+    List<String> res2 = rule.getCategoriesCausingError(tokenDetMasSin, tokenSubNeuSin);
+    assertThat(res2.size(), is(1));
+    assertTrue(res2.get(0).contains("Genus"));
+
+    List<String> res3 = rule.getCategoriesCausingError(tokenDetFemSin, tokenSubFemPlu);
+    assertThat(res3.size(), is(1));
+    assertTrue(res3.get(0).contains("Numerus"));
+
+    //List<String> res4 = rule.getCategoriesCausingError(tokenDetFemSin, tokenSubGenFemPlu);
+    //assertThat(res4.size(), is(2));
+    //assertTrue(res4.get(0).contains("Numerus"));
+    //assertTrue(res4.get(1).contains("Kasus"));
+  }
+
+  @Test
   public void testCompoundMatch() throws IOException {
     assertBad("Das ist die Original Mail", "die Originalmail", "die Original-Mail");
     assertBad("Das ist die neue Original Mail", "die neue Originalmail", "die neue Original-Mail");
@@ -55,10 +81,20 @@ public class AgreementRuleTest {
     assertBad("Die derzeitige Standard Priorität ist 5.", "Die derzeitige Standardpriorität", "Die derzeitige Standard-Priorität");
     assertBad("Ein neuer LanguageTool Account", "Ein neuer LanguageTool-Account");
     assertBad("Danke für deine Account Daten", "deine Accountdaten", "deine Account-Daten");
-    assertBad("Mit seinem Konkurrent Alistair Müller", "sein Konkurrent", "seinem Konkurrenten");
+    assertBad("Mit seinem Konkurrent Alistair Müller", "seinem Konkurrenten");
     assertBad("Wir gehen ins Fitness Studio", "ins Fitnessstudio", "ins Fitness-Studio");
     assertBad("Wir gehen durchs Fitness Studio", "durchs Fitnessstudio", "durchs Fitness-Studio");
+    assertBad("Was für eine schöner Sonnenuntergang!", "ein schöner Sonnenuntergang");
     assertGood("Es gibt ein Sprichwort, dem zufolge der tägliche Genuss einer Mandel dem Gedächtnis förderlich sei.");
+    assertGood("War das Eifersucht?");
+    assertGood("Sie gehörte einst zu den besten Afrikas.");
+    assertGood("Dieses Bild stammt von einem lange Zeit unbekannten Maler.");
+    assertGood("Das Staatsoberhaupt ist der Verfassung zufolge der König.");
+    assertGood("Der Ende der 1960er Jahre umgestaltete Garten ist schön.");
+    assertGood("Der Ende der achtziger Jahre umgestaltete Garten hat unter anderem ungefähr 70 verschiedene Sorten von Rosen und Volieren für exotische Vögel.");
+    assertGood("Als Vorboten des Discounthandels sind die Ende der 50er Jahre in der Bundesrepublik Deutschland wiederauflebenden Erscheinungsformen des Beziehungs-, Betriebs- und Belegschaftshandels anzusehen.");
+    assertGood("Die Anfang des letzten Monats umgestaltete Veranda ist schön.");
+    assertGood("Der Mitte 2001 umgestaltete Garten ist schön.");
     //assertBad("Die Bad Taste Party von Susi", "Die Bad-Taste-Party");   // not supported yet
     //assertBad("Die Update Liste.", "Die Updateliste");  // not accepted by speller
     List<RuleMatch> matches = lt.check("Er folgt damit dem Tipp des Autoren Michael Müller.");
@@ -69,6 +105,10 @@ public class AgreementRuleTest {
   @Test
   public void testDetNounRule() throws IOException {
     // correct sentences:
+    assertGood("Der fließend Französisch sprechende Präsident dankt stilvoll ab.");
+    assertGood("Spricht der fließend Französisch?");
+    assertGood("Spricht dieser fließend Französisch, muss er viel Geld verdienen.");
+    assertGood("Der letzte Woche beschlossene Etat ist unwirksam.");
     assertGood("Die Einen sagen dies, die Anderen das.");
     assertGood("So ist es in den USA.");
     assertGood("Das ist der Tisch.");
@@ -175,6 +215,13 @@ public class AgreementRuleTest {
     assertGood("Im Jahr 1922 verlieh ihm König George V. den erblichen Titel eines Baronet. ");
     assertGood("... der zu dieser Zeit aber ohnehin schon allen Einfluss verloren hatte.");
     assertGood("Ein Geschenk, das Maßstäbe setzt");
+    assertGood("Einwohnerzahl stieg um das Zweieinhalbfache");
+    assertGood("Die Müllers aus Hamburg.");
+    assertGood("Es ist noch unklar, wann und für wen Impfungen vorgenommen werden könnten.");
+    assertGood("Macht dir das Hoffnung?");
+    assertGood("Mich fasziniert Macht.");
+    assertGood("Der solchen Einsätzen gegenüber kritische Hitler wurde nicht im Voraus informiert.");
+    assertGood("Gregor wählte die Gestalt des wenige Jahrzehnte zuvor verstorbenen Klostergründers.");
 
     assertGood("Wir machen das Januar.");
     assertGood("Wir teilen das Morgen mit.");
@@ -184,6 +231,8 @@ public class AgreementRuleTest {
     assertGood("Kannst du das Mittags machen?");
     assertGood("Können Sie das nächsten Monat erledigen?");
     assertGood("Können Sie das auch nächsten Monat erledigen?");
+    assertGood("War das Absicht?");
+    assertGood("Alles Große und Edle ist einfacher Art.");
 
     assertGood("Das Dach meines Autos.");
     assertGood("Das Dach meiner Autos.");
@@ -253,6 +302,7 @@ public class AgreementRuleTest {
     assertGood("Macht dir das Freude?");
     assertGood("Das macht jedem Angst.");
     assertGood("Dann macht das Sinn.");
+    assertGood("Das sind beides Lichtschalter.");
 
     // relative clauses:
     assertGood("Das Recht, das Frauen eingeräumt wird.");
@@ -263,6 +313,8 @@ public class AgreementRuleTest {
     assertGood("Die meisten Lebensmittel enthalten das.");  // Lebensmittel has NOG as gender in Morphy
     // TODO: Find agreement errors in relative clauses
     assertBad("Gutenberg, die Genie.");
+    assertBad("Wahrlich ein äußerst kritische Jury.", "eine äußerst kritische Jury");
+    assertBad("Das ist ein enorm großer Auto.", "ein enorm großes Auto");
     //assertBad("Gutenberg, die größte Genie.");
     //assertBad("Gutenberg, die größte Genie aller Zeiten.");
     assertGood("Die wärmsten Monate sind August und September, die kältesten Januar und Februar.");
@@ -283,6 +335,8 @@ public class AgreementRuleTest {
     assertGood("Es ist nicht bekannt, mit welchem Alter Kinder diese Fähigkeit erlernen.");
     assertGood("Dieser ist nun in den Ortungsbereich des einen Roboters gefahren.");
     assertGood("Wenn dies großen Erfolg hat, werden wir es weiter fördern.");
+    assertGood("Alles Gute!");
+    assertGood("Das bedeutet nichts Gutes.");
     assertGood("Die Ereignisse dieses einen Jahres waren sehr schlimm.");
     assertGood("Er musste einen Hochwasser führenden Fluss nach dem anderen überqueren.");
     assertGood("Darf ich Ihren Füller für ein paar Minuten ausleihen?");
@@ -313,6 +367,11 @@ public class AgreementRuleTest {
     assertGood("Er wollte doch nur jemandem Gutes tun.");
     assertGood("und das erst Jahrhunderte spätere Auftauchen der Legende");
     assertGood("Texas und New Mexico, beides spanische Kolonien, sind...");
+    assertGood("Texas und New Mexico - beides spanische Kolonien - sind...");
+    assertGood("Texas und New Mexico – beides spanische Kolonien – sind...");
+    assertGood("Weitere Brunnen sind insbesondere der Wittelsbacher und der Vater-Rhein-Brunnen auf der Museumsinsel, beides Werke von Adolf von Hildebrand.");
+    assertGood("Für manche ist das Anlass genug, darüber nicht weiter zu diskutieren.");
+    assertGood("Vielleicht schreckt das Frauen ab.");
     assertGood("Unser Hund vergräbt seine Knochen im Garten.");
     assertGood("Ob das Mehrwert bringt?");
     assertGood("Warum das Sinn macht?");
@@ -354,25 +413,25 @@ public class AgreementRuleTest {
     assertGood("Die Feuergefahr hingegen war für für die Londoner Teil des Alltags.");
     assertGood("Was ist, wenn ein Projekt bei den Berliner Type Awards mit einem Diplom ausgezeichnet wird?");
     assertGood("Was ist mit dem Liechtensteiner Kulturleben los?");
+    assertGood("Das ist der Mann den Präsident Xi Jinping verurteilte.");
     // incorrect sentences:
     assertBad("Ein Buch mit einem ganz ähnlichem Titel.");
     assertBad("Meiner Chef raucht.");
     assertBad("Er hat eine 34-jährigen Sohn.");
-    assertBad("Es sind die Tisch.", "dem Tisch", "den Tisch", "der Tisch", "die Tische");
-    assertBad("Es sind das Tisch.", "dem Tisch", "den Tisch", "der Tisch");
+    assertBad("Es sind die Tisch.", "die Tische", "der Tisch", "den Tisch", "dem Tisch");
+    assertBad("Es sind das Tisch.", "der Tisch", "den Tisch", "dem Tisch");
     assertBad("Es sind die Haus.", "das Haus", "dem Haus", "die Häuser");
-    assertBad("Es sind der Haus.", "das Haus", "dem Haus", "der Häuser");
-    assertBad("Es sind das Frau.", "der Frau", "die Frau");
-    assertBad("Das Auto des Mann.", "dem Mann", "den Mann", "der Mann", "des Mannes", "des Manns");
-    assertBad("Das interessiert das Mann.", "dem Mann", "den Mann", "der Mann");
-    assertBad("Das interessiert die Mann.", "dem Mann", "den Mann", "der Mann", "die Männer");
+    assertBad("Es sind der Haus.", "dem Haus", "das Haus", "der Häuser");
+    assertBad("Es sind das Frau.", "die Frau", "der Frau");
+    assertBad("Das Auto des Mann.", "der Mann", "den Mann", "dem Mann", "des Manns", "des Mannes");
+    assertBad("Das interessiert das Mann.", "der Mann", "den Mann", "dem Mann");
+    assertBad("Das interessiert die Mann.", "der Mann", "den Mann", "dem Mann", "die Männer");
     assertBad("Das Auto ein Mannes.", "ein Mann", "eines Mannes");
-    assertBad("Das Auto einem Mannes.", "einem Mann", "einem Manne", "eines Mannes");
+    assertBad("Das Auto einem Mannes.", "eines Mannes", "einem Mann");
     assertBad("Das Auto einer Mannes.", "eines Mannes");
-    assertBad("Das Auto einen Mannes.", "einen Mann", "eines Mannes");
+    assertBad("Das Auto einen Mannes.", "eines Mannes", "einen Mann");
     assertBad("Die Galerie zu den Bilder findet sich hier.");
     assertBad("Ganz im Gegensatz zu den Blätter des Brombeerstrauches.");
-    //assertBad("Das erwähnt Auto bog nach rechts ab.");    // TODO
     assertGood("Das erlaubt Forschern, neue Versuche durchzuführen.");
     assertGood("Dies ermöglicht Forschern, neue Versuche durchzuführen.");
     assertGood("Je länger zugewartet wird, desto schwieriger dürfte es werden, die Jungtiere von den Elterntieren zu unterscheiden.");
@@ -401,20 +460,20 @@ public class AgreementRuleTest {
     assertBad("Er erzählte von den Leute und den Dingen, die er gesehen hatte.");
     assertBad("Diese Partnerschaft wurde 1989 nach den Massaker auf dem Platz des Himmlischen Friedens eingefroren.");
 
-    assertBad("Das Dach von meine Auto.", "mein Auto", "meine Autos", "meinem Auto");
-    assertBad("Das Dach von meinen Auto.", "mein Auto", "meinem Auto", "meinen Autos");
+    assertBad("Das Dach von meine Auto.", "meinem Auto");
+    assertBad("Das Dach von meinen Auto.", "meinem Auto", "meinen Autos");
 
-    assertBad("Das Dach mein Autos.", "mein Auto", "meine Autos", "meinen Autos", "meiner Autos", "meines Autos");
-    assertBad("Das Dach meinem Autos.", "meine Autos", "meinem Auto", "meinen Autos", "meiner Autos", "meines Autos");
+    assertBad("Das Dach mein Autos.", "mein Auto", "meine Autos", "meines Autos", "meinen Autos", "meiner Autos");
+    assertBad("Das Dach meinem Autos.", "meinem Auto", "meines Autos", "meine Autos", "meinen Autos", "meiner Autos");
 
     assertBad("Das Dach meinem großen Autos.");
     assertBad("Das Dach mein großen Autos.");
 
-    assertBad("Das Klientel der Partei.", "Der Klientel", "Die Klientel");  // gender used to be wrong in Morphy data
+    assertBad("Das Klientel der Partei.", "Die Klientel", "Der Klientel");  // gender used to be wrong in Morphy data
     assertGood("Die Klientel der Partei.");
 
-    assertBad("Der Haus ist groß", "Das Haus", "Dem Haus", "Der Häuser");
-    assertBad("Aber der Haus ist groß", "das Haus", "dem Haus", "der Häuser");
+    assertBad("Der Haus ist groß", "Dem Haus", "Das Haus", "Der Häuser");
+    assertBad("Aber der Haus ist groß", "dem Haus", "das Haus", "der Häuser");
 
     assertBad("Ich habe einen Feder gefunden.", "eine Feder", "einer Feder");
 
@@ -438,7 +497,7 @@ public class AgreementRuleTest {
     assertBad("Ich gebe dir das kleinen Kaninchen.");
     assertBad("Ich gebe dir das kleinem Kaninchen.");
     assertBad("Ich gebe dir das kleiner Kaninchen.");
-    assertBadWithNoSuggestion("Geprägt ist der Platz durch einen 142 Meter hoher Obelisken");
+    assertBad("Geprägt ist der Platz durch einen 142 Meter hoher Obelisken", "einen 142 Meter hohen Obelisken");
     //assertBad("Ich gebe dir das kleines Kaninchen.");  // already detected by ART_ADJ_SOL
     //assertBad("Ich gebe dir das klein Kaninchen.");  // already detected by MEIN_KLEIN_HAUS
     assertGood("Ich gebe dir das kleine Kaninchen.");
@@ -459,13 +518,25 @@ public class AgreementRuleTest {
     assertGood("Ein ID 3 von Volkswagen.");
     assertGood("Der ID.3 von Volkswagen.");
     assertGood("Der ID3 von Volkswagen.");
+    assertGood("Das bedeutet Krieg!");
+    assertGood("Im Tun zu sein verhindert Prokrastination.");
 
     assertBad("Hier steht Ihre Text.");
     assertBad("Hier steht ihre Text.");
+    assertBad("Antje Last, Inhaberin des Berliner Kult Hotels Auberge, freute sich ebenfalls über die Gastronomenfamilie aus Bayern.");
 
     assertBad("Das ist doch lächerlich, was ist denn das für ein Klinik?");
     assertGood("Das ist doch lächerlich, was ist denn das für eine Klinik?");
     assertGood("Was ist denn das für ein Typ?");
+    assertGood("Hier geht's zur Customer Journey.");
+    assertGood("Das führt zur Verbesserung der gesamten Customer Journey.");
+    assertGood("Meint er das wirklich Ernst?");
+    assertGood("Meinen Sie das Ernst?");
+    assertGood("Die können sich in unserer Hall of Fame verewigen.");
+    assertGood("Die können sich in unserer neuen Hall of Fame verewigen.");
+    assertGood("Auch, wenn das weite Teile der Bevölkerung betrifft.");
+    assertGood("Hat das Einfluss auf Ihr Trinkverhalten?");
+    assertGood("Ihr wisst aber schon, dass das Blödsinn ist.");
 
     assertBad("Ich weiß nicht mehr, was unser langweiligen Thema war.");
     assertGood("Aber mein Wissen über die Antike ist ausbaufähig.");
@@ -475,6 +546,52 @@ public class AgreementRuleTest {
     assertBad("Er stieg durchs Fensters.");
     assertBad("Ich habe heute ein Krankenwagen gesehen.");
     assertGood("Sie werden merken, dass das echte Nutzer sind.");
+    assertGood("Dieses neue Mac OS trug den Codenamen Rhapsody.");
+    assertGood("Das Mac OS is besser als Windows.");
+    assertGood("Damit steht das Porsche Museum wie kaum ein anderes Museum für Lebendigkeit und Abwechslung.");
+    assertGood("Weitere Krankenhäuser sind dass Eastern Shore Memorial Hospital, IWK Health Centre, Nova Scotia Hospital und das Queen Elizabeth II Health Sciences Centre.");
+    assertGood("Ich bin von Natur aus ein sehr neugieriger Mensch.");
+    assertGood("Ich bin auf der Suche nach einer Junior Developerin.");
+    assertGood("War das Eifersucht?");
+    assertGood("Waren das schwierige Entscheidungen?");
+    assertGood("Soll das Demokratie sein?");
+    assertGood("Hat das Spaß gemacht?");
+    assertBad("Funktioniert das Software auch mit Windows?");
+    assertGood("Soll das Sinn stiften?");
+    assertGood("Soll das Freude machen?");
+    assertGood("Die Trial ist ausgelaufen.");
+    assertGood("Ein geworbener Neukunde interagiert zusätzlich mit dem Unternehmen.");
+    assertGood("Ich weiß, dass jeder LanguageTool benutzen sollte.");
+    assertGood("1992 übernahm die damalige Ernst Klett Schulbuchverlag GmbH, Stuttgart, den reprivatisierten Verlag Haack Gotha");
+    assertGood("Überlegst du dir einen ID.3 zu leasen?");
+    assertGood("Der Deutsch Langhaar ist ein mittelgroßer Jagdhund");
+    assertGood("Eine Lösung die Spaß macht");
+    assertGood("Mir machte das Spaß.");
+    assertGood("Wir möchten nicht, dass irgendjemand Fragen stellt.");
+    assertGood("Die Multiple Sklerose hat 1000 Gesichter.");
+    assertGood("Na ja, einige nennen das Freundschaft plus, aber das machen wir besser nicht.");
+    assertGood("Vogue, eigentlich als B-Seite der letzten Like A Prayer-Auskopplung Keep It Together gedacht, wurde kurzfristig als eigenständige Single herausgebracht");
+    assertGood("..., die laufend Gewaltsituationen ausgeliefert sind");
+    assertGood("Dann folgte die Festnahme der dringend Tatverdächtigen.");
+    assertGood("Von der ersten Spielminute an machten die Münsteraner Druck und ...");
+    assertGood("Wenn diese Prognose bestätigt wird, wird empfohlen, dass Unternehmen die gefährliche Güter benötigen, die Transporte am Montag und Dienstag machen.");
+
+    assertGood("Ich habe meine Projektidee (die riesiges finanzielles Potenzial hat) an einen Unternehmenspräsidenten geschickt.");
+    assertGood("Als weitere Rechtsquelle gelten gelegentlich noch immer der Londoner Court of Appeal und das britische House of Lords.");
+    assertGood("Die Evangelische Kirche befindet sich in der Bad Sodener Altstadt direkt neben dem Quellenpark.");
+    assertGood("Der volle Windows 10 Treibersupport");
+    assertGood("Zugleich stärkt es die renommierte Berliner Biodiversitätsforschung.");
+    assertGood("Der Windows 10 Treibersupport");
+    assertGood("Kennt irgendwer Tipps wie Kopfhörer länger halten?");
+    assertGood("George Lucas 1999 über seine sechsteilige Star Wars Saga.");
+    assertGood("… und von denen mehrere Gegenstand staatsanwaltlicher Ermittlungen waren.");
+    assertGood("Natürlich ist das Quatsch!");
+    assertGood("Die Xi Jinping Ära ist …");
+    assertGood("Die letzte unter Windows 98 lauffähige Version ist 5.1.");
+    assertGood("Das veranlasste Bürgermeister Adam, selbst tätig zu werden, denn er wollte es nicht zulassen, dass in seiner Stadt Notleidende ohne Hilfe dastehen.");
+    assertGood("Die südlichste Düsseldorfer Rheinbrücke ist die Fleher Brücke, eine Schrägseilbrücke mit dem höchsten Brückenpylon in Deutschland und einer Vielzahl von fächerförmig angeordneten Seilen.");
+    assertGood("Ein zeitweise wahres Stakkato an einschlägigen Patenten, das Benz & Cie.");
+    assertGood("Wem Rugby nicht sehr geläufig ist, dem wird auch das Six Nations nicht viel sagen.");
     // TODO: not yet detected:
     //assertBad("Erst recht wir fleißiges Arbeiter.");
     //assertBad("Erst recht ich fleißiges Arbeiter.");
@@ -491,16 +608,17 @@ public class AgreementRuleTest {
   @Test
   public void testZurReplacement() throws IOException {
     assertBad("Hier geht's zur Schrank.", "zum Schrank");
-    assertBad("Hier geht's zur Schränken.", "zu den Schränken", "zum Schränken");
-    assertBad("Hier geht's zur Männern.", "zu den Männern");
+    assertBad("Hier geht's zur Schränken.", "zum Schränken", "zu Schränken");
+    assertBad("Hier geht's zur Männern.", "zu Männern");
     assertBad("Hier geht's zur Portal.", "zum Portal");
-    assertBad("Hier geht's zur Portalen.", "zu den Portalen");
-    assertBad("Sie gehen zur Frauen.", "zu Frauen", "zu den Frauen", "zur Frau");
-    assertBad("Niereninsuffizienz führt zur Störungen des Wasserhaushalts.", "zu Störungen", "zu den Störungen", "zur Störung");
-    assertBad("Das Motiv wird in der Klassik auch zur Darstellungen übernommen.", "zu Darstellungen", "zu den Darstellungen", "zur Darstellung");
+    assertBad("Hier geht's zur Portalen.", "zu Portalen");
+    assertBad("Sie gehen zur Frauen.", "zu Frauen", "zur Frau");
+    assertBad("Niereninsuffizienz führt zur Störungen des Wasserhaushalts.", "zu Störungen", "zur Störung");
+    assertBad("Das Motiv wird in der Klassik auch zur Darstellungen übernommen.", "zu Darstellungen", "zur Darstellung");
     assertGood("Hier geht's zur Sonne.");
     assertGood("Hier geht's zum Schrank.");
     assertGood("Niereninsuffizienz führt zu Störungen des Wasserhaushalts.");
+    assertGood("Das hat der fließend Englisch sprechende Mitarbeiter veranlasst.");
   }
 
   @Test
@@ -540,6 +658,8 @@ public class AgreementRuleTest {
   @Test
   public void testDetAdjNounRule() throws IOException {
     // correct sentences:
+    assertGood("Die Übernahme der früher selbständigen Gesellschaft");
+    assertGood("Das ist, weil man oft bei anderen schreckliches Essen vorgesetzt bekommt.");
     assertGood("Das ist der riesige Tisch.");
     assertGood("Der riesige Tisch ist groß.");
     assertGood("Die Kanten der der riesigen Tische.");
@@ -559,8 +679,16 @@ public class AgreementRuleTest {
     assertGood("Wir wollen sein ein einzig Volk von Brüdern");
     assertGood("Eine Zeitreise durch die 68er Revolte");
     assertGood("Ich besitze ein Modell aus der 300er Reihe.");
+    assertGood("Aber ansonsten ist das erste Sahne");
+    assertGood("...damit diese ausreichend Sauerstoff geben.");
+    assertGood("...als auch die jedem zukommende Freiheit.");
+    assertGood("...als auch die daraus jedem zukommende Freiheit.");
+    assertGood("Damit zeigen wir, wie bedeutungsreich manche deutsche Begriffe sein können.");  // http://mediawiki.ids-mannheim.de/VarGra/index.php/Starke_/_schwache_Flexion_des_Adjektivs_und_Substantivs_nach_Artikelw%C3%B6rtern,_artikelartigen_W%C3%B6rtern_und_Pronomen
+    assertGood("Damit zeigen wir, wie bedeutungsreich manche deutschen Begriffe sein können.");
 
     // incorrect sentences:
+    assertBad("Er hatte ein anstrengenden Tag",
+      "ein anstrengender Tag", "ein anstrengendes Tag", "einen anstrengenden Tag", "einem anstrengenden Tag");
     assertBad("Es sind die riesigen Tisch.");
     //assertBad("Dort, die riesigen Tischs!");    // TODO: error not detected because of comma
     assertBad("Als die riesigen Tischs kamen.");
@@ -570,8 +698,8 @@ public class AgreementRuleTest {
     assertBad("An der rote Ampel.");
     assertBad("An der rotes Ampel.");
     assertBad("An der rotem Ampel.");
-    assertBad("Er hatte ihn aus dem 1,4 Meter tiefem Wasser gezogen.");
-    assertBad("Er hatte ihn aus dem 1,4 Meter tiefem Wasser gezogen.");
+    assertBad("Er hatte ihn aus dem 1,4 Meter tiefem Wasser gezogen.", "dem 1,4 Meter tiefen Wasser");
+    assertBad("Das ist ein sehr schönes Tisch.", "ein sehr schöner Tisch");
     assertBad("Er hatte eine sehr schweren Infektion.");
     assertBad("Ein fast 5 Meter hohem Haus.");
     assertBad("Ein fünf Meter hohem Haus.");
@@ -581,6 +709,47 @@ public class AgreementRuleTest {
     assertBad("Den neue Finanzierungsweg wollen sie daher Hand in Hand mit dem Leser gehen.");
     assertBad("Den neuen Finanzierungsweg wollen sie daher Hand in Hand mit dem Lesern gehen.");
     //assertBad("An der rot Ampel.");
+  }
+
+  @Test
+  public void testDetAdjAdjNounRule() throws IOException {
+    // correct:
+    assertGood("Das verlangt reifliche Überlegung.");
+    assertGood("Das bedeutet private Versicherungssummen ab 100€.");
+    assertGood("Das erfordert einigen Mut.");
+    assertGood("Die abnehmend aufwendige Gestaltung der Portale...");
+    assertGood("Die strahlend roten Blumen.");
+    assertGood("Der weiter vorhandene Widerstand konnte sich nicht durchsetzen.");
+    assertGood("Das jetzige gemeinsame Ergebnis...");
+    assertGood("Das früher übliche Abdecken mit elementarem Schwefel...");
+    assertGood("Das einzig wirklich Schöne...");
+    assertGood("Andere weniger bekannte Vorschläge waren „Konsistenter Empirismus“ oder...");
+    assertGood("Werden mehrere solcher physikalischen Elemente zu einer Einheit zusammengesetzt...");
+    assertGood("Aufgrund ihrer weniger guten Bonitätslage.");
+    assertGood("Mit ihren teilweise eigenwilligen Außenformen...");
+    assertGood("Die deutsche Kommasetzung bedarf einiger technischer Ausarbeitung.");
+    assertGood("Die deutsche Kommasetzung bedarf einiger guter technischer Ausarbeitung.");
+    // incorrect:
+    assertBad("Das ist eine solides strategisches Fundament", "ein solides strategisches Fundament");
+    assertBad("Das ist eine solide strategisches Fundament", "ein solides strategisches Fundament");
+    assertBad1("Das ist eine solide strategische Fundament", "ein solides strategisches Fundament");
+    assertBad("Das ist ein solide strategisches Fundament", "ein solides strategisches Fundament");
+    assertBad("Das ist ein solides strategische Fundament", "ein solides strategisches Fundament");
+    assertBad("Das ist ein solides strategisches Fundamente", "ein solides strategisches Fundament");
+    assertBad("Das ist ein solides strategisches Fundaments", "ein solides strategisches Fundament");
+    assertBad("Die deutsche Kommasetzung bedarf einiger technisches Ausarbeitung.");
+    assertBad("Die deutsche Kommasetzung bedarf einiger guter technische Ausarbeitung.");
+  }
+
+  @Test
+  public void testKonUntArtDefSub() throws IOException {
+    // correct:
+    assertGood("Wieso verstehst du nicht, dass das komplett verschiedene Dinge sind?");
+    assertGood("Ich frage mich sehr, ob die wirklich zusätzliche Gebühren abdrücken wollen");
+    // incorrect:
+    assertBad("Dies wurde durchgeführt um das moderne Charakter zu betonen.", "den modernen Charakter");
+    assertBad("Nur bei Topfpflanzung ist eine regelmäßige Düngung wichtig, da die normalen Bodenbildungsprozessen nicht stattfinden.", "die normalen Bodenbildungsprozesse", "den normalen Bodenbildungsprozessen");
+    assertBad("Die Höhe kommt oft darauf an, ob die richtigen Leuten gut mit einen können oder nicht.");
   }
 
   private void assertGood(String s) throws IOException {
@@ -595,6 +764,25 @@ public class AgreementRuleTest {
       RuleMatch match = matches[0];
       List<String> suggestions = match.getSuggestedReplacements();
       assertThat(suggestions, is(Arrays.asList(expectedSuggestions)));
+    }
+  }
+
+  // test that a suggestion is there, no matter its position
+  private void assertBad1(String s, String expectedSuggestion) throws IOException {
+    RuleMatch[] matches = rule.match(lt.getAnalyzedSentence(s));
+    assertEquals("Did not find one match in sentence '" + s + "'", 1, matches.length);
+    RuleMatch match = matches[0];
+    List<String> suggestions = match.getSuggestedReplacements();
+    boolean found = false;
+    for (String suggestion : suggestions.subList(0, Math.min(4, suggestions.size()))) {
+      if (suggestion.equals(expectedSuggestion)) {
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      fail("Expected suggestion '" + expectedSuggestion + "' not found in first 5 suggestions for input '" + s + "'. " +
+        "Suggestions found: " + suggestions);
     }
   }
 

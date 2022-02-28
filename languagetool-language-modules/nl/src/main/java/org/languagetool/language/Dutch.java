@@ -24,6 +24,7 @@ import org.languagetool.*;
 import org.languagetool.languagemodel.LanguageModel;
 import org.languagetool.rules.*;
 import org.languagetool.rules.nl.*;
+import org.languagetool.rules.spelling.SpellingCheckRule;
 import org.languagetool.synthesis.Synthesizer;
 import org.languagetool.synthesis.nl.DutchSynthesizer;
 import org.languagetool.tagging.Tagger;
@@ -114,15 +115,16 @@ public class Dutch extends Language {
             new UppercaseSentenceStartRule(messages, this),
             new MorfologikDutchSpellerRule(messages, this, userConfig, altLanguages),
             new MultipleWhitespaceRule(messages, this),
-            new CompoundRule(messages),
+            new CompoundRule(messages, this, userConfig),
             new DutchWrongWordInContextRule(messages),
             new WordCoherencyRule(messages),
             new SimpleReplaceRule(messages),
-            new LongSentenceRule(messages, userConfig, 40, true, true),
+            new LongSentenceRule(messages, userConfig, 40),
             new LongParagraphRule(messages, this, userConfig),
             new PreferredWordRule(messages),
             new SpaceInCompoundRule(messages),
-            new SentenceWhitespaceRule(messages)
+            new SentenceWhitespaceRule(messages),
+            new CheckCaseRule(messages, this)
     );
   }
 
@@ -195,8 +197,13 @@ public class Dutch extends Language {
     List<String> ruleFileNames = super.getRuleFileNames();
     String dirBase = JLanguageTool.getDataBroker().getRulesDir() + "/" + getShortCode() + "/";
     ruleFileNames.add(dirBase + "nl-NL/grammar.xml");
-    ruleFileNames.add(dirBase + "grammar-test-1.xml");
+    //ruleFileNames.add(dirBase + "grammar-test.xml");
     return ruleFileNames;
+  }
+  
+  @Override
+  public SpellingCheckRule createDefaultSpellingRule(ResourceBundle messages) throws IOException {
+      return new MorfologikDutchSpellerRule(messages, this, null, Collections.emptyList());
   }
 
 }

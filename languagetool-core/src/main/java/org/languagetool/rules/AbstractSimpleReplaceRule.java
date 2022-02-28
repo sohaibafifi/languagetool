@@ -42,6 +42,7 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractSimpleReplaceRule extends Rule {
 
   protected boolean ignoreTaggedWords = false;
+  protected boolean subRuleSpecificIds;
 
   private static final Logger logger = LoggerFactory.getLogger(AbstractSimpleReplaceRule.class);
   private boolean checkLemmas = true;
@@ -91,6 +92,7 @@ public abstract class AbstractSimpleReplaceRule extends Rule {
   }
 
   public AbstractSimpleReplaceRule(ResourceBundle messages) {
+    super(messages);
     super.setCategory(Categories.MISC.getCategory(messages));
   }
 
@@ -195,7 +197,7 @@ public abstract class AbstractSimpleReplaceRule extends Rule {
       }
       replacements.remove(originalTokenStr);
       if (replacements.size() > 0) {
-        RuleMatch potentialRuleMatch = createRuleMatch(tokenReadings, replacements, sentence);
+        RuleMatch potentialRuleMatch = createRuleMatch(tokenReadings, replacements, sentence, originalTokenStr);
         ruleMatches.add(potentialRuleMatch);
       }
     }
@@ -212,13 +214,16 @@ public abstract class AbstractSimpleReplaceRule extends Rule {
   }
 
   protected RuleMatch createRuleMatch(AnalyzedTokenReadings tokenReadings,
-                                      List<String> replacements, AnalyzedSentence sentence) {
+                                      List<String> replacements, AnalyzedSentence sentence, String originalTokenStr) {
     String tokenString = tokenReadings.getToken();
     int pos = tokenReadings.getStartPos();
-
-    RuleMatch potentialRuleMatch = new RuleMatch(this, sentence, pos, pos
+    
+    RuleMatch potentialRuleMatch = null;
+    potentialRuleMatch = new RuleMatch(this, sentence, pos, pos
         + tokenString.length(), getMessage(tokenString, replacements), getShort());
-
+    if (subRuleSpecificIds) {
+      potentialRuleMatch.setSpecificRuleId(StringTools.toId(getId() + "_" + originalTokenStr));
+    }
     if (!isCaseSensitive() && StringTools.startsWithUppercase(tokenString)) {
       for (int i = 0; i < replacements.size(); i++) {
         replacements.set(i, StringTools.uppercaseFirstChar(replacements.get(i)));
@@ -260,4 +265,13 @@ public abstract class AbstractSimpleReplaceRule extends Rule {
   protected boolean isTokenException(AnalyzedTokenReadings atr) {
     return false;
   }
+  
+  /**
+   * If this is set, each replacement pair will have its own rule ID, making rule deactivations more specific.
+   * @since 5.5
+   */
+  public void useSubRuleSpecificIds() {
+    subRuleSpecificIds = true;
+  }
+    
 }

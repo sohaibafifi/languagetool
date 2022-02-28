@@ -36,6 +36,7 @@ import org.languagetool.JLanguageTool.Mode;
 import org.languagetool.JLanguageTool.ParagraphHandling;
 import org.languagetool.gui.Configuration;
 import org.languagetool.markup.AnnotatedTextBuilder;
+import org.languagetool.openoffice.OfficeTools.RemoteCheck;
 import org.languagetool.rules.CategoryId;
 import org.languagetool.rules.Rule;
 import org.languagetool.rules.RuleMatch;
@@ -65,7 +66,7 @@ public class SwJLanguageTool {
     if (isRemote) {
       lt = null;
       mlt = null;
-      rlt = new LORemoteLanguageTool(language, motherTongue, config, extraRemoteRules);
+      rlt = new LORemoteLanguageTool(language, motherTongue, config, extraRemoteRules, userConfig);
       if (!rlt.remoteRun()) {
         MessageHandler.showMessage(MESSAGES.getString("loRemoteSwitchToLocal"));
         isRemote = false;
@@ -196,10 +197,17 @@ public class SwJLanguageTool {
 
   /**
    * check text by LT
+   * default: check only grammar
+   * local: LT checks only grammar (spell check is not implemented locally)
+   * remote: spell checking is used for LT check dialog (is needed because method getAnalyzedSentence is not supported by remote check)
    */
   public List<RuleMatch> check(String text, boolean tokenizeText, ParagraphHandling paraMode) throws IOException {
+    return check(text, tokenizeText, paraMode, RemoteCheck.ONLY_GRAMMAR);
+  }
+
+  public List<RuleMatch> check(String text, boolean tokenizeText, ParagraphHandling paraMode, RemoteCheck checkMode) throws IOException {
     if (isRemote) {
-      List<RuleMatch> ruleMatches = rlt.check(text, paraMode);
+      List<RuleMatch> ruleMatches = rlt.check(text, paraMode, checkMode);
       if (ruleMatches == null) {
         doReset = true;
         ruleMatches = new ArrayList<>();
@@ -226,10 +234,12 @@ public class SwJLanguageTool {
 
   /**
    * Get a list of tokens from a sentence
+   * This Method may be used only for local checks
+   * Returns null for remote checks
    */
   public List<String> sentenceTokenize(String text) {
     if (isRemote) {
-      return lt.sentenceTokenize(text);   // This is only a dummy; don't use it for call of remote server
+      return null;
     } else if (isMultiThread) {
         return mlt.sentenceTokenize(text); 
     } else {
@@ -239,10 +249,12 @@ public class SwJLanguageTool {
 
   /**
    * Analyze sentence
+   * This Method may be used only for local checks
+   * Returns null for remote checks
    */
   public AnalyzedSentence getAnalyzedSentence(String sentence) throws IOException {
     if (isRemote) {
-      return lt.getAnalyzedSentence(sentence);   // This is only a dummy; don't use it for call of remote server
+      return null;
     } else if (isMultiThread) {
         return mlt.getAnalyzedSentence(sentence); 
     } else {

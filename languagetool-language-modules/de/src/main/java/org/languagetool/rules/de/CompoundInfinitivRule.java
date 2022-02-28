@@ -19,16 +19,16 @@
 package org.languagetool.rules.de;
 
 import morfologik.speller.Speller;
-import morfologik.stemming.Dictionary;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
 import org.languagetool.*;
 import org.languagetool.rules.*;
 import org.languagetool.rules.patterns.PatternToken;
 import org.languagetool.rules.patterns.PatternTokenBuilder;
+import org.languagetool.rules.spelling.morfologik.MorfologikSpeller;
 import org.languagetool.tagging.disambiguation.rules.DisambiguationPatternRule;
 import org.languagetool.tools.StringTools;
 import org.languagetool.tools.Tools;
+import static org.languagetool.rules.patterns.PatternRuleBuilderHelper.tokenRegex;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,9 +44,7 @@ import java.util.function.Supplier;
  * @since 4.4
  */
 public class CompoundInfinitivRule extends Rule {
-  
-  private static Dictionary dict;
-  
+
   private final LinguServices linguServices;
   private final Language lang;
   private final Supplier<List<DisambiguationPatternRule>> antiPatterns;
@@ -73,6 +71,12 @@ public class CompoundInfinitivRule extends Rule {
       token("dazu"),
       token("zu"),
       token("haben")
+    ),
+    Arrays.asList(
+      // "Er hatte nichts weiter zu sagen"
+      tokenRegex("deutlich|viel|Stück|nichts|nix|noch"),
+      token("weiter"),
+      token("zu")
     )
   );
   
@@ -108,16 +112,6 @@ public class CompoundInfinitivRule extends Rule {
     }
     setUrl(Tools.getUrl("https://www.duden.de/sprachwissen/sprachratgeber/Infinitiv-mit-zu"));
     antiPatterns = cacheAntiPatterns(lang, ANTI_PATTERNS);
-
-  }
-
-  @NotNull
-  private static Dictionary getDictionary() throws IOException {
-    if (dict == null) {
-      // Dictionary is thread-safe, so we can re-use it (https://github.com/morfologik/morfologik-stemming/issues/69)
-      dict = Dictionary.read(JLanguageTool.getDataBroker().getFromResourceDirAsUrl("/de/hunspell/de_DE.dict"));
-    }
-    return dict;
   }
 
   @Override
@@ -188,7 +182,7 @@ public class CompoundInfinitivRule extends Rule {
       return true;
     }
     String verb = null;
-    for (int i = n - 2; i > 0 && !isPunctuation(tokens[i].getToken()) && verb == null; i--) {
+    for (int i = n - 2; i > 0 && !isPunctuation(tokens[i].getToken()); i--) {
       if (tokens[i].hasPosTagStartingWith("VER:IMP")) {
         verb = StringUtils.lowerCase(getLemma(tokens[i]));
       } else if (tokens[i].hasPosTagStartingWith("VER")) {
@@ -231,7 +225,7 @@ public class CompoundInfinitivRule extends Rule {
     if (linguServices == null && speller == null) {
       // speller can not initialized by constructor because of temporary initialization of LanguageTool in other rules,
       // which leads to problems in LO/OO extension
-      speller = new Speller(getDictionary());
+      speller = new Speller(MorfologikSpeller.getDictionaryWithCaching("/de/hunspell/de_DE.dict"));
     }
     List<RuleMatch> ruleMatches = new ArrayList<>();
     AnalyzedTokenReadings[] tokens = getSentenceWithImmunization(sentence).getTokensWithoutWhitespace();

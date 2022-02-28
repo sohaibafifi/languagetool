@@ -18,11 +18,15 @@
  */
 package org.languagetool.openoffice;
 
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.Date;
 
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import org.languagetool.JLanguageTool;
 import org.languagetool.tools.Tools;
@@ -104,25 +108,6 @@ class MessageHandler {
   }
 
   /**
-   * Get the path to log-file
-   *//*
-  private static String getLogPath() {
-    String xdgDataHome = System.getenv().get("XDG_DATA_HOME");
-    String logHome = xdgDataHome != null ? xdgDataHome + "/LanguageTool" : homeDir;
-    String path = logHome + "/" + logFileName;
-    File parentDir = new File(path).getParentFile();
-    if (parentDir != null && !testMode) {
-      if (!parentDir.exists()) {
-        boolean success = parentDir.mkdirs();
-        if (!success) {
-          showMessage("Can't create directory: " + parentDir);
-        }
-      }
-    }
-    return path;
-  }
-  */
-  /**
    * Will throw exception instead of showing errors as dialogs - use only for test cases.
    */
   static void setTestMode(boolean mode) {
@@ -146,6 +131,15 @@ class MessageHandler {
   }
 
   /**
+   * run an information message in a separate thread
+   * closing if lost focus
+   */
+  static void showClosingInformationDialog(String text) {
+    ClosingInformationThread informationDialog = new ClosingInformationThread(text);
+    informationDialog.start();
+  }
+  
+  /**
    * class to run a dialog in a separate thread
    */
   private static class DialogThread extends Thread {
@@ -168,6 +162,37 @@ class MessageHandler {
       } else {
         JOptionPane.showMessageDialog(null, text);
       }
+    }
+  }
+  
+  /**
+   * class to run a dialog in a separate thread
+   * closing if lost focus
+   */
+  private static class ClosingInformationThread extends Thread {
+    private final String text;
+    JDialog dialog;
+
+    ClosingInformationThread(String text) {
+      this.text = text;
+    }
+
+    @Override
+    public void run() {
+      JOptionPane pane = new JOptionPane(text, JOptionPane.INFORMATION_MESSAGE);
+      dialog = pane.createDialog(null, UIManager.getString("OptionPane.messageDialogTitle", null));
+      dialog.setModal(false);
+      dialog.setAlwaysOnTop(true);
+      dialog.addWindowFocusListener(new WindowFocusListener() {
+        @Override
+        public void windowGainedFocus(WindowEvent e) {
+        }
+        @Override
+        public void windowLostFocus(WindowEvent e) {
+          dialog.setVisible(false);
+        }
+      });
+      dialog.setVisible(true);
     }
   }
   

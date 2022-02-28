@@ -30,12 +30,12 @@ import static org.junit.Assert.assertEquals;
 public class CommaWhitespaceRuleTest {
 
   private CommaWhitespaceRule rule;
-  private JLanguageTool langTool;
+  private JLanguageTool lt;
   
   @Before
   public void setUp() {
     rule = new CommaWhitespaceRule(TestTools.getEnglishMessages());
-    langTool = new JLanguageTool(TestTools.getDemoLanguage());
+    lt = new JLanguageTool(TestTools.getDemoLanguage());
   }
 
   @Test
@@ -79,30 +79,42 @@ public class CommaWhitespaceRuleTest {
     assertMatches("A sentence ' with' one examples of wrong quotations marks in it.", 1);
     assertMatches("A sentence 'with ' one examples of wrong quotations marks in it.", 1);
 
-    RuleMatch[] matches = rule.match(langTool.getAnalyzedSentence("ABB (  z.B. )"));
+    RuleMatch[] matches = rule.match(lt.getAnalyzedSentence("ABB (  z.B. )"));
     assertEquals(2, matches.length);
     assertEquals(4, matches[0].getFromPos());
     assertEquals(6, matches[0].getToPos());
     assertEquals(11, matches[1].getFromPos());
     assertEquals(13, matches[1].getToPos());
     
-    matches = rule.match(langTool.getAnalyzedSentence("This ,"));
+    matches = rule.match(lt.getAnalyzedSentence("This ,"));
     assertEquals(1, matches.length);
     assertEquals(",", matches[0].getSuggestedReplacements().get(0));
-    matches = rule.match(langTool.getAnalyzedSentence("This ,is a test sentence."));
+    matches = rule.match(lt.getAnalyzedSentence("This ,is a test sentence."));
     assertEquals(2, matches.length);
     assertEquals(", ", matches[0].getSuggestedReplacements().get(0));
-    matches = rule.match(langTool.getAnalyzedSentence("This , is a test sentence."));
+    matches = rule.match(lt.getAnalyzedSentence("This , is a test sentence."));
     assertEquals(1, matches.length);
     assertEquals(",", matches[0].getSuggestedReplacements().get(0));
-    
+
+    matches = rule.match(lt.getAnalyzedSentence("You \" fixed\" it."));
+    assertEquals(1, matches.length);
+    assertEquals("\" ", matches[0].getSuggestedReplacements().get(0));
+    assertEquals(" \"", matches[0].getSuggestedReplacements().get(1));
+    assertEquals(3, matches[0].getFromPos());
+    assertEquals(6, matches[0].getToPos());
+    matches = rule.match(lt.getAnalyzedSentence("You \"fixed \" it."));
+    assertEquals(1, matches.length);
+    assertEquals("\" ", matches[0].getSuggestedReplacements().get(0));
+    assertEquals(" \"", matches[0].getSuggestedReplacements().get(1));
+    assertEquals(10, matches[0].getFromPos());
+    assertEquals(13, matches[0].getToPos());
 
     assertMatches("Ellipsis . . . as suggested by The Chicago Manual of Style", 3);
     assertMatches("Ellipsis . . . . as suggested by The Chicago Manual of Style", 4);
   }
 
   private void assertMatches(String text, int expectedMatches) throws IOException {
-    assertEquals(expectedMatches, rule.match(langTool.getAnalyzedSentence(text)).length);
+    assertEquals(expectedMatches, rule.match(lt.getAnalyzedSentence(text)).length);
   }
 
 }

@@ -24,6 +24,8 @@ antecedências	antecedência	NCMP000
 antípoda	antípoda	NCMS000
 antípodas	antípodas	NCMP000
 Arcos	Arcos	NPCSG00
+arriscámo	arriscar	VMIS1P0
+arriscávamo	arriscar	VMII1P0
 Arizona	Arizona	NPFSG00
 assalto	assalto	NCFS000
 assaltos	assalto	NCFP000
@@ -97,6 +99,8 @@ docilidades	docilidade	NCMP000
 # durante como adjetivo e nome são correctos mas desproporcionalmente raros
 drible	drible	NCFS000
 dribles	drible	NCFP000
+drive	drive	NCFS000
+drives	drive	NCFP000
 durante	durante	AQ0CS0
 durante	durante	NCMS000
 estilo	estilar	VMIP1S0
@@ -165,6 +169,8 @@ imperador	imperador	AQ0MP0
 imperador	imperador	NCMP000
 imperadores	imperador	AQ0MS0
 imperadores	imperador	NCMS000
+interface	interface	NCFS000
+interfaces	interface	NCFP000
 irrealismo	irrealismo	NCFS000
 irrealismos	irrealismo	NCFP000
 Jordânia	Jordânia	NPMS000
@@ -221,11 +227,14 @@ nós	nós	NCMP000
 o	o	NCMS000
 Odisseia	Odisseia	NPMS000
 oo	o	NCMP000
+ótimo	ótimo	NPMS000
 Palestina	Palestina	NPMS000
 paralaxe	paralaxe	NCMS000
 paralaxes	paralaxe	NCMP000
 #passarão raro comparado com a forma verbal do verbo passar
 passarão	passarão	NCMS000
+percorremo	percorrer	VMIP1P0
+percorremo	percorrer	VMIS1P0
 perdoe	perdoe	NCFS000
 perita	pêra	NCFS00D
 peritas	pêra	NCFP00D
@@ -238,6 +247,8 @@ portuguesa	portuguesar	VMM02S0
 # Portuguesar - não é utilizado em linguagem formal
 posicionamento	posicionamento	NCFS000
 posicionamentos	posicionamento	NCFP000
+pudemo	poder	VMIS1P0
+pudéramo	poder	VMIM1P0
 puseste	pôr	VMIS2P0
 quentes	quentar	VMM02S0
 quentes	quentar	VMSP2S0
@@ -259,6 +270,7 @@ regatas	regata	NCMP000
 rodrigues	rodrigar	VMM02S0
 rodrigues	rodrigar	VMSP2S0
 Ruanda	Ruanda	NPFSG00
+sabemo	saber	VMIP1P0
 # sai exists as a zoological name but its usage is too rare when compared with the verb
 sai	sai	NCMS000
 sais	sai	NCMP000
@@ -307,6 +319,7 @@ Uganda	Uganda	NPFSG00
 uma	umar	VMIP3S0
 uma	umar	VMM02S0
 umas	umar	VMIP2S0
+usamo	usar	VMIP1P0
 vagina	vagina	NCMS000
 vaginas	vagina	NCMP000
 vaginas	vaginas	NCFP000
@@ -314,6 +327,7 @@ Veiga	Veiga	NPMSS00
 vento	ventar	VMIP1S0
 # vento is a rare form of the verb ventar will be dealt by disambiguation later
 violar	violar	NCMS000
+vi	vir	VMX0000
 vírus	vírus	NCMS000
 víros	vírus	NCMP000
 vulgarismo	vulgarismo	NCFS000

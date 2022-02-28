@@ -18,13 +18,6 @@
  */
 package org.languagetool.rules.de;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
-import java.util.regex.Pattern;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.languagetool.AnalyzedSentence;
@@ -32,6 +25,11 @@ import org.languagetool.JLanguageTool;
 import org.languagetool.Languages;
 import org.languagetool.TestTools;
 import org.languagetool.language.German;
+
+import java.io.IOException;
+
+import static org.junit.Assert.*;
+import static org.languagetool.rules.patterns.StringMatcher.regexp;
 
 public class CaseRuleTest {
 
@@ -53,6 +51,10 @@ public class CaseRuleTest {
   public void testRule() throws IOException {
 
     // correct sentences:
+    assertGood("(Dauer, Raum, Anwesende)");
+    assertGood("Es gibt wenige Befragte.");
+    assertGood("Es gibt weniger Befragte, die das machen würden.");
+    assertGood("Es gibt mehr Befragte, die das machen würden.");
     assertGood("Das ist eine Abkehr von Gottes Geboten.");
     assertGood("Dem Hund Futter geben");
     assertGood("Heute spricht Frau Stieg.");
@@ -153,6 +155,13 @@ public class CaseRuleTest {
     assertGood("Wahrscheinlich müssten sie das überarbeiten");
     assertGood("Assistenzsysteme warnen rechtzeitig vor Gefahren.");
     assertGood("Jeremy Schulte rannte um sein Leben.");
+    assertGood("Er arbeitet im Bereich Präsidiales.");
+    assertGood("Er spricht Sunnitisch & Schiitisch.");
+    assertGood("Er sagte, Geradliniges und Krummliniges sei unvergleichbar.");
+    assertGood("Dort erfahren sie Kurioses und Erstaunliches zum Zusammenspiel von Mensch und Natur.");
+    assertGood("Dabei unterscheidet die Shareware zwischen Privatem und Dienstlichem bei Fahrten ebenso wie bei Autos.");
+    assertGood("Besucher erwartet Handegefertigtes, Leckeres und Informatives rund um den Hund.");
+    assertGood("Der Unterschied zwischen Vorstellbarem und Machbarem war niemals geringer.");
     assertGood("Das war Fiete Lang.");
     assertGood("Wenn du an das glaubst, was du tust, kannst du Großes erreichen.");
     assertGood("Dann hat er Großes erreicht.");
@@ -180,7 +189,15 @@ public class CaseRuleTest {
     assertGood("Unser Wärmestrom-Tarif WärmeKompakt im Detail");  // ignore so we don't suggest "wärmeKompakt" (#3779)
     assertGood("Autohaus Dornig GmbH");
     assertGood("Hans Pries GmbH");
+    assertGood(":D Auf dieses Frl.");
     assertGood("Das Gedicht “Der Panther”.");  // quotes are not correct, but leave that to the quotes rule
+    assertGood("Klar, dass wir das brauchen.");
+    assertGood("Das wird Scholz' engster Vertrauter Wolfgang Schmidt übernehmen.");
+
+    assertGood("Ist das eine Frage ? Müsste das nicht anders sein?");
+    assertGood("Das ist ein Satz !!! Das auch.");
+    assertGood("Liebe Kund:in");
+    assertGood("Wir sollten das mal labeln.");
 
     // https://github.com/languagetool-org/languagetool/issues/1515:
     assertGood("▶︎ Dies ist ein Test");
@@ -195,12 +212,22 @@ public class CaseRuleTest {
     assertGood("..., die ins Nichts griff.");
     assertGood("Er fragte, was sie über das denken und zwinkerte ihnen zu.");
     assertGood("dem Ägyptischen, Berberischen, Semitischen, Kuschitischen, Omotischen und dem Tschadischen");
+    assertGood("mit S-Bahn-ähnlichen Verkehrsmitteln");
+    assertGood("mit U-Bahn-ähnlichen und günstigen Verkehrsmitteln");
+    assertGood("mit Ü-Ei-großen, schweren Hagelkörnern");
+    assertGood("mit E-Musik-artigen, komplizierten Harmonien");
 
     //assertBad("Sie sind nicht Verständlich");
     assertBad("Das machen der Töne ist schwierig.");
     assertBad("Sie Vertraute niemandem.");
     assertBad("Beten Lernt man in Nöten.");
+    assertBad("Ich habe Heute keine Zeit.");
+    assertBad("Er sagte, Geradliniges und krummliniges sei unvergleichbar.");
+    assertBad("Er sagte, ein Geradliniges und Krummliniges Konzept ist nicht tragbar.");
     assertBad("Ä Was?");
+    assertBad("… die preiswerte Variante unserer Topseller im Bereich Alternativ Mehle.");
+    assertBad("…  jahrzehntelangen Mitstreitern und vielen Freunden aus Nah und Fern.");
+    assertBad("Hi und Herzlich willkommen auf meiner Seite.");
     //assertBad("Ich gehe gerne Joggen.");
     assertBad("Er ist Groß.");
     assertBad("Die Zahl ging auf Über 1.000 zurück.");
@@ -369,7 +396,20 @@ public class CaseRuleTest {
     assertGood("Audi A5 Sportback 2.0 TDI");
     assertGood("§ 1 Allgemeine Bedingungen");
     assertGood("§1 Allgemeine Bedingungen");
+    assertGood("[H3] Was ist Daytrading?");
     assertGood(" Das ist das Aus des Airbus A380.");
+    assertGood("Wir sollten ihr irgendwas Erotisches schenken.");
+    assertGood("Er trank ein paar Halbe.");
+    assertGood("Sie/Er hat Schuld.");
+    assertGood("Das war irgendein Irrer.");
+    assertGood("Wir wagen Neues.");
+    assertGood("Grundsätzlich gilt aber: Essen Sie, was die Einheimischen Essen.");
+    assertGood("Vielleicht reden wir später mit ein paar Einheimischen.");
+    assertBad("Das existiert im Jazz zunehmend nicht mehr Bei der weiteren Entwicklung des Jazz zeigt sich das.");
+    assertGood("Das denken zwar viele, ist aber total falsch.");
+    assertGood("Ich habe nix Besseres gefunden.");
+    assertGood("Ich habe nichts Besseres gefunden.");
+    assertGood("Ich habe noch Dringendes mitzuteilen.");
 
     // uppercased adjective compounds
     assertGood("Er isst UV-bestrahltes Obst.");
@@ -381,6 +421,30 @@ public class CaseRuleTest {
     assertBad("Das ist Eine Schreibweise.");
     assertGood("Das ist ein Mann.");
     assertBad("Das ist Ein Mann.");
+
+    assertBad("Sie erhalten bald unsere Neuesten Insights.");
+    assertBad("Auf eine Carvingschiene sollte die Kette schon im Kalten Zustand weit durchhängen.");
+
+    assertGood("Du Ärmste!");
+    assertGood("Ich habe nur Schlechtes über den Laden gehört.");
+    assertGood("Du Ärmster, leg dich besser ins Bett.");
+    assertGood("Er wohnt Am Hohen Hain 6a");
+    assertGood("Das Bauvorhaben Am Wiesenhang 9");
+    assertGood("... und das Zwischenmenschliche Hand in Hand.");
+    assertGood("Der Platz auf dem die Ahnungslosen Kopf an Kopf stehen.");
+    assertGood("4.)   Bei Beschäftigung von Hilfskräften: Schadenfälle durch Hilfskräfte");
+    assertGood("Es besteht aus Schülern, Arbeitstätigen und Studenten.");
+    assertGood("Sie starrt ständig ins Nichts.");
+    assertGood("\\u2063Das Haus ist schlön.");
+    assertGood("\\u2063\\u2063Das Haus ist schlön.");
+    assertGood("Die Mannschaft ist eine gelungene Mischung aus alten Haudegen und jungen Wilden.");
+    assertGood("Alleine durch die bloße Einwohnerzahl des Landes leben im Land zahlreiche Kulturschaffende, nach einer Schätzung etwa 30.000 Künstler.");
+    assertGood("Ich hatte das offenbar vergessen oder nicht ganz verstanden.");
+    assertGood("Ich hatte das vergessen oder nicht ganz verstanden.");
+    assertGood("Das ist ein zwingendes Muss.");
+    assertGood("Er hält eine Handbreit Abstand.");
+    assertGood("Das ist das Debakel und Aus für Podolski.");
+    assertGood("Der schwedische Psychologe Dan Katz, Autor von 'Angst kocht auch nur mit Wasser', sieht in der Corona-Krise dennoch nicht nur Negatives.");
   }
 
   private void assertGood(String input) throws IOException {
@@ -459,13 +523,13 @@ public class CaseRuleTest {
   @Test
   public void testCompareLists() throws IOException {
     AnalyzedSentence sentence1 = lt.getAnalyzedSentence("Hier ein Test");
-    assertTrue(rule.compareLists(sentence1.getTokensWithoutWhitespace(), 0, 2, new Pattern[]{Pattern.compile(""), Pattern.compile("Hier"), Pattern.compile("ein")}));
-    assertTrue(rule.compareLists(sentence1.getTokensWithoutWhitespace(), 1, 2, new Pattern[]{Pattern.compile("Hier"), Pattern.compile("ein")}));
-    assertTrue(rule.compareLists(sentence1.getTokensWithoutWhitespace(), 0, 3, new Pattern[]{Pattern.compile(""), Pattern.compile("Hier"), Pattern.compile("ein"), Pattern.compile("Test")}));
-    assertFalse(rule.compareLists(sentence1.getTokensWithoutWhitespace(), 0, 4, new Pattern[]{Pattern.compile(""), Pattern.compile("Hier"), Pattern.compile("ein"), Pattern.compile("Test")}));
+    assertTrue(CaseRule.compareLists(sentence1.getTokensWithoutWhitespace(), 0, 2, regexp(""), regexp("Hier"), regexp("ein")));
+    assertTrue(CaseRule.compareLists(sentence1.getTokensWithoutWhitespace(), 1, 2, regexp("Hier"), regexp("ein")));
+    assertTrue(CaseRule.compareLists(sentence1.getTokensWithoutWhitespace(), 0, 3, regexp(""), regexp("Hier"), regexp("ein"), regexp("Test")));
+    assertFalse(CaseRule.compareLists(sentence1.getTokensWithoutWhitespace(), 0, 4, regexp(""), regexp("Hier"), regexp("ein"), regexp("Test")));
 
     AnalyzedSentence sentence2 = lt.getAnalyzedSentence("das Heilige Römische Reich");
-    assertTrue(rule.compareLists(sentence2.getTokensWithoutWhitespace(), 0, 4, new Pattern[]{Pattern.compile(""), Pattern.compile("das"), Pattern.compile("Heilige"), Pattern.compile("Römische"), Pattern.compile("Reich")}));
-    assertFalse(rule.compareLists(sentence2.getTokensWithoutWhitespace(), 8, 11, new Pattern[]{Pattern.compile(""), Pattern.compile("das"), Pattern.compile("Heilige"), Pattern.compile("Römische"), Pattern.compile("Reich")}));
+    assertTrue(CaseRule.compareLists(sentence2.getTokensWithoutWhitespace(), 0, 4, regexp(""), regexp("das"), regexp("Heilige"), regexp("Römische"), regexp("Reich")));
+    assertFalse(CaseRule.compareLists(sentence2.getTokensWithoutWhitespace(), 8, 11, regexp(""), regexp("das"), regexp("Heilige"), regexp("Römische"), regexp("Reich")));
   }
 }

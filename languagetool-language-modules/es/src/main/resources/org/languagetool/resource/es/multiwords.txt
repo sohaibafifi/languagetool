@@ -1,3 +1,135 @@
+#separatorRegExp=[\t;]
+Narendra Modi;NPMSSP0
+Recep Tayyip Erdoğan;NPMSSP0
+Recep Tayyip Erdogan;NPMSSP0
+Borís Yeltsin;NPMSSP0
+Volodímir Zelenski;NPMSSP0
+Víktor Yanukóvich;NPMSSP0
+Bernard Shaw;NPMSSP0
+plan maestro;NCMS000
+planes maestros;NCMP000
+menú degustación;NCFS000
+menús degustación;NCFP000
+de golpe;LOC_ADV
+por completo;LOC_ADV
+Madame Pompadour;NPFSSP0
+Madame de Pompadour;NPFSSP0
+ahora mismo;RG
+Time Magazine;NPMSO00
+sala de estar;NCFS000
+Intima Teater;NPMSO00
+Intima teatern;NPMSO00
+Ansu Fati;NPMSSP0
+de mal humor;LOC_ADV
+von Clausewitz;NPCNSP0
+Alí Babá;NPMSSP0
+Leroy Merlin;NPCNO00
+40dB.;NPCSO00
+Nursultán Nazarbáyev;NPMSSP0
+cara o cruz;NCMS000
+John Maynard Keynes;NPMSSP0
+Carl Schmitt;NPMSSP0
+Fondo Monetario Internacional;NPMSO00
+Todo Pisos;NPCNO00
+acid jazz;NCMS000
+American Heritage;NPCNO00
+Motion Picture Association;NPFSO00
+raras veces	LOC_ADV
+al dedillo	LOC_ADV
+síndrome de savant	NCMS000
+síndrome del savant	NCMS000
+abruptio placentae	NPCNO00
+The Soprano	NPMSO00
+Los Soprano	NPMSO00
+Save the Children	NPMSO00
+casa cuartel	NCFS000
+casas cuartel	NCFP000
+long play	NCMS000
+long plays	NCMP000
+gin tonic	NCMS000
+gin tonics	NCMP000
+star system	NCMS000
+hot jazz	NCMS000
+hot dog	NCMS000
+hot dogs	NCMP000
+Philip Roth	NPMSSP0
+Dorothy Parker	NPFSSP0
+Omar Sharif	NPMSSP0
+O'Toole	NPCNSP0
+O’Toole	NPCNSP0
+La Monte Young	NPMSSP0
+Mazinger Z	NPMNSP0
+Mazinger Zeta	NPMNSP0
+Power Rangers	NPMPSP0
+Ford Ranger	NPCNO00
+Glasgow Rangers	NPMNO00
+rasca y gana	NCMN000
+carta puebla	NCFS000
+cartas puebla	NCFP000
+cinta pengante	NCFS000
+cintas pengantes	NCFP000
+Sifan Hassan	NPFSSP0
+plano secuencia	NCMS000
+planos secuencia	NCMP000
+greatest hits	NCMP000
+bloqueo rex	NCMS000
+Julian Barnes	NPMSSP0
+Ursula von der Leyen	NPFSSP0
+Next Generation	NPCNO00
+Jens Weidmann	NPMSSP0
+cada vez	LOC_ADV
+iPod touch	NPMNO00
+iPod Touch	NPMNO00
+Carles Puigdemont	NPMSSP0
+Toni Comín	NPMSSP0
+Clara Ponsatí	NPFSSP0
+Beppe Grillo	NPMSSP0
+Alí Babà	NPMSSP0
+App Store	NPFSO00
+Sinn Féin	NPMSO00
+Tate Gallery	NPFSO00
+Human Rights Watch	NPCSO00
+Jeu de Paume	NPMSO00
+Imperial College	NPMSO00
+Galerías Preciados	NPCNO00
+Pony Express	NPMSO00
+ARN polimerasa	NCFS000
+Las Condes	NPFPG00
+Green Bay Packers	NPMPO00
+Mies van der Rohe	NPMSSP0
+van der Rohe	NPMSSP0
+cinéma vérité	NCMS000
+Abu Mazen	NPMSSP0
+Riyad Mansur	NPMSSP0
+Ahmed Yabari	NPMSSP0
+Guilad Shalit	NPMSSP0
+Ismail Haniye	NPMSSP0
+Hisham Kandil	NPMSSP0
+Jaled Mashal	NPMSSP0
+Ezedin Al Kasem	NPCNO00
+por fin	LOC_ADV
+Septiembre Negro	NPMSO00
+Setiembre Negro	NPMSO00
+Microsoft Corporation	NPFSO00
+Silicon Valley	NPMSG00
+pro tempore	LOC_ADV
+Aíd al Fitr	NCMS000
+a largo plazo	LOC_ADV
+a medio plazo	LOC_ADV
+a corto plazo	LOC_ADV
+Ricky Rubio	NPMS000
+100 braza	NCMN000
+van 't Hoff	NPMSSP0
+van ’t Hoff	NPMSSP0
+rondó-sonata	NCMS000
+rondó sonata	NCMS000
+Force India	NPCNO00
+Sahara Force India	NPCNO00
+Champions League	NPFNO00
+Europa League	NPFNO00
+Microsoft Teams	NPCNO00
+Marie Curie	NPFSSP0
+Google Meet	NPCNO00
 full time	LOC_ADV
 full-time	LOC_ADV
 part time	LOC_ADV
@@ -204,7 +336,6 @@ nomina nuda	NCCP000
 nomen nudum	NCCS000
 nomina dubia	NCCP000
 nomen dubium	NCCS000
-DD. HH.	NCMP000
 Satoshi Nakamoto	NPMSSP0
 Charlie Hebdo	NPCSO00
 cuarto de estar	NCMS000
@@ -243,7 +374,10 @@ rebus sic stantibus	LOC_ADJ
 pacta sunt servanda	LOC_ADJ
 Ngũgĩ wa Thiong'o	NPMSSP0
 Ngugi wa Thiong'o	NPMSSP0
+Ngũgĩ wa Thiong’o	NPMSSP0
+Ngugi wa Thiong’o	NPMSSP0
 Nyong'o	NPCNSP0
+Nyong’o	NPCNSP0
 a fuego bajo	LOC_ADV
 win-win	LOC_ADJ
 win-lose	LOC_ADJ
@@ -282,6 +416,13 @@ de noche	LOC_ADV
 de día	LOC_ADV
 a contrario sensu	LOC_ADV
 a sensu contrario	LOC_ADV
+stricto sensu	LOC_ADV
+lato sensu	LOC_ADV
+sensu lato	LOC_ADV
+sensu stricto	LOC_ADV
+sensu amplo	LOC_ADV
+sensu latissimo	LOC_ADV
+sensu strictissimo	LOC_ADV
 Cannabis sativa	NCCS000
 en la actualidad	LOC_ADV
 a primera vista	LOC_ADV
@@ -522,6 +663,8 @@ data mart	NCMS000
 data marts	NCMP000
 piel roja	NCCS000
 pieles rojas	NCCP000
+Piel Roja	NCCS000
+Pieles Rojas	NCCP000
 Países Bajos	NPMPG00
 Estados Unidos	NPMPG00
 Rand Corporation	NCFSO00
@@ -550,6 +693,7 @@ call centers	NPMP000
 call centre	NPMS000
 call centres	NPMP000
 déjà vu	NPMNO00
+déjà vécu	NCMS000
 ménage à trois	NPMNO00
 prêt-à-porter	AQ0CN0
 D'Hondt	NPCNSP0
@@ -1057,7 +1201,7 @@ a toda pastilla	LOC_ADV
 a toda plana	LOC_ADV
 a toda prisa	LOC_ADV
 a toda rienda	LOC_ADV
-a todas estas	LOC_ADV
+#a todas estas	LOC_ADV
 a todas horas	LOC_ADV
 a todo andar	LOC_ADV
 a todo correr	LOC_ADV
@@ -1104,6 +1248,7 @@ a uno y otro lado	LOC_ADV
 a upa	LOC_ADV
 a usanza de	LOC_PREP
 a veces	LOC_ADV
+otra vez	LOC_ADV
 a vez que	LOC_CS
 a vida o muerte	LOC_ADV
 a vista de pájaro	LOC_ADV
@@ -1340,6 +1485,8 @@ Bma.	Y
 Bmo.	Y
 Bo.	Y
 boca arriba	LOC_ADV
+disc jockey	NCCS000
+disc jockeys	NCCP000
 boy scout	NCMS000
 boy scouts	NCMP000
 Boy Scout	NCMS000
@@ -1739,6 +1886,7 @@ de pleno derecho	LOC_ADV
 de poca monta	LOC_ADV
 de poca ropa	LOC_ADV
 de poco más o menos	LOC_ADV
+más o menos	LOC_ADV
 de poco pelo	LOC_ADV
 de poder a poder	LOC_ADV
 de polo a polo	LOC_ADV
@@ -1894,6 +2042,16 @@ edit.	Y
 edo.	Y
 EE. UU.	NPMPG00
 JJ. OO.	NPMPO00
+JJ. PP.	NPMPO00
+RR. HH.	NCMP000
+DD. HH.	NCMP000
+CC. OO.	NPFPO00
+EE.UU.	NPMPG00
+JJ.OO.	NPMPO00
+JJ.PP.	NPMPO00
+RR.HH.	NCMP000
+DD.HH.	NCMP000
+CC.OO.	NPFPO00
 ef.	Y
 ej.	Y
 el acabose	NCMS000
@@ -2137,6 +2295,7 @@ Hna.	Y
 Hno.	Y
 Hong Kong	NPCSG00
 honoris causa	LOC_ADJ
+Honoris Causa	LOC_ADJ
 horror vacui	NCMS000
 I.	Y
 i. e.	Y
@@ -2210,7 +2369,6 @@ L/	Y
 laissez faire	NCMS000
 lapsus calami	NCMN000
 lapsus linguae	NCMN000
-lato sensu	LOC_ADV
 laus Deo	LOC_ADV
 Lcda.	Y
 Lcdo.	Y
@@ -2483,7 +2641,8 @@ pról.	Y
 pues bien	LOC_ADV
 pues sí que	LOC_CS
 pza.	Y
-pág.	Y
+pág.	NCFS00
+págs.	NCFP00
 párr.	Y
 q. b. s. m.	Y
 q. b. s. p.	Y
@@ -2513,7 +2672,7 @@ rara vez	LOC_ADV
 rata parte	LOC_ADV
 Rda.	Y
 Rdo.	Y
-reales decretos leyes	NCMS000
+reales decretos leyes	NCMP000
 reality show	NCMS000
 reality shows	NCMP000
 reg.	Y
@@ -2525,6 +2684,8 @@ respecto a que	LOC_CS
 respecto de	LOC_PREP
 Rev.	Y
 rigor mortis	NCMN000
+frigor mortis	NCMN000
+livor mortis	NCMN000
 rock & roll	NCMS000
 rock 'n' roll	NCMS000
 rock ’n’ roll	NCMS000
@@ -2532,7 +2693,6 @@ rock and roll	NCMS000
 rock&roll	NCMS000
 rock'n'roll	NCMS000
 rock’n’roll	NCMS000
-RR. HH.	Y
 Rte.	Y
 rum rum	NCMS000
 Rvd.	Y
@@ -2589,8 +2749,6 @@ según como	LOC_ADV
 según el decir de	LOC_PREP
 según que	LOC_CS
 semejante a	LOC_PREP
-sensu lato	LOC_ADV
-sensu stricto	LOC_ADV
 sex appeal	NCMS000
 sex shop	NCCS000
 sex shops	NCCP000
@@ -2639,7 +2797,6 @@ stabat mater	NCMN000
 statu quo	NCMN000
 status quo	NCMN000
 Sto.	Y
-stricto sensu	LOC_ADV
 sub iudice	LOC_ADV
 sub judice	LOC_ADV
 sub voce	LOC_ADV
@@ -2736,7 +2893,10 @@ vv. aa.	Y
 vía crucis	NCMN000
 Vía Crucis	NCMN000
 W. C.	Y
-wi fi	NCMN000
+wi fi	NCCN000
+Wi Fi	NCCN000
+wi-fi	NCCN000
+Wi-Fi	NCCN000
 wind surf	NCMS000
 wind surfing	NCMS000
 Xto.	Y

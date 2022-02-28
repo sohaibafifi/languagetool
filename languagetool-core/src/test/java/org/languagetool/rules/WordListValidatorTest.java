@@ -31,7 +31,7 @@ import static junit.framework.TestCase.fail;
 public class WordListValidatorTest {
 
   private static final String VALID_CHARS =
-          "[ 0-9a-zA-ZöäüÖÄÜßëçèéáàóòÈÉÁÀÓÒÍãñíîş&" +
+          "[ 0-9a-zA-ZöäüÖÄÜßëçèéáàóòÈÉÁÀÓÒÍãñíîŞş&*_:\\\\" +
           "___INSERT___" +
           "Œ€ūαΑβΒγɣΓδΔεΕζΖηΗθΘιΙκΚλΛμΜνΝξΞοΟπΠρΡσΣτΤυΥφΦχΧψΨωΩάΆέΈίΊήΉύΎϊϋΰΐœţłń" +
           "ŚśōżúïÎôêâû" +
@@ -42,10 +42,21 @@ public class WordListValidatorTest {
   // Words that are valid but with special characters so that we don't want to
   // allow them in general:
   private static final Set<String> VALID_WORDS = new HashSet<>(Arrays.asList(
+          "Varaždin/S",
           "Będzin",
           "Aydın",
+          "Poreč",
+          "Čeferin",
+          "Čeferin/S",
+          "Perišić",
+          "Perišić/S",
+          "Modrić",
+          "Modrić/S",
+          "Miłosz",
+          "Arnautović/S",
           "Bhagavad-gītā",
           "Sønderjylland/S",
+          "Utøya/S",
           "Božena/S",
           "Brăila/S",
           "Timișoara/S",
@@ -92,7 +103,21 @@ public class WordListValidatorTest {
           "Djuvečreis",
           "Hidschāb/S",
           "Dvořák/S",
+          "Paul Erdős",
           "Erdoğan/S",
+          "Sørensen/S",
+          "Sørensen",
+          "Søren/S",
+          "Søren",
+          "Radosław",
+          "Radosław/S",
+          "Jarosław",
+          "Jarosław/S",
+          "Władysław/S",
+          "Şahin/S",
+          "Uğur/S",
+          "Jørgensen/S",
+          "Jørgensen",
           "Ångström",
           "ångström",
           "ångströms",
@@ -112,13 +137,23 @@ public class WordListValidatorTest {
           "V&D",
           "İlkay",
           "Gündoğan",
+          "Tuğrul",
           "Ñuñoa",
           "Ibišević",
           "Fríður",
           "Łódź",
           "Ørsted",
           "Mirotić",
+          "Subotić",
           "Pÿur",
+          "Subašić",
+          "celebrytę", // for PL
+          "antybiotykoterapię", // for PL
+          "elektromobilność", // for PL
+          "kryptowalutę", // for PL
+          "fotowoltaikę", // for PL
+          "insulinooporność", // for PL
+          "infografikę", // for PL
           "dtª",  // for PT
           "dtº",  // for PT
           "ª",  // for PT

@@ -146,7 +146,7 @@ class CheckCallable implements Callable<File> {
     System.err.println(sdf.format(new Date()) + " " + s);
   }
 
-  private void writeFakeError(ObjectMapper mapper, FileWriter fw, String textToCheck, String pseudoFileName, ApiErrorException e, int retries) throws IOException {
+  private synchronized void writeFakeError(ObjectMapper mapper, FileWriter fw, String textToCheck, String pseudoFileName, ApiErrorException e, int retries) throws IOException {
     Language lang = Languages.getLanguageForShortCode(langCode);
     JLanguageTool lt = new JLanguageTool(Languages.getLanguageForShortCode("en"));
     RuleMatch ruleMatch = new RuleMatch(new FakeRule(), lt.getAnalyzedSentence(textToCheck), 0, 1, FAIL_MESSAGE + e.getMessage() + " (retries: " + retries + ")");
@@ -162,6 +162,8 @@ class CheckCallable implements Callable<File> {
     try {
       System.setProperty("http.keepAlive", "false");  // without this, there's an overhead of about 1 second - not sure why
       URLConnection conn = url.openConnection();
+      conn.setConnectTimeout(20*1000);
+      conn.setReadTimeout(60*1000);
       conn.setDoOutput(true);
       if (user != null && password != null) {
         String authString = user + ":" + password;

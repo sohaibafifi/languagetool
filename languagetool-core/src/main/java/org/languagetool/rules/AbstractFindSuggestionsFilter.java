@@ -28,7 +28,6 @@ import java.util.regex.Pattern;
 import org.languagetool.AnalyzedTokenReadings;
 import org.languagetool.rules.RuleMatch;
 import org.languagetool.rules.patterns.RuleFilter;
-import org.languagetool.rules.spelling.morfologik.MorfologikSpeller;
 import org.languagetool.tagging.Tagger;
 import org.languagetool.tools.StringTools;
 
@@ -38,12 +37,20 @@ public abstract class AbstractFindSuggestionsFilter extends RuleFilter {
 
   abstract protected Tagger getTagger();
 
-  abstract protected MorfologikSpeller getSpeller();
+  //abstract protected MorfologikSpeller getSpeller();
+  abstract protected List<String> getSpellingSuggestions(String w) throws IOException; 
 
   @Override
   public RuleMatch acceptRuleMatch(RuleMatch match, Map<String, String> arguments, int patternTokenPos,
       AnalyzedTokenReadings[] patternTokens) throws IOException {
+    
+//    if (match.getSentence().getText().contains("saperçoit")) {
+//      int ii=0;
+//      ii++;
+//    }
 
+    //TODO: remove suggestions that trigger the rule again.
+    // It would be needed to run again the rule with the full sentence. 
     List<String> replacements = new ArrayList<>();
     String wordFrom = getRequired("wordFrom", arguments);
     String desiredPostag = getRequired("desiredPostag", arguments);
@@ -67,7 +74,7 @@ public abstract class AbstractFindSuggestionsFilter extends RuleFilter {
       }
       if (posWord < 1 || posWord > patternTokens.length) {
         throw new IllegalArgumentException("FindSuggestionsFilter: Index out of bounds in "
-            + match.getRule().getFullId() + ", PronounFrom: " + posWord);
+            + match.getRule().getFullId() + ", wordFrom: " + posWord);
       }
       AnalyzedTokenReadings atrWord = patternTokens[posWord - 1];
       boolean isWordCapitalized = StringTools.isCapitalizedWord(atrWord.getToken());
@@ -80,46 +87,47 @@ public abstract class AbstractFindSuggestionsFilter extends RuleFilter {
         if (atr.matchesPosTagRegex(desiredPostag)) {
           if (diacriticsMode) {
             return null;
-          } else {
-            generateSuggestions = false;
           }
         }
       }
 
       if (generateSuggestions) {
         if (removeSuggestionsRegexp != null) {
-          regexpPattern = Pattern.compile(removeSuggestionsRegexp, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+          regexpPattern = Pattern.compile(removeSuggestionsRegexp, Pattern.UNICODE_CASE);
         }
         String wordToCheck = atrWord.getToken();
         if (atrWord.isTagged()) {
           wordToCheck = makeWrong(atrWord.getToken());
         }
-        List<String> suggestions = getSpeller().findReplacements(wordToCheck);
+        List<String> suggestions = getSpellingSuggestions(wordToCheck); //getSpeller().findReplacements(wordToCheck);
         if (suggestions.size() > 0) {
-          // TODO: do not tag capitalized words with tags for lower case
-          List<AnalyzedTokenReadings> analyzedSuggestions = getTagger().tag(suggestions);
-          for (AnalyzedTokenReadings analyzedSuggestion : analyzedSuggestions) {
-            if (!analyzedSuggestion.getToken().equals(atrWord.getToken())
-                && analyzedSuggestion.matchesPosTagRegex(desiredPostag)) {
-              if (!replacements.contains(analyzedSuggestion.getToken())
-                  && !replacements.contains(analyzedSuggestion.getToken().toLowerCase())
-                  && (!diacriticsMode || equalWithoutDiacritics(analyzedSuggestion.getToken(), atrWord.getToken()))) {
-                if (regexpPattern == null || !regexpPattern.matcher(analyzedSuggestion.getToken()).matches()) {
-                  String replacement = analyzedSuggestion.getToken();
-                  if (isWordAllupper) {
-                    replacement = replacement.toUpperCase();
-                  }
-                  if (isWordCapitalized) {
-                    replacement = StringTools.uppercaseFirstChar(replacement);
-                  }
-                  replacements.add(replacement);
-                }
-              }
+          for (String suggestion : suggestions) {
+            // TODO: do not tag capitalized words with tags for lower case
+            List<AnalyzedTokenReadings> analyzedSuggestions = getTagger().tag(Collections.singletonList(cleanSuggestion(suggestion)));
+            for (AnalyzedTokenReadings analyzedSuggestion : analyzedSuggestions) {
               if (replacements.size() >= MAX_SUGGESTIONS) {
                 break;
               }
+              if (!suggestion.equals(atrWord.getToken())
+                  && analyzedSuggestion.matchesPosTagRegex(desiredPostag)) {
+                if (!replacements.contains(suggestion)
+                    && !replacements.contains(suggestion.toLowerCase())
+                    && (!diacriticsMode || equalWithoutDiacritics(suggestion, atrWord.getToken()))) {
+                  if (regexpPattern == null || !regexpPattern.matcher(suggestion).matches()) {
+                    String replacement = suggestion;
+                    if (isWordAllupper) {
+                      replacement = replacement.toUpperCase();
+                    }
+                    if (isWordCapitalized) {
+                      replacement = StringTools.uppercaseFirstChar(replacement);
+                    }
+                    replacements.add(replacement);
+                  }
+                } 
+              }
             }
           }
+          
         }
       }
     }
@@ -196,27 +204,31 @@ public abstract class AbstractFindSuggestionsFilter extends RuleFilter {
       return s.replace("ú", "ù");
     }
     if (s.contains("à")) {
-      return s.replace("à", "a");
+      return s.replace("à", "ä");
     }
     if (s.contains("è")) {
-      return s.replace("à", "e");
+      return s.replace("è", "ë");
     }
     if (s.contains("ì")) {
       return s.replace("ì", "i");
     }
     if (s.contains("ò")) {
-      return s.replace("ò", "o");
+      return s.replace("ò", "ö");
     }
     if (s.contains("ï")) {
-      return s.replace("ï", "i");
+      return s.replace("ï", "ì");
     }
     if (s.contains("ü")) {
-      return s.replace("ü", "u");
+      return s.replace("ü", "ù");
     }
     return s + "-";
   }
 
   private boolean equalWithoutDiacritics(String s, String t) {
     return StringTools.removeDiacritics(s).equalsIgnoreCase(StringTools.removeDiacritics(t));
+  }
+  
+  protected String cleanSuggestion(String s) {
+    return s;
   }
 }

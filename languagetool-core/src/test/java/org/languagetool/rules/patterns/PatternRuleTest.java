@@ -132,8 +132,10 @@ public class PatternRuleTest extends AbstractPatternRuleTest {
       if (lang.getShortCodeWithCountryAndVariant().equals("de-DE")) {
         runTestForLanguage(lang);  // tests de-DE-AT/grammar.xml
         runTestForLanguage(Languages.getLanguageForShortCode("de"));  // tests de/grammar.xml
-      } else {
-        System.out.println("Skipping " + lang + " because only de-DE gets tested for German (assuming there are no de-CH specific rules)");
+      } else if (lang.getShortCodeWithCountryAndVariant().equals("de-CH")) {
+        runTestForLanguage(lang);
+      } else{
+        System.out.println("Skipping " + lang + " because only de-DE and de-CH gets tested for German (assuming there are no de-AT specific rules)");
       }
     } else {
       if (skipCountryVariant(lang)) {
@@ -156,14 +158,14 @@ public class PatternRuleTest extends AbstractPatternRuleTest {
 
   public void runTestForLanguage(Language lang) throws IOException {
     validatePatternFile(lang);
-    System.out.println("Running pattern rule tests for " + lang.getName() + "... ");
+    System.out.println("Running pattern rule tests for " + lang.getName() + " (" + lang.getClass().getName() + ")... ");
     MultiThreadedJLanguageTool lt = createToolForTesting(lang);
     MultiThreadedJLanguageTool allRulesLt = new MultiThreadedJLanguageTool(lang);
     validateRuleIds(lang, allRulesLt);
     validateSentenceStartNotInMarker(allRulesLt);
+    validateUnifyIgnoreAtTheStartOfUnify(allRulesLt);
     List<AbstractPatternRule> rules = getAllPatternRules(lang, lt);
     testRegexSyntax(lang, rules);
-    testExamplesExist(rules);
     testGrammarRulesFromXML(rules, allRulesLt, lang);
     System.out.println(rules.size() + " rules tested.");
     allRulesLt.shutdown();
@@ -218,16 +220,20 @@ public class PatternRuleTest extends AbstractPatternRuleTest {
       if (rule.getId().equalsIgnoreCase("ID")) {
         System.err.println("WARNING: " + lang.getShortCodeWithCountryAndVariant() + " has a rule with id 'ID', this should probably be changed");
       }
+      if (rule.getId().startsWith("DB_")) {
+        fail("Rule ID must not start with 'DB_', this prefix is reserved for internal use: " + rule.getId());
+      }
+      if (rule.getId().contains("[") || rule.getId().contains("]")) {
+        fail("Rule ID must not contain '[...]': " + rule.getId());
+      }
       if (rule.getId().length() > 79) {  // limit needed so the Grafana import script works
         fail("Rule ID too long, keep it <= 79 chars: " + rule.getId());
       }
       Category category = rule.getCategory();
-      if (category != null && category.getId() != null) {
-        String catId = category.getId().toString();
-        if (!catId.matches("[A-Z0-9_-]+") && !categoryIds.contains(catId)) {
-          System.err.println("WARNING: category id '" + catId + "' doesn't match expected regexp [A-Z0-9_-]+");
-          categoryIds.add(catId);
-        }
+      String catId = category.getId().toString();
+      if (!catId.matches("[A-Z0-9_-]+") && !categoryIds.contains(catId)) {
+        System.err.println("WARNING: category id '" + catId + "' doesn't match expected regexp [A-Z0-9_-]+");
+        categoryIds.add(catId);
       }
     }
   }
@@ -254,6 +260,33 @@ public class PatternRuleTest extends AbstractPatternRuleTest {
     }
   }
 
+  /*
+   * Check <unify-ignore> at the start of <unify>
+   */
+  protected void validateUnifyIgnoreAtTheStartOfUnify(JLanguageTool lt) {
+    System.out.println("Check that <unify-ignore> is not at the start of <unify>....");
+    List<Rule> rules = lt.getAllRules();
+    for (Rule rule : rules) {
+      if (rule instanceof AbstractPatternRule) {
+        List<PatternToken> patternTokens = ((AbstractPatternRule) rule).getPatternTokens();
+        if (patternTokens != null) {
+          boolean hasUnify = patternTokens.stream().anyMatch(PatternToken::isUnified);
+          if (hasUnify) {
+            for (PatternToken patternToken : patternTokens) {
+              if (patternToken.isUnified()) {
+                if (patternToken.isUnificationNeutral()) {
+                  String failure = "<ignore-unify> at the start of <unify> - please move the token outside of <unify>";
+                  addError((AbstractPatternRule) rule, failure);
+                }
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
   private static void disableSpellingRules(JLanguageTool lt) {
     List<Rule> allRules = lt.getAllRules();
     for (Rule rule : allRules) {
@@ -289,25 +322,6 @@ public class PatternRuleTest extends AbstractPatternRuleTest {
     }
   }
 
-  protected void testExamplesExist(List<AbstractPatternRule> rules) {
-    for (AbstractPatternRule rule : rules) {
-      if (rule.getCorrectExamples().isEmpty()) {
-        boolean correctionExists = false;
-        for (IncorrectExample incorrectExample : rule.getIncorrectExamples()) {
-          if (incorrectExample.getCorrections().size() > 0) {
-            correctionExists = true;
-            break;
-          }
-        }
-        if (!correctionExists) {
-          String failure = "Rule needs at least one <example> with a 'correction' attribute"
-                  + " or one <example> of type='correct'.";
-          addError(rule, failure);
-        }
-      }
-    }
-  }
-
   private void addError(AbstractPatternRule rule, String failure) {
     synchronized (ruleErrors) {
       ruleErrors.addError(new PatternRuleTestFailure(rule, failure));
@@ -315,7 +329,12 @@ public class PatternRuleTest extends AbstractPatternRuleTest {
   }
 
   protected void testGrammarRulesFromXML(List<AbstractPatternRule> rules, JLanguageTool allRulesLt, Language lang) {
-    System.out.println("Checking example sentences of " + rules.size() + " rules for " + lang + "...");
+    if (System.getProperty("skipRules") != null) {
+      System.out.println("SKIPPING: Checking example sentences of " + rules.size() + " rules for " + lang + "...");
+      return;
+    } else {
+      System.out.println("Checking example sentences of " + rules.size() + " rules for " + lang + "...");
+    }
 
     int threadCount = Math.max(1, Runtime.getRuntime().availableProcessors() / 2);
     ExecutorService executor = Executors.newFixedThreadPool(threadCount);
@@ -331,7 +350,8 @@ public class PatternRuleTest extends AbstractPatternRuleTest {
         String sourceFile = rule.getSourceFile();
         if (lang.isVariant() && sourceFile != null &&
                 sourceFile.matches("/org/languagetool/rules/" + lang.getShortCode() + "/grammar.*\\.xml") &&
-                !sourceFile.contains("-l2-")) {
+                !sourceFile.contains("-l2-") && !lang.getShortCodeWithCountryAndVariant().equals("de-DE-x-simple-language") &&
+                !lang.getClass().getName().contains("PremiumOnly")) {
           //System.out.println("Skipping " + rule.getFullId() + " in " + sourceFile + " because we're checking a variant");
           skipCount++;
           continue;
@@ -402,6 +422,12 @@ public class PatternRuleTest extends AbstractPatternRuleTest {
           addError(rule, "Empty incorrect example sentence after cleaning/trimming.");
           continue;
       }
+      
+      String marker = origBadSentence.substring(expectedMatchStart+"<marker>".length(), origBadSentence.indexOf("</marker>"));
+      if (marker.startsWith(", ") && origBadExample.getCorrections().stream().anyMatch(k -> !k.startsWith(" ") && !k.startsWith(",") && !k.startsWith("?") && !k.startsWith(".") && !k.startsWith(";") && !k.startsWith("…"))) {
+        System.err.println("*** WARNING: " + lang.getName() + " rule " + rule.getFullId() + " removes ', ' but " +
+          "doesn't have a space, comma, semicolon, or dot at the start of the suggestion: " + origBadSentence + " => " + origBadExample.getCorrections());
+      }
 
       // necessary for XML Pattern rules containing <or>
       List<RuleMatch> matches = new ArrayList<>();
@@ -426,7 +452,7 @@ public class PatternRuleTest extends AbstractPatternRuleTest {
           if (rule instanceof RegexPatternRule) {
             info = "\nRegexp: " + ((RegexPatternRule) rule).getPattern();
           }
-          String failure = badSentence + "\"\n"
+          String failure = "\"" + badSentence + "\"\n"
                   + "Errors expected: 1\n"
                   + "Errors found   : " + matches.size() + "\n"
                   + "Message: " + rule.getMessage() + "\n" + sb + "\nMatches: " + matches + info;

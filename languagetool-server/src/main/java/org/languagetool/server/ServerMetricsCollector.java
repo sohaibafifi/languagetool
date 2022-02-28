@@ -21,16 +21,16 @@ package org.languagetool.server;
 import com.google.common.cache.Cache;
 import io.prometheus.client.Counter;
 import io.prometheus.client.Gauge;
-import io.prometheus.client.Info;
 import io.prometheus.client.Histogram;
+import io.prometheus.client.Info;
 import io.prometheus.client.exporter.HTTPServer;
 import io.prometheus.client.guava.cache.CacheMetricsCollector;
 import io.prometheus.client.hotspot.DefaultExports;
 import org.languagetool.JLanguageTool;
 import org.languagetool.Language;
+import org.languagetool.Premium;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class ServerMetricsCollector {
@@ -105,23 +105,34 @@ public class ServerMetricsCollector {
   private final Counter failedHealthcheckCounter = Counter
     .build("languagetool_failed_healthchecks_total", "Failed healthchecks").register();
 
-  private final Gauge hiddenMatchesServerEnabled = Gauge
-    .build("languagetool_hidden_matches_server_enabled", "Configuration of hidden matches server").register();
-  private final Gauge hiddenMatchesServerStatus = Gauge
-    .build("languagetool_hidden_matches_server_up", "Status of hidden matches server").register();
-  private final Counter hiddenMatchesServerRequests = Counter
-    .build("languagetool_hidden_matches_server_requests_total", "Number of hidden server requests by status")
-    .labelNames("status").register();
-
   private final Info buildInfo = Info
     .build("languagetool_build", "Build information").register();
+
+  private final Gauge configValues = Gauge
+    .build("languagetool_configuration_values", "Configuration settings").labelNames("name").register();
+
 
   private final CacheMetricsCollector cacheMetrics = new CacheMetricsCollector().register();
 
 
-  public static void init(int port) throws IOException {
+  public static void init(HTTPServerConfig config) throws IOException {
     DefaultExports.initialize();
-    server = new HTTPServer(port, true);
+    server = new HTTPServer(config.getPrometheusPort(), true);
+    Gauge c = getInstance().configValues;
+    exposeConfigurationValues(config, c);
+  }
+
+  private static void exposeConfigurationValues(HTTPServerConfig config, Gauge c) {
+    c.labels("maxCheckThreads").set(config.getMaxCheckThreads());
+    c.labels("maxWorkQueueSize").set(config.getMaxWorkQueueSize());
+    c.labels("cacheSize").set(config.getCacheSize());
+    c.labels("cacheTTLSeconds").set(config.getCacheTTLSeconds());
+    c.labels("maxCheckTimeMillisAnonymous").set(config.getMaxCheckTimeMillisAnonymous());
+    c.labels("maxCheckTimeMillisLoggedIn").set(config.getMaxCheckTimeMillisLoggedIn());
+    c.labels("maxCheckTimeMillisPremium").set(config.getMaxCheckTimeMillisPremium());
+    c.labels("maxTextLengthAnonymous").set(config.getMaxTextLengthAnonymous());
+    c.labels("maxTextLengthLoggedIn").set(config.getMaxTextLengthLoggedIn());
+    c.labels("maxTextLengthPremium").set(config.getMaxTextLengthPremium());
   }
 
   public static void stop() {
@@ -133,30 +144,12 @@ public class ServerMetricsCollector {
   }
 
   public ServerMetricsCollector() {
-    buildInfo.info("version", Objects.toString(JLanguageTool.VERSION), "buildDate", Objects.toString(JLanguageTool.BUILD_DATE), "revision", Objects.toString(JLanguageTool.GIT_SHORT_ID), "premium", Objects.toString(String.valueOf(JLanguageTool.isPremiumVersion())));
+    buildInfo.info("version", Objects.toString(JLanguageTool.VERSION), "buildDate", Objects.toString(JLanguageTool.BUILD_DATE), "revision", Objects.toString(JLanguageTool.GIT_SHORT_ID), "premium", Objects.toString(String.valueOf(Premium.isPremiumVersion())));
   }
 
 
   public void monitorCache(String name, Cache cache) {
     cacheMetrics.addCache(name, cache);
-  }
-
-  public void logHiddenServerConfiguration(boolean enabled) {
-    hiddenMatchesServerEnabled.set(enabled ? 1.0 : 0.0);
-  }
-
-  public void logHiddenServerStatus(boolean up) {
-    hiddenMatchesServerStatus.set(up ? 1.0 : 0.0);
-  }
-
-  public void logHiddenServerRequest(boolean success) {
-    if (hiddenMatchesServerStatus.get() == 0.0) {
-      hiddenMatchesServerRequests.labels("down").inc();
-    } else if (success) {
-      hiddenMatchesServerRequests.labels("success").inc();
-    } else {
-      hiddenMatchesServerRequests.labels("failure").inc();
-    }
   }
 
   public void logCheck(Language language, long milliseconds, int textSize, int matchCount,

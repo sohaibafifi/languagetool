@@ -38,18 +38,18 @@ class ConfigThread extends Thread {
 
   private final Language docLanguage;
   private final Configuration config;
-  private final SwJLanguageTool langTool;
+  private final SwJLanguageTool lt;
   private final MultiDocumentsHandler documents;
   private final ConfigurationDialog cfgDialog;
   
-  ConfigThread(Language docLanguage, Configuration config, SwJLanguageTool langTool, MultiDocumentsHandler documents) {
+  ConfigThread(Language docLanguage, Configuration config, SwJLanguageTool lt, MultiDocumentsHandler documents) {
     if (config.getDefaultLanguage() == null) {
       this.docLanguage = docLanguage;
     } else {
       this.docLanguage = config.getDefaultLanguage();
     }
     this.config = config;
-    this.langTool = langTool;
+    this.lt = lt;
     this.documents = documents; 
     cfgDialog = new ConfigurationDialog(null, true, config);
   }
@@ -60,25 +60,25 @@ class ConfigThread extends Thread {
       return;
     }
     try {
-      List<Rule> allRules = langTool.getAllRules();
-      Set<String> disabledRulesUI = documents.getDisabledRules();
+      List<Rule> allRules = lt.getAllRules();
+      Set<String> disabledRulesUI = documents.getDisabledRules(docLanguage.getShortCodeWithCountryAndVariant());
       config.addDisabledRuleIds(disabledRulesUI);
       boolean configChanged = cfgDialog.show(allRules);
       if (configChanged) {
         Set<String> disabledRules = config.getDisabledRuleIds();
-        Set<String> tmpDisabledRules = new HashSet<String>(disabledRulesUI);
+        Set<String> tmpDisabledRules = new HashSet<>(disabledRulesUI);
         for (String ruleId : tmpDisabledRules) {
           if(!disabledRules.contains(ruleId)) {
             disabledRulesUI.remove(ruleId);
           }
         }
-        documents.setDisabledRules(disabledRulesUI);
+        documents.setDisabledRules(docLanguage.getShortCodeWithCountryAndVariant(), disabledRulesUI);
         config.removeDisabledRuleIds(disabledRulesUI);
         config.saveConfiguration(docLanguage);
-//        documents.resetDocumentCaches();
+        documents.resetDocumentCaches();
         documents.resetConfiguration();
       } else {
-        config.removeDisabledRuleIds(documents.getDisabledRules());
+        config.removeDisabledRuleIds(documents.getDisabledRules(docLanguage.getShortCodeWithCountryAndVariant()));
       }
     } catch (Throwable e) {
       MessageHandler.showError(e);

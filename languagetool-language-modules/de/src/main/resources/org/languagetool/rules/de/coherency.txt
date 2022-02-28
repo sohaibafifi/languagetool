@@ -57,6 +57,7 @@ Auswahlbibliographie;Auswahlbibliografie
 Autobiographie;Autobiografie
 autobiographisch;autobiografisch
 Automatenphoto;Automatenfoto
+BAföG;Bafög
 Babyphoto;Babyfoto
 Babyphotographie;Babyfotografie
 Bahnhofsplatz;Bahnhofplatz
@@ -94,8 +95,10 @@ Blitzlichtphotographie;Blitzlichtfotografie
 Blumenphoto;Blumenfoto
 Blu-ray;Blu-Ray
 Bodengeographie;Bodengeografie
+Bonbonniere;Bonboniere
 Bouquet;Bukett
 Bouquets;Buketts
+Bö;Böe
 Bravour;Bravur
 Buntphoto;Buntfoto
 Chicorée;Schikoree
@@ -104,6 +107,8 @@ circa;zirka
 Clan;Klan
 Computertomographie;Computertomografie
 contra;kontra
+Count-down;Countdown
+Cross-over;Crossover
 Dekolletee;Dekolleté
 Delphin;Delfin
 Demographie;Demografie
@@ -124,6 +129,7 @@ essentiell;essenziell
 Ethnographie;Ethnografie
 Eukaryonten;Eukaryoten
 Exklusivphoto;Exklusivfoto
+Exposé;Exposee
 Facette;Fassette
 Facetten;Fassetten
 Fachbibliographie;Fachbibliografie
@@ -170,6 +176,7 @@ Gruppenphotographie;Gruppenfotografie
 Hagiographie;Hagiografie
 Halbtonphoto;Halbtonfoto
 Hämorrhoiden;Hämorriden
+Handicap;Handikap
 Handyphoto;Handyfoto
 Hauptmikrophon;Hauptmikrofon
 Herbstsinfonie;Herbstsymphonie
@@ -364,7 +371,7 @@ stenographisch;stenografisch
 Stimmenrecorder;Stimmenrekorder
 substantiell;substanziell
 Sueskanal;Suezkanal
-Symphonie;Sinfonie
+#Symphonie;Sinfonie
 Symphonieorchester;Sinfonieorchester
 Symphoniker;Sinfoniker
 symphonisch;sinfonisch

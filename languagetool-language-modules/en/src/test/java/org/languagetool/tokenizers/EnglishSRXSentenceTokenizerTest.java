@@ -41,6 +41,8 @@ public class EnglishSRXSentenceTokenizerTest {
   @Test
   public void testTokenize() {
     // incomplete sentences, need to work for on-thy-fly checking of texts:
+    testSplit("What is the I.S?");
+    testSplit("Where are the I.S and the M.Z notes? ");
     testSplit("Here's a");
     testSplit("Here's a sentence. ", "And here's one that's not comp");
     testSplit("Or did you install it (i.e. MS Word) yourself?");
@@ -108,7 +110,11 @@ public class EnglishSRXSentenceTokenizerTest {
     testSplit("It really(!) works well.");
     testSplit("It really[!] works well.");
     testSplit("A test.\u00A0\n", "Another test.");  // try to deal with at least some nbsp that appear in strange places (e.g. Google Docs, web editors)
-    testSplit("A test.\u00A0Another test.");  // not clear whether this is the best behavior...
+    testSplit("A test.\u00A0", "Another test.");  // not clear whether this is the best behavior...
+    testSplit("A test.\n", "Another test.");
+    testSplit("A test. \n", "Another test.");
+    testSplit("A test. \n", "\n", "Another test.");
+    testSplit("\"Here he comes.\"\u00a0", "But this is another sentence.");
 
     testSplit("The new Yahoo! product is nice.");
     testSplit("Yahoo!, what is it?");
@@ -122,6 +128,7 @@ public class EnglishSRXSentenceTokenizerTest {
     testSplit("Who Shall I Say is Calling & Other Stories S. Deziemianowicz, ed. (2009)");
     testSplit("Who Shall I Say is Calling & Other Stories S. Deziemianowicz, ed. ", "And this is another one.");
     testSplit("This is a sentence written by Ed. ", "And this is another one.");
+
   }
 
   private void testSplit(String... sentences) {

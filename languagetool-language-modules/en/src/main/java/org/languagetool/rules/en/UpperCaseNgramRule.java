@@ -383,7 +383,7 @@ public class UpperCaseNgramRule extends Rule {
       tokenRegex("[A-Z].*")
     ),
     Arrays.asList(
-      tokenRegex("Teams|Maps|Canvas|Remind|Switch|Gems?|Glamour|Divvy|Solo|Splash|Phrase|Beam") // Microsoft Teams, Google Maps, Remind App, Nintendo Switch (not tagged as NNP), Gems (Ruby Gems)
+      tokenRegex("Teams|Maps|Canvas|Remind|Tile|Switch|Gems?|Glamour|Divvy|Solo|Splash|Phrase||Spotlight|Outreach|Grab") // Microsoft Teams, Google Maps, Remind App, Nintendo Switch (not tagged as NNP), Gems (Ruby Gems)
     ),
     Arrays.asList(
       pos("SENT_START"), // Music and Concepts.
@@ -427,8 +427,45 @@ public class UpperCaseNgramRule extends Rule {
     Arrays.asList( // And mine is Wed.
       csRegex("Wed")
     ),
+    Arrays.asList( // Ender's Game
+      new PatternTokenBuilder().posRegex("NN.*").csTokenRegex("[A-Z].+").build(),
+      token("'s"),
+      csRegex("[A-Z].+")
+    ),
+    Arrays.asList( // Title Case: How to Become an Millionaire
+      csRegex("How"),
+      csRegex("to"),
+      new PatternTokenBuilder().pos("VB").csTokenRegex("[A-Z].+").build(),
+      csRegex("an?|my|y?our|her|his|the|from|by|about"),
+      csRegex("[A-Z].+")
+    ),
+    Arrays.asList( // Do
+      csRegex("Do|Does|Did|Can|[CW]ould"),
+      csRegex("n't"),
+      new PatternTokenBuilder().pos("VB").csTokenRegex("[A-Z].+").build(),
+      pos("IN"),
+      csRegex("[A-Z].+")
+    ),
+    Arrays.asList( // Title Case: How to Become an Millionaire
+      csRegex("Let"),
+      csRegex("'s"),
+      new PatternTokenBuilder().pos("VB").csTokenRegex("[A-Z].+").build(),
+      pos("IN"),
+      csRegex("[A-Z].+")
+    ),
     Arrays.asList( // Keys
       csRegex("Enter|Return|Escape|Shift")
+    ),
+    Arrays.asList( // You Can't Judge a Book by the Cover
+      csRegex("[A-Z].+"),
+      csRegex("Ca|Wo|Do|Should|[CW]ould|Must|Did|Does|Need"),
+      csRegex("n't"),
+      csRegex("[A-Z].+")
+    ),
+    Arrays.asList( // You Can't Judge a Book by the Cover
+      csRegex("Ca|Wo|Do|Should|[CW]ould|Must|Did|Does|Need"),
+      csRegex("n't"),
+      csRegex("[A-Z].+")
     )
   );
 

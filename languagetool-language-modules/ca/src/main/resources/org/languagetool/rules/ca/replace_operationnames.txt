@@ -1,4 +1,5 @@
 asfaltat=asfaltatge
+autorentat=autorentada|autorentatge
 reasfaltat=reasfaltatge
 assecat=assecament|assecatge
 buidat=buidatge
@@ -46,7 +47,9 @@ tornejat=tornejament
 trossejat=trossejament
 vaporitzat=vaporització
 visionat=visionament
-
+xifrat=xifratge
+emplenat=emplenament
+planxat=planxada|planxament
 
 
 

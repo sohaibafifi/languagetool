@@ -18,6 +18,9 @@
  */
 package org.languagetool.synthesis;
 
+import gnu.trove.THashSet;
+
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import org.languagetool.tagging.ManualTagger;
 import org.languagetool.tagging.TaggedWord;
@@ -45,10 +48,14 @@ public final class ManualSynthesizer {
   /** a map with the key composed by the lemma and POS. The values are inflected forms. */
   private final MostlySingularMultiMap<TaggedWord, String> mapping;
   private final Set<String> possibleTags;
+  
+  private final static String DEFAULT_SEPARATOR = "\t";
+  private static String separator;
 
   public ManualSynthesizer(InputStream inputStream) throws IOException {
-    HashSet<String> tags = new HashSet<>();
+    THashSet<String> tags = new THashSet<>();
     mapping = new MostlySingularMultiMap<>(loadMapping(inputStream, tags));
+    tags.trimToSize();
     possibleTags = Collections.unmodifiableSet(tags);
   }
 
@@ -77,13 +84,18 @@ public final class ManualSynthesizer {
     Map<TaggedWord, List<String>> mapping = new HashMap<>();
     Map<String, String> interned = new HashMap<>();
     try (Scanner scanner = new Scanner(inputStream, "utf8")) {
+      separator = DEFAULT_SEPARATOR;
       while (scanner.hasNextLine()) {
         String line = scanner.nextLine();
+        line = line.trim();
+        if (line.startsWith("#separatorRegExp=")) {
+          separator = line.replace("#separatorRegExp=", "");
+        }
         if (StringTools.isEmpty(line) || line.charAt(0) == '#') {
           continue;
         }
-        line = line.replaceFirst("#.*", "").trim();
-        String[] parts = line.split("\t");
+        line = StringUtils.substringBefore(line, "#").trim();
+        String[] parts = line.split(separator);
         if (parts.length != 3) {
           throw new IOException("Unknown line format when loading manual synthesizer dictionary: " + line);
         }

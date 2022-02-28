@@ -1,6 +1,6 @@
-/* LanguageTool, a natural language style checker 
+/* LanguageTool, a natural language style checker
  * Copyright (C) 2018 Daniel Naber (http://www.danielnaber.de)
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -49,6 +49,24 @@ public class ProhibitedCompoundRule extends Rule {
   private static final List<Pair> lowercasePairs = Arrays.asList(
           // NOTE: words here must be all-lowercase
           // NOTE: no need to add words from confusion_sets.txt, they will be used automatically (if starting with uppercase char)
+          new Pair("beine", "Körperteil", "biene", "Insekt"),
+          new Pair("rebe", "Weinrebe", "reibe", "Küchenreibe"),
+          new Pair("lande", null, "landes", null),
+          new Pair("ass", "Spielkarte", "pass", "Reisepass; Übergang durch ein Gebirge"),
+          new Pair("türmer", "Turmwächter", "türme", "Plural von 'Turm' (Bauwerk)"),
+          new Pair("soge", "ziehende Strömungen", "sorge", "bedrückendes Gefühl"),
+          new Pair("panne", "technischer Defekt", "spanne", "Zeitraum"),
+          new Pair("elfer", "Elfmeter", "helfer", "Person, die hilft"),
+          new Pair("bau", "Bauwerk, Baustelle", "baum", "Pflanze"),
+          new Pair("gase", "Plural von 'Gas' (Aggregatzustand)", "gasse", "kleine Straße"),
+          new Pair("ekel", "Abscheu", "enkel", "Kind eines eigenen Kindes"),
+          new Pair("reis", "Nahrungsmittel", "reise", "Ausflug/Fahrt"),
+          new Pair("speichel", "Körperflüssigkeit", "speicher", "Lager, Depot, Ablage"),
+          new Pair("hüte", "Kopfbedeckungen", "häute", "Plural von 'Haut'"),
+          new Pair("bach", "kleiner Fluss", "bauch", "Teil des menschlichen Körpers"),
+          new Pair("werbereich", null, "erbereich", null),
+          new Pair("lage", "Position", "alge", "im Wasser lebende Organismen"),
+          new Pair("sphäre", "Kugel", "spähreh", null),
           new Pair("schenke", "Gastwirtschaft (auch: Schänke)", "schenkel", "Ober- und Unterschenkel"),
           new Pair("rune", "Schriftzeichen der Germanen", "runde", "Rundstrecke"),
           new Pair("mai", "Monat nach April", "mail", "E-Mail"),
@@ -105,6 +123,12 @@ public class ProhibitedCompoundRule extends Rule {
   private static LinguServices linguServices;
   private static final List<String> ignoreWords = Arrays.asList("Die", "De");
   private static final List<String> blacklistRegex = Arrays.asList(
+    "stromkreis",  // vs. reis/reise
+    "Lande(basis|basen|region|gebiets?|gebieten?|regionen|betriebs?|betrieben?|offizieren?|bereichs?|bereichen?|einrichtung|einrichtungen|massen?|plans?|versuchs?|versuchen?)",  // vs. Landes
+    "Model(vertrags?|verträgen?|erfahrung|erfahrungen|szene)",
+    "(Raum|Surf|Jazz|Herbst|Gymnastik|Normal)schuhen?",
+    "preis",  // Getränkepreis etc.
+    "reisähnlich(e|e[nmrs])?",
     "reisender",  // Ägyptenreisender etc.
     "[a-zöäüß]+sender",  // wg. sende/sender, z.B. bremsender, abzulassender
     "gra(ph|f)ische?",  // kosmografisch etc.
@@ -117,6 +141,327 @@ public class ProhibitedCompoundRule extends Rule {
     "Gra(ph|f)it"   // Grafit/Graphit
   );
   private static final Set<String> blacklist = new HashSet<>(Arrays.asList(
+          "Bankangabe",  // vs. band
+          "Bankangaben",  // vs. band
+          "Lehrbecken",  // vs. ecken
+          "Strohseide",  // vs. seile
+          "Filtermaschine",  // vs. Folter
+          "Filtermaschinen",  // vs. Folter
+          "Kenncode",  // vs. ode
+          "Kenncodes",  // vs. ode
+          "Sicherheitshalt",  // vs. haft
+          "Sicherheitshalts",  // vs. haft
+          "Sicherheitshalte",  // vs. haft
+          "Wandschalter",  // vs. hand
+          "Wandschalters",  // vs. hand
+          "Wildgericht",  // vs. wald
+          "Wildgerichte",  // vs. wald
+          "Haltungskonzept",  // vs. haft
+          "Schenkelbiene",  // vs. beine
+          "Schenkelbienen",  // vs. beine
+          "Felsenbiene",  // vs. beine
+          "Felsenbienen",  // vs. beine
+          "Killerbiene",  // vs. beine
+          "Killerbienen",  // vs. beine
+          "Investitionsbetrug",  // vs. betrag
+          "Investitionsbetruges",  // vs. betrag
+          "Investitionsbetrugs",  // vs. betrag
+          "Luftwert",  // vs. Lust
+          "Luftwerte",  // vs. Lust
+          "Luftwerts",  // vs. Lust
+          "Luftwertes",  // vs. Lust
+          "Luftwerten",  // vs. Lust
+          "Gegenschall",  // vs. schale
+          "Kontenvorgänge",  // vs. Kosten
+          "Militärbunker",  // vs. funker
+          "Gemüseboxen",  // vs. boden
+          "Suchwunsch",  // vs. Buch
+          "Pflanzerden",  // vs. enden
+          "Kriegsflucht", // vs. frucht
+          "Reisekabel",  // vs. fabel
+          "Schutzboxen",
+          "Wandbeschichtung",  // vs. Band
+          "Maschinenbrand",  // vs. bank
+          "Badehilfe",  // vs. Lade
+          "Badehilfen",  // vs. Lade
+          "Backprogramm",  // vs. Pack
+          "Backprogramme",
+          "Backprogrammen",
+          "Backfunktion",
+          "Backleistung",
+          "Winterblues",
+          "Klickverbindung",
+          "Klickverbindungen",
+          "Traumschuhe",  // vs Schule
+          "Traumschuhen",  // vs Schule
+          "Schulware",  // vs Schuh
+          "Schulwaren",  // vs krisen
+          "Konzernkreisen",  // vs krisen
+          "Strandmotiv",  // vs stand
+          "Strandmotive",  // vs stand
+          "Strandmotiven",  // vs stand
+          "Tiersammelstelle",  // vs eier
+          "Tiersammelstellen",  // vs eier
+          "Verkaufserlebnis",  // vs verlauf
+          "Eisgenuss",  // vs ess
+          "Oberhardt",  // vs eber
+          "Hundebett",  // vs fett
+          "Artengesetz",  // vs arm
+          "Mietpartner",  // vs mit
+          "Mietpartners",  // vs mit
+          "Mietpartnern",  // vs mit
+          "Mieterlebnis",  // vs mit
+          "Paketkasten",  // vs karten
+          "Ausnahmefirmen",  // vs formen
+          "Schreibraten",  // vs bart
+          "Treppentransport",  // vs truppen
+          "Treppentransports",  // vs truppen
+          "Treppentransporte",  // vs truppen
+          "Treppentransporten",  // vs truppen
+          "Familienvillen",  // vs willen
+          "Kampweg",  // vs kampf
+          "Kampwegs",  // vs kampf
+          "Werbemodel",  // vs modell
+          "Werbemodels",  // vs modell
+          "Schuhreinigung",  // vs schul
+          "Luftrad",  // vs rat
+          "Luftrads",  // vs rat
+          "Waschgel",  // vs geld
+          "Waschgels",  // vs geld
+          "Absatzzeile",  // vs ziele
+          "Absatzzeilen",  // vs ziele
+          "Standardzeile",  // vs ziele
+          "Standardzeilen",  // vs ziele
+          "Reisspezialität",  // vs eis
+          "Reisspezialitäten",  // vs eis
+          "Kommunikationsgewerbe",  // vs gewebe
+          "Kunststoffgewerbe",  // vs gewebe
+          "Obstring",  // vs ost
+          "Obstringen",  // vs ost
+          "Mietinformation",  // vs mit
+          "Mietinformationen",  // vs mit
+          "Bergtrasse",  // vs rasse
+          "Privatprofil",  // vs profit
+          "Spezialölen",  // vs öfen
+          "Ladedock",  // vs deck
+          "Ladedocks",  // vs deck
+          "Fahrtenregler",  // vs segler
+          "Fahrtenreglern",  // vs segler
+          "Fahrtenreglers",  // vs segler
+          "Körperakne",  // vs akte
+          "Mitarbeiterakte",  // vs aktie
+          "Mitarbeiterakten",  // vs aktien
+          "Frontschaden",  // vs frost
+          "Testgebühr",  // vs fest
+          "Testgebühren",  // vs fest
+          "Energiegeld",  // vs feld
+          "Kontaktermittlung",  // vs vermittlung
+          "Flutnacht",  // vs blut
+          "Salztank",  // vs bank
+          "Kursformat",  // vs kurz
+          "Kursformate",  // vs kurz
+          "Kursformaten",  // vs kurz
+          "Kursseite",  // vs kurz
+          "Kursseiten",  // vs kurz
+          "Ladekarte",  // vs lage
+          "Ladekarten",  // vs lage
+          "Schneehose",  // vs hase
+          "Schneehosen",  // vs hase
+          "Außendusche",  // vs augen
+          "Außenduschen",  // vs augen
+          "Nachbauteile",  // vs bar
+          "Nachbauteilen",  // vs bar
+          "Außenbar",  // vs bau
+          "Modelfigur",  // vs modell
+          "Kurzangebot",  // vs kur
+          "Kurzangebote",  // vs kur
+          "Kurzangeboten",  // vs kur
+          "Verschwörungsideologe",  // vs ideologie
+          "Verschwörungsideologen",  // vs ideologie
+          "Maklerkollege",  // vs maler
+          "Maklerkollegen",  // vs maler
+          "Suppenköche",  // vs küche
+          "Suppenköchen",  // vs küche
+          "Schulköche",  // vs küche
+          "Schulköchen",  // vs küche
+          "Privatköche",  // vs küche
+          "Privatköchen",  // vs küche
+          "Mannschaftsköche",  // vs küche
+          "Mannschaftsköchen",  // vs küche
+          "Gourmetköche",  // vs küche
+          "Gourmetköchen",  // vs küche
+          "Fischköche",  // vs küche
+          "Fischköchen",  // vs küche
+          "Gefängnisköche",  // vs küche
+          "Gefängnisköchen",  // vs küche
+          "Chemieexperte",  // vs exporte
+          "Devisenexperte",  // vs exporte
+          "Mietinteressent",  // vs Mit
+          "Mietinteressenten",  // vs Mit
+          "Mietinteressentin",  // vs Mit
+          "Mietinteressentinnen",  // vs Mit
+          "Gruppenunterkunft",  // vs Truppe
+          "Gruppenunterkünfte",  // vs Truppe
+          "Gruppenunterkünften",  // vs Truppe
+          "Fischturm",  // vs Misch
+          "Wandtaster",  // vs Hand
+          "Rauchsalz",  // vs satz
+          "Miettag",  // vs Mit
+          "Mietrechnung",  // vs Mit
+          "Grundgas",  // vs Glas
+          "Mahlstufe",  // vs Wahl
+          "Mahlstufen",  // vs Wahl
+          "Mahlprogramm",  // vs Wahl
+          "Mahlprogramme",  // vs Wahl
+          "Mahlprogrammen",  // vs Wahl
+          "umparken",  // vs packen
+          "Fabrikgasse",  // vs gase
+          "Dachreinigung",  // vs Nach
+          "Dachreinigungen",  // vs Nach
+          "Geisterspiel",  // vs Meister
+          "Geisterspiels",  // vs Meister
+          "Geisterspiele",  // vs Meister
+          "Geisterspielen",  // vs Meister
+          "gehostet",  // vs hort
+          "gehostete",  // vs hort
+          "gehostetes",  // vs hort
+          "gehosteten",  // vs hort
+          "gehostetes",  // vs hort
+          "gehosteter",  // vs hort
+          "gehostetem",  // vs hort
+          "Felltyp",  // vs Zell
+          "Felltyps",  // vs Zell
+          "Gemüsehaus",  // vs baus
+          "Ladepark",  // vs Bade
+          "Ladeparks",  // vs Bade
+          "Autoexperte",  // vs exporte
+          "Autoexperten",  // vs exporte
+          "Basiskonten",  // vs kosten
+          "Onlinekonten",  // vs kosten
+          "Druckmodell",  // vs model/modell
+          "Druckmodells",  // vs model/modell
+          "Druckmodelle",  // vs model/modell
+          "Druckmodellen",  // vs model/modell
+          "Modelleben",  // vs model/modell
+          "Modellebens",  // vs model/modell
+          "Porzellanmarke",  // vs markt/marke
+          "Porzellanmarken",  // vs markt/marke
+          "Abtauvorgang",  // vs bau/tau
+          "Abtauvorgangs",  // vs bau/tau
+          "Abtauvorgänge",  // vs bau/tau
+          "Abtauvorgängen",  // vs bau/tau
+          "Kurzantrag",  // vs kur
+          "Kurzanträge",  // vs kur
+          "Kurzanträgen",  // vs kur
+          "Hundeschuhe",  // vs schule
+          "Hundeschuhen",  // vs schule
+          "Testerinnen",  // vs text
+          "Wirtschaftspreises",  // vs kreises
+          "Schlüsselkreise",  // vs preisen
+          "Bundespreisen",  // vs kreisen
+          "Terminsuche",  // vs sache
+          "Suchposition",  // vs sach
+          "Mietersache",  // vs suche
+          "Textprüfungen",  // vs test
+          "Abteilungszahlen",  // vs wahlen
+          "Batteriewahl",  // vs zahl
+          "Zahlrhythmus",  // vs wahl
+          "Zahldatum",  // vs wahl
+          "Auszahlphase",  // vs wahl
+          "Auszahlmethode",  // vs wahl
+          "Zahlprozess",  // vs wahl
+          "Protestzahlen",  // vs wahlen
+          "Leserwahlen",  // vs zahlen
+          "Publikumswahl",  // vs zahl
+          "Händlerwahl",  // vs zahl
+          "Wettbetrag",  // vs wert
+          "Wettguthaben",  // vs wert
+          "Wettannahme",  // vs wert
+          "Wettkonto",  // vs wert
+          "Wettguthaben",  // vs wert
+          "Wettguthabens",  // vs wert
+          "Wettsteuern",  // vs wert
+          "Wettoptionen",  // vs wert
+          "Testhaushalt",  // vs rest
+          "Testkapazität",  // vs rest
+          "Testfamilie",  // vs rest
+          "Testkapazitäten",  // vs rest
+          "Testbeobachtung",  // vs text
+          "Testproduktionen",  // vs text
+          "Produkttest",  // vs rest
+          "Produkttesten",  // vs rest
+          "Produkttext",  // vs test
+          "Textkampagnen",  // vs test
+          "Texting",  // vs testing
+          "Testfelds",  // vs text
+          "Testnachweis",  // vs text
+          "Testbeiträge",  // vs text
+          "Testbeiträgen",  // vs text
+          "Verkaufstext",  // vs test
+          "Bewerbungsfrage",  // vs bewertung
+          "Bewerbungstag",  // vs bewertung
+          "Bestätigungstext",  // vs test
+          "Bewerbungsprozess",  // vs bewertung
+          "Bewerbungsprozesse",  // vs bewertung
+          "Bewertungsmanagement",  // vs bewerbung
+          "Bewertungsdossier",  // vs bewerbung
+          "Bewerbungsnote",  // vs bewertung
+          "Bewerbungskennziffer",  // vs bewertung
+          "Online-Bewertung",  // vs bewerbung
+          "Schuhmodell",  // vs schul
+          "Schuhmodells",  // vs schul
+          "Bürgertest",  // vs fest
+          "Testzelt",  // vs fest
+          "Testgelegenheit",  // vs fest
+          "Testbestellung",  // vs fest
+          "Aufklärungsseiten",  // vs zeiten
+          "Verkaufsseiten",  // vs zeiten
+          "Morgenseiten",  // vs zeiten
+          "Bedürfnisseiten",  // vs zeiten
+          "Kehrzeiten",  // vs seiten
+          "Lernseiten",  // vs zeiten
+          "Suchstatistik",  // vs buch
+          "Kassenlösung",  // vs klasse
+          "Kassenchef",  // vs klasse
+          "Kassenmanagement",  // vs klasse
+          "Kassenbesetzung",  // vs klasse
+          "Stundenkonten",  // vs kosten
+          "Werbekonten",  // vs kosten
+          "Kontensicherung",  // vs kosten
+          "Extrakonten",  // vs kosten
+          "Servicekonten",  // vs kosten
+          "Lichtmodi",  // vs sicht
+          "Frontlicht",  // vs sicht
+          "sichtgeschützter",  // vs licht
+          "Sichtproben",  // vs licht
+          "Mietschein",  // vs mit
+          "Miethilfen",  // vs mit
+          "Mietberater",  // vs mit
+          "Mietstrom",  // vs mit
+          "Fitnessmarke",  // vs markt
+          "Kameramarke",  // vs markt
+          "Gewürzmarke",  // vs markt
+          "Paketmarke",  // vs markt
+          "Standregal",  // vs strand
+          "Standordnung",  // vs strand
+          "Zahnkorrekturen",  // vs bahn
+          "Infektionslage",  // vs tage
+          "Strandtage",  // vs lage
+          "Schweinebach",  // vs Schweinebauch
+          "Schweinebaches",  // vs Schweinebauches
+          "Wellenbach",  // vs Wellenbauch
+          "Kesselbauches",  // vs Kesselbaches
+          "Froschbach",  // vs Froschbauch
+          "Bachregion",  // vs Bauchregion
+          "Bachregionen",  // vs Bauchregionen
+          "Flugtaxen",  // vs Flugtagen
+          "Fahrerkanzel",  // vs Führerkanzel
+          "Wehrchef",  // vs Lehrchef
+          "Lichtkunstwerk",  // vs Dichtkunstwerk
+          "Infektionslage",  // vs Infektionstage
+          "Teilspiegel",  // vs Heilspiegel
+          "Preiseseite",  // vs Presseseite
+          "Teamfahrers",  // vs Teamführers
           "Supportzeiten",  // vs Supportseiten
           "Schwabenweg",
           "Datenspende",
@@ -702,7 +1047,57 @@ public class ProhibitedCompoundRule extends Rule {
           "pullert",
           "Meisterchor",
           "Bienenfarm",
-          "Feuchtmann" //name
+          "Windknoten",
+          "Videoarten", // vs Videokarten
+          "Textartikel", // vs Textpartikel
+          "Textartikels", // vs Textpartikels
+          "Textartikeln", // vs Textpartikeln
+          "Feuchtmann", //name
+          "Fachlektüre",
+          "Fachlektüren",
+          "Lustkugel",
+          "Lustkugeln",
+          "Tankbeleg", // vs Bankbeleg
+          "Tankbelegs", // vs Bankbelegs
+          "Tankbeleges", // vs Bankbeleges
+          "Tankbelege", // vs Bankbelege
+          "Tankbelegen", // vs Bankbelegen
+          "Kamelart", // vs. Kabelart
+          "Kamelarten", // vs. Kabelarten
+          "Bayern-Präsident", // vs Bauernpräsident
+          "Bayern-Präsidenten", // vs Bauernpräsident
+          "Bundessprechern", // vs Bundessprecherin
+          "Netzsuche", // vs Netztuche (?)
+          "Beileger", // vs Beilager
+          "Beilegers", // vs Beilagers
+          "Beilegern", // vs Beilagern
+          "Sexangelegenheit", // vs Seeangelegenheit
+          "Sexangelegenheiten", // vs Seeangelegenheiten
+          "Mobilfunkmarke", // vs Mobilfunkmarkt
+          "Schulball", // vs Schulfall
+          "Schulballs", // vs Schulfalls
+          "Aluminiumzölle", // vs Aluminiumzelle
+          "Aluminiumzöllen", // vs Aluminiumzellen
+          "Herz-Ass", // vs Herzast
+          "Herzass", // vs Herzast
+          "Fleischmagen", // vs Fleischtagen
+          "marktdurchdringend", // vs markdurchdringend
+          "marktdurchdringende",
+          "marktdurchdringendes",
+          "marktdurchdringender",
+          "marktdurchdringenden",
+          "marktdurchdringendem",
+          "Zukunftsbaum", // vs raum
+          "Zukunftsbaums", // vs raum
+          "Zukunftsbaumes", // vs raum
+          "Rasenwurzel", // vs nasen
+          "Rasenwurzeln", // vs nasen
+          "Wandlungskapital", // vs Handlungskapital
+          "Wandlungskapitals", // vs Handlungskapital
+          "Themenboxen", // vs bogen
+          "Superyacht", // vs macht
+          "Testbestellung", // vs fest
+          "Testbestellungen" // vs fest
   ));
 
   // have per-class static list of these and reference that in instance
@@ -838,7 +1233,7 @@ public class ProhibitedCompoundRule extends Rule {
   private boolean isMisspelled (String word) {
     return (linguServices == null ? spellerRule.isMisspelled(word) : !linguServices.isCorrectSpell(word, german));
   }
-  
+
   private int getMatches(AnalyzedSentence sentence, List<RuleMatch> ruleMatches, AnalyzedTokenReadings readings, int partsStartPos, String wordPart, int toPosCorrection) {
     /* optimizations:
      only nouns can be compounds
@@ -881,7 +1276,7 @@ public class ProhibitedCompoundRule extends Rule {
       long variantCount = lm.getCount(variant);
       //float factor = variantCount / (float)Math.max(wordCount, 1);
       //System.out.println("word: " + wordPart + " (" + wordCount + "), variant: " + variant + " (" + variantCount + "), factor: " + factor + ", pair: " + pair);
-      if (variantCount > 0 && wordCount == 0 && !blacklist.contains(wordPart) && !isMisspelled(variant) && blacklistRegex.stream().noneMatch(k -> wordPart.matches(".*" + k + ".*"))) {
+      if (variantCount > getThreshold() && wordCount == 0 && !blacklist.contains(wordPart) && !isMisspelled(variant) && blacklistRegex.stream().noneMatch(k -> wordPart.matches(".*" + k + ".*"))) {
         String msg;
         if (pair.part1Desc != null && pair.part2Desc != null) {
           msg = "Möglicher Tippfehler. " + uppercaseFirstChar(pair.part1) + ": " + pair.part1Desc + ", " + uppercaseFirstChar(pair.part2) + ": " + pair.part2Desc;
@@ -891,7 +1286,7 @@ public class ProhibitedCompoundRule extends Rule {
         int fromPos = readings.getStartPos() + partsStartPos;
         int toPos = fromPos + wordPart.length() + toPosCorrection;
         String id = getId() + "_" + cleanId(pair.part1) + "_" + cleanId(pair.part2);
-        RuleMatch match = new RuleMatch(new SpecificIdRule(id, pair.part1, pair.part2, messages), sentence, fromPos, toPos, msg);
+        RuleMatch match = new RuleMatch(new SpecificIdRule(id, pair.part1, pair.part2, messages, isPremium()), sentence, fromPos, toPos, msg);
         match.setSuggestedReplacement(variant);
         weightedMatches.add(new WeightedRuleMatch(variantCount, match));
       }
@@ -902,6 +1297,10 @@ public class ProhibitedCompoundRule extends Rule {
     }
     partsStartPos += wordPart.length() + 1;
     return partsStartPos;
+  }
+
+  int getThreshold() {
+    return 0;
   }
 
   private String cleanId(String id) {
@@ -969,7 +1368,8 @@ public class ProhibitedCompoundRule extends Rule {
   static private class SpecificIdRule extends Rule {  // don't extend ProhibitedCompoundRule for performance reasons (speller would get re-initialized a lot)
     private final String id;
     private final String desc;
-    SpecificIdRule(String id, String part1, String part2, ResourceBundle messages) {
+    SpecificIdRule(String id, String part1, String part2, ResourceBundle messages, boolean isPremium) {
+      this.setPremium(isPremium);
       this.id = Objects.requireNonNull(id);
       this.desc = "Markiert wahrscheinlich falsche Komposita mit Teilwort '" + uppercaseFirstChar(part1) + "' statt '" + uppercaseFirstChar(part2) + "' und umgekehrt";
       setCategory(Categories.TYPOS.getCategory(messages));

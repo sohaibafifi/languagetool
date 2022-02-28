@@ -34,13 +34,13 @@ import org.languagetool.rules.RuleMatch;
 
 public class TokenAgreementNounVerbRuleTest {
 
-  private JLanguageTool langTool;
+  private JLanguageTool lt;
   private TokenAgreementNounVerbRule rule;
 
   @Before
   public void setUp() throws IOException {
     rule = new TokenAgreementNounVerbRule(TestTools.getMessages("uk"));
-    langTool = new JLanguageTool(new Ukrainian());
+    lt = new JLanguageTool(new Ukrainian());
   }
 
   @Test
@@ -53,7 +53,9 @@ public class TokenAgreementNounVerbRuleTest {
     assertMatches(1, "вони швидко прибіг");
 
     assertMatches(1, "та з інших питань перевірка проведено не повно");
-    
+
+    assertMatches(1, "з часом пара вирішили узаконити");
+
     assertMatches(0, "На честь Джудіт Резнік названо кратер");
     
     //TODO:
@@ -63,6 +65,10 @@ public class TokenAgreementNounVerbRuleTest {
     assertEmptyMatch("чи зуміє наша держава забезпечити власні потреби");
     assertEmptyMatch("так навчила мене бабуся місити пухке дріжджове тісто");
     assertEmptyMatch("чи можуть російськомовні громадяни вважатися українцями");
+    
+    // predic + inf
+    assertEmptyMatch("не шкода віддати життя");
+    assertEmptyMatch("не шкода було віддати життя");
 
     // correct sentences:
     assertEmptyMatch("чоловік прибіг");
@@ -213,8 +219,11 @@ public class TokenAgreementNounVerbRuleTest {
     assertMatches(0, "вони як ніхто інший знали");
     
     assertMatches(0, "який прибила хвиля");
-    assertMatches(0, "ті, хто зрозуміли");
-    assertMatches(0, "всі хто зрозуміли");
+    assertMatches(0, "Ті, хто зрозуміли");
+    assertMatches(0, "ті, хто сповідує");
+    assertMatches(0, "ті, хто не сповідують");
+    assertMatches(1, "всі хто зрозуміли"); // пропущена кома
+    assertEmptyMatch("про те, хто була ця клята Пандора");
 
     assertEmptyMatch("що можна було й інший пошукати");
   }
@@ -285,6 +294,7 @@ public class TokenAgreementNounVerbRuleTest {
     assertEmptyMatch("То вона, то Гриць виринають перед її душею");
     assertEmptyMatch("Кожен чоловік і кожна жінка мають");
     assertEmptyMatch("каналізація і навіть охорона пропонувалися");
+    assertEmptyMatch("Кавказ загалом і Чечня зокрема лишаться");
     assertEmptyMatch("Європейський Союз і моя рідна дочка переживуть це збурення");
     assertEmptyMatch("Бразилія, Мексика, Індія збувають");
     assertEmptyMatch("Банкова й особисто президент дістали");
@@ -473,7 +483,7 @@ public class TokenAgreementNounVerbRuleTest {
   }
   
   private void assertEmptyMatch(String text) throws IOException {
-    AnalyzedSentence analyzedSentence = langTool.getAnalyzedSentence(text);
+    AnalyzedSentence analyzedSentence = lt.getAnalyzedSentence(text);
     try {
       assertEquals(Collections.<RuleMatch>emptyList(), Arrays.asList(rule.match(analyzedSentence)));
     }
@@ -508,16 +518,17 @@ public class TokenAgreementNounVerbRuleTest {
   public void testSpecialChars() throws IOException {
     assertEmptyMatch("Тарас при\u00ADбіг.");
 
-    RuleMatch[] matches = rule.match(langTool.getAnalyzedSentence("Тарас при\u00ADбігла."));
+    RuleMatch[] matches = rule.match(lt.getAnalyzedSentence("Тарас при\u00ADбігла."));
     assertEquals(1, matches.length);
 
-    matches = rule.match(langTool.getAnalyzedSentence("Та\u00ADрас прибігла."));
+    matches = rule.match(lt.getAnalyzedSentence("Та\u00ADрас прибігла."));
     assertEquals(1, matches.length);
   }
 
   
   private void assertMatches(int num, String text) throws IOException {
-    assertEquals(num, rule.match(langTool.getAnalyzedSentence(text)).length);
+    RuleMatch[] match = rule.match(lt.getAnalyzedSentence(text));
+    assertEquals("Unexpected: " + Arrays.asList(match), num, match.length);
   }
 
   private static final String GOOD_TEXT = "Хоча упродовж десятиліть ширилися численні історії про те, що я був у ряду наступників трону Тембу, щойно наведений простий генеалогічний екскурс викриває міфічність таких тверджень."

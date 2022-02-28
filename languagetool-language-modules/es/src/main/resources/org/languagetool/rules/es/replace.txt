@@ -1,3 +1,31 @@
+hryvnia|hrivna|grivnia|jrivna|hryvna=grivna
+crimeano=crimeo
+crimeanos=crimeos
+crimeana=crimea
+crimeanas=crimeas
+absurdez=absurdidad
+houthi=hutí
+houthis|houthís=hutís|hutíes
+espúreo=espurio
+espúreos=espurios
+espúrea=espuria
+espúreas=espurias
+derrepente|derepente=de repente
+Tigrai|Tigray=Tigré
+COVID19=COVID-19
+covid19=covid-19
+erupto=eructo
+cassette=casete
+cassettes=casetes
+interface=interfaz|interfase
+cunclillas|cluquillas=cuclillas
+agusto=a gusto
+cocreta=concreta|croqueta
+cocretas=concretas|croquetas
+vermouth=vermut|vermú
+vermouths=vermuts|vermús
+tambien=también|cambien
+shampoo=champú
 aver=a ver|haber|ver|aves|saber
 alante=adelante
 ostentóreo=estentóreo|ostentoso
@@ -65,7 +93,6 @@ almenos=al menos|almenas|a menos
 antibacterial=antibacteriano|antibacteriana
 antibacteriales=antibacterianos|antibacterianas
 sanitizante=desinfectante
-whatsapp=WhatsApp|wasap
 yoghourt|yogourt|yoghurt|yogurt=yogur
 yoghourts|yogourts|yoghurts|yogurts=yogures
 similaridad=similitud
@@ -89,7 +116,23 @@ zairense=zaireño|zaireña
 zairenses=zaireños|zaireñas
 boicó|boycott=boicot|boicoteo
 boicós|boycotts=boicots|boicoteos
+click=clic
+clicks=clics
+#prevent adding obvious mistakes to personal dictionary 
+despues=después
+estan=están
+encuenta=en cuenta
+hobbie=hobby|hobbies
+demas=demás
+algun=algún
 #################################################
 # Errors in the dictionary 
 # (can be removed after updating the dictionary)
 #################################################
+insanía=insania
+insanías=insania
+Kazajstán=Kazajistán
+kazakhstano=kazajo
+kazakhstanos=kazajos
+kazakhstana=kazaja
+kazakhstanas=kazajas

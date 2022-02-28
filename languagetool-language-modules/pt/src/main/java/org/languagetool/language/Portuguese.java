@@ -115,7 +115,7 @@ public class Portuguese extends Language implements AutoCloseable {
                     Arrays.asList("[", "(", "{", "\"", "“" /*, "«", "'", "‘" */),
                     Arrays.asList("]", ")", "}", "\"", "”" /*, "»", "'", "’" */)),
             new HunspellRule(messages, this, userConfig, altLanguages),
-            new LongSentenceRule(messages, userConfig, -1, false),
+            new LongSentenceRule(messages, userConfig, 50),
             new LongParagraphRule(messages, this, userConfig),
             new UppercaseSentenceStartRule(messages, this,
                 Example.wrong("Esta casa é velha. <marker>foi</marker> construida em 1950."),
@@ -128,7 +128,7 @@ public class Portuguese extends Language implements AutoCloseable {
             new ParagraphRepeatBeginningRule(messages, this),
             new PunctuationMarkAtParagraphEnd(messages, this, true),
             //Specific to Portuguese:
-            new PostReformPortugueseCompoundRule(messages),
+            new PostReformPortugueseCompoundRule(messages, this, userConfig),
             new PortugueseReplaceRule(messages),
             new PortugueseBarbarismsRule(messages, "/pt/barbarisms-pt.txt"),
             //new PortugueseArchaismsRule(messages, "/pt/archaisms-pt.txt"),   // see https://github.com/languagetool-org/languagetool/issues/3095

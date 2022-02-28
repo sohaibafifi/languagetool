@@ -50,7 +50,7 @@ public class EnglishSynthesizer extends BaseSynthesizer {
   private static final String TAGS_FILE_NAME = "/en/english_tags.txt";
   private static final String SOR_FILE_NAME = "/en/en.sor";
   
-  private static final List<String> exceptions = Arrays.asList("e'er", "o'er", "ol'", "ma'am", "n't");
+  private static final List<String> exceptions = Arrays.asList("ne'er", "e'er", "o'er", "ol'", "ma'am", "n't", "informations");
 
   // A special tag to add determiners.
   private static final String ADD_DETERMINER = "+DT";
@@ -73,8 +73,7 @@ public class EnglishSynthesizer extends BaseSynthesizer {
    * @return String value - inflected word.
    */
   @Override
-  public String[] synthesize(AnalyzedToken token, String posTag)
-      throws IOException {
+  public String[] synthesize(AnalyzedToken token, String posTag) throws IOException {
     if (posTag.startsWith(SPELLNUMBER_TAG)) {
       return super.synthesize(token, posTag);
     }
@@ -94,12 +93,11 @@ public class EnglishSynthesizer extends BaseSynthesizer {
    * @since 2.5
    */
   @Override
-  public String[] synthesize(AnalyzedToken token, String posTag,
-      boolean posTagRegExp) throws IOException {
+  public String[] synthesize(AnalyzedToken token, String posTag, boolean posTagRegExp) throws IOException {
     if (posTag.startsWith(SPELLNUMBER_TAG)) {
       return synthesize(token, posTag);
     }
-    if (posTag != null && posTagRegExp) {
+    if (posTagRegExp) {
       String myPosTag = posTag;
       String det = "";
       if (posTag.endsWith(ADD_IND_DETERMINER)) {
@@ -123,31 +121,24 @@ public class EnglishSynthesizer extends BaseSynthesizer {
       }
       return removeExceptions(results.toArray(new String[0]));
     }
-
     return removeExceptions(synthesize(token, posTag));
   }
 
   private void lookup(String lemma, String posTag, List<String> results, String determiner) {
     List<String> lookup = super.lookup(lemma, posTag);
     for (String result : lookup) {
-      results.add(determiner + StringTools.lowercaseFirstCharIfCapitalized(result));
+      //results.add(determiner + StringTools.lowercaseFirstCharIfCapitalized(result)); //why lowercase?
+      results.add(determiner + result);
     }
   }
   
-  private boolean isException(String w) {
+  @Override
+  protected boolean isException(String w) {
     // remove: 've, 's, 're...
     return w.startsWith("'") || exceptions.contains(w);  
   }
-  
-  private String[] removeExceptions(String words[]) {
-    List<String> results = new ArrayList<>();
-    for (String word : words) {
-      if (!isException(word)) {
-        results.add(word);
-      }
-    }
-    return results.toArray(new String[0]);
-  }
+
+
 
 }
 

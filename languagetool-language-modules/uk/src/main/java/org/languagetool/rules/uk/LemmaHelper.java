@@ -44,6 +44,15 @@ public abstract class LemmaHelper {
     return false;
   }
 
+  public static boolean hasLemma(List<AnalyzedToken> readings, Pattern lemmaRegex) {
+    for(AnalyzedToken analyzedToken: readings) {
+      if( lemmaRegex.matcher(analyzedToken.getLemma()).matches() ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public static boolean hasLemma(AnalyzedTokenReadings analyzedTokenReadings, List<String> lemmas, String partPos) {
     for(AnalyzedToken analyzedToken: analyzedTokenReadings.getReadings()) {
       for(String lemma: lemmas) {
@@ -141,6 +150,24 @@ public abstract class LemmaHelper {
 
     for(int i = pos; i < tokens.length && i > 0; i += step) {
       if( (posTag == null || PosTagHelper.hasPosTagPart(tokens[i], posTag)) 
+          && (token == null || token.matcher(tokens[i].getCleanToken()).matches()) )
+        return i;
+
+      if( posTagsToIgnore != null ) {
+      if( ! PosTagHelper.hasPosTag(tokens[i], posTagsToIgnore)
+          && ! QUOTES.matcher(tokens[i].getCleanToken()).matches() )
+        break;
+      }
+    }
+
+    return -1;
+  }
+
+  static int tokenSearch(AnalyzedTokenReadings[] tokens, int pos, Pattern posTag, Pattern token, Pattern posTagsToIgnore, Dir dir) {
+    int step = dir == Dir.FORWARD ? 1 : -1;
+
+    for(int i = pos; i < tokens.length && i > 0; i += step) {
+      if( (posTag == null || PosTagHelper.hasPosTag(tokens[i], posTag)) 
           && (token == null || token.matcher(tokens[i].getCleanToken()).matches()) )
         return i;
 

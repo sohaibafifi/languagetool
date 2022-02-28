@@ -144,6 +144,7 @@ public class LanguageSpecificTest {
       JLanguageTool lt = new JLanguageTool(language);
       List<Rule> allRules = lt.getAllRules();
       for (Rule rule : allRules) {
+        assertIdAndDescriptionValidity(language, rule);
         if (!(rule instanceof AbstractPatternRule)) {
           assertIdUniqueness(idsToClassName, ruleClasses, language, rule);
           assertIdValidity(language, rule);
@@ -217,7 +218,8 @@ public class LanguageSpecificTest {
     int i = 0;
     List<String> actualRuleIds = new ArrayList<>();
     for (RuleMatch match : matches) {
-      actualRuleIds.add(match.getRule().getId());
+      //actualRuleIds.add(match.getRule().getId());
+      actualRuleIds.add(match.getSpecificRuleId());
     }
     if (expectedMatchIds.size() != actualRuleIds.size()) {
       failTest(lang, text, expectedMatchIds, actualRuleIds);
@@ -245,11 +247,24 @@ public class LanguageSpecificTest {
     ruleClasses.add(rule.getClass());
   }
 
-  private void assertIdValidity(Language language, Rule rule) {
+  private void assertIdValidity(Language lang, Rule rule) {
     String ruleId = rule.getId();
     if (!ruleId.matches("^[A-Z_][A-Z0-9_]+$")) {
       throw new RuntimeException("Invalid character in rule id: '" + ruleId + "', language: "
-              + language + ", only [A-Z0-9_] are allowed and the first character must be in [A-Z_]");
+              + lang + ", only [A-Z0-9_] are allowed and the first character must be in [A-Z_]");
+    }
+  }
+
+  private void assertIdAndDescriptionValidity(Language lang, Rule rule) {
+    String ruleId = rule.getId();
+    if (rule.getId().equals(rule.getDescription())) {
+      System.err.println("*** WARNING: " + lang.getShortCodeWithCountryAndVariant() + ": " + rule.getFullId() + ": 'id' and 'name' are identical for this rule");
+    }
+    if (rule.getId().trim().isEmpty()) {
+      throw new RuntimeException("Empty rule id: '" + ruleId + "', language: " + lang.getShortCodeWithCountryAndVariant());
+    }
+    if (rule.getDescription().trim().isEmpty()) {
+      throw new RuntimeException("Empty rule description for rule: '" + ruleId + "', language: " + lang.getShortCodeWithCountryAndVariant());
     }
   }
 
@@ -305,7 +320,7 @@ public class LanguageSpecificTest {
       }
     }
     System.out.println("Number of default='temp_off' rules for " + lang + ": " + count);
-    int limit = 10;
+    int limit = 20;
     if (count > limit) {
       System.err.println("################################################################################################");
       System.err.println("WARNING: " + count + " default='temp_off' rules for " + lang + ", please make sure to turn on these");

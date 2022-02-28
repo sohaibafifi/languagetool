@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.UnaryOperator;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -31,6 +32,7 @@ import org.languagetool.rules.uk.LemmaHelper;
 import org.languagetool.tagging.BaseTagger;
 import org.languagetool.tagging.TaggedWord;
 import org.languagetool.tagging.WordTagger;
+import org.languagetool.tokenizers.uk.UkrainianWordTokenizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +46,7 @@ import org.slf4j.LoggerFactory;
 public class UkrainianTagger extends BaseTagger {
   private static final Logger logger = LoggerFactory.getLogger(UkrainianTagger.class);
 
-  private static final Pattern NUMBER = Pattern.compile("[+-±]?[€₴\\$]?[0-9]+(,[0-9]+)?([-–—][0-9]+(,[0-9]+)?)?(%|°С?)?|\\d{1,3}([\\s\u00A0\u202F]\\d{3})+");
+  private static final Pattern NUMBER = Pattern.compile("[-+±]?[0-9]+(,[0-9]+)?([-–—][0-9]+(,[0-9]+)?)?|\\d{1,3}([\\s\u00A0\u202F]\\d{3})+");
   // full latin number regex: M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})
   private static final Pattern LATIN_NUMBER = Pattern.compile("(?=[MDCLXVI])M*(C[MD]|D?C*)(X[CL]|L?X*)(I[XV]|V?I*)");
   private static final Pattern LATIN_NUMBER_CYR = Pattern.compile("[IXІХV]{2,4}(-[а-яі]{1,4})?|[IXІХV](-[а-яі]{1,4})");
@@ -71,7 +73,7 @@ public class UkrainianTagger extends BaseTagger {
       return additionalTaggedTokens;
     }
 
-    if ( LATIN_NUMBER.matcher(word).matches() ) {
+    if ( LATIN_NUMBER.matcher(word).matches() && ! word.matches("[MD]+") ) {
       List<AnalyzedToken> additionalTaggedTokens = new ArrayList<>();
       additionalTaggedTokens.add(new AnalyzedToken(word, "number:latin", word));
       return additionalTaggedTokens;
@@ -101,10 +103,10 @@ public class UkrainianTagger extends BaseTagger {
       return additionalTaggedTokens;
     }
 
-    if ( word.indexOf('-') > 0 ) {
+    if ( word.length() >= 3 && word.indexOf('-') > 0 ) {
 
       // екс-«депутат»
-      if( COMPOUND_WITH_QUOTES_REGEX.matcher(word).find() ) {
+      if( word.length() >= 6 && COMPOUND_WITH_QUOTES_REGEX.matcher(word).find() ) {
         String adjustedWord = word.replaceAll("[«»\"„“]", "");
         return getAdjustedAnalyzedTokens(word, adjustedWord, null, null, null);
       }
@@ -124,6 +126,11 @@ public class UkrainianTagger extends BaseTagger {
 
   @Override
   protected List<AnalyzedToken> getAnalyzedTokens(String word) {
+    
+    if( word.indexOf('`') > 0 ) {
+      word = word.replace('`', '\'');
+    }
+    
     List<AnalyzedToken> tokens = super.getAnalyzedTokens(word);
 
     if( word.length() < 2 )
@@ -159,6 +166,8 @@ public class UkrainianTagger extends BaseTagger {
           }
         }
 
+//        String lowerWord = word.toLowerCase();
+        
         // try г instead of ґ
         else if( word.contains("ґ") || word.contains("Ґ") ) {
           tokens = convertTokens(tokens, word, "ґ", "г", ":alt");
@@ -171,6 +180,54 @@ public class UkrainianTagger extends BaseTagger {
         }
         else if( word.contains("льо") ) {
           tokens = convertTokens(tokens, word, "льо", "ло", ":alt");
+        }
+        else if( word.startsWith("сьвя") ) {
+          tokens = convertTokens(tokens, word, "сьвя", "свя", ":arch");
+        }
+        else if( word.startsWith("сьві") ) {
+          tokens = convertTokens(tokens, word, "сьві", "сві", ":arch");
+        }
+        else if( word.contains("ьск") && ! word.endsWith("ская") && ! word.equals("Комсомольском")) {
+          tokens = convertTokens(tokens, word, "ьск", "ьськ", ":bad");
+        }
+
+        if( tokens.get(0).hasNoTag() ) {
+          if ( word.length() >= 3 ) {
+            if ( word.length() >= 9 ) {
+              Matcher matcher2 = CompoundTagger.LEFT_O_ADJ_INVALID_PATTERN.matcher(word);
+              if (matcher2.matches()) {
+                String prefix = matcher2.group(1);
+                String adjustedWord = matcher2.group(2);
+                List<AnalyzedToken> newTokens = getAdjustedAnalyzedTokens(word, adjustedWord, Pattern.compile("^adj.*"), null,
+                    (lemma) -> prefix + lemma);
+                if( ! newTokens.isEmpty() ) {
+                  tokens = newTokens;
+                }
+              }
+            }
+            if( tokens.get(0).hasNoTag()
+                && ! word.equalsIgnoreCase("ііі") ) {// often stands for Latin number
+              Matcher matcher = Pattern.compile("([аеєиіїоуюя])\\1{2,}", Pattern.CASE_INSENSITIVE|Pattern.UNICODE_CASE).matcher(word);
+              if( matcher.find() ) {
+                String adjustedWord = matcher.replaceAll("$1");
+                List<AnalyzedToken> newTokens = getAdjustedAnalyzedTokens(word, adjustedWord, Pattern.compile("(?!noun.*:prop).*"), ":alt",
+                    (lemma) -> lemma);
+                if( ! newTokens.isEmpty() ) {
+                  tokens = newTokens;
+                }
+              }
+            }
+            if( tokens.get(0).hasNoTag() 
+                && word.indexOf("[") != -1 && word.indexOf("]") != -1 
+                && UkrainianWordTokenizer.WORDS_WITH_BRACKETS_PATTERN.matcher(word).find() ) {
+              String adjustedWord = word.replace("[", "").replace("]", "");
+              List<AnalyzedToken> newTokens = getAdjustedAnalyzedTokens(word, adjustedWord, null, ":alt",
+                  (lemma) -> lemma);
+              if( ! newTokens.isEmpty() ) {
+                tokens = newTokens;
+              }
+            }
+          }
         }
       }
     }
@@ -193,14 +250,8 @@ public class UkrainianTagger extends BaseTagger {
     }
 
     // Івано-Франківська as adj from івано-франківський
-    if( word.indexOf('-') > 1 && ! word.endsWith("-") ) {
-      String[] parts = word.split("-");
-      if( Stream.of(parts).allMatch(LemmaHelper::isCapitalized) ) {
-        String lowerCasedWord = word.toLowerCase(); //Stream.of(parts).map(String::toLowerCase).collect(Collectors.joining("-"));
-        List<TaggedWord> wdList = wordTagger.tag(lowerCasedWord);
-        if( PosTagHelper.hasPosTagPart2(wdList, "adj") ) {
-          List<AnalyzedToken> analyzedTokens = asAnalyzedTokenListForTaggedWordsInternal(word, wdList);
-          analyzedTokens = PosTagHelper.filter(analyzedTokens, Pattern.compile("adj.*"));
+    List<AnalyzedToken> analyzedTokens = analyzeAllCapitamizedAdj(word);
+    if( analyzedTokens.size() > 0 ) {
           if( tokens.get(0).hasNoTag() ) {
             tokens = analyzedTokens;
           }
@@ -212,11 +263,26 @@ public class UkrainianTagger extends BaseTagger {
               }
             }
           }
-        }
-      }
     }
 
     return tokens;
+  }
+
+
+  protected List<AnalyzedToken> analyzeAllCapitamizedAdj(String word) {
+    if( word.indexOf('-') > 1 && ! word.endsWith("-") ) {
+      String[] parts = word.split("-");
+      if( Stream.of(parts).allMatch(LemmaHelper::isCapitalized) ) {
+        String lowerCasedWord = word.toLowerCase(); //Stream.of(parts).map(String::toLowerCase).collect(Collectors.joining("-"));
+        List<TaggedWord> wdList = wordTagger.tag(lowerCasedWord);
+        if( PosTagHelper.hasPosTagPart2(wdList, "adj") ) {
+          List<AnalyzedToken> analyzedTokens = asAnalyzedTokenListForTaggedWordsInternal(word, wdList);
+          analyzedTokens = PosTagHelper.filter(analyzedTokens, Pattern.compile("adj.*"));
+          return analyzedTokens;
+        }
+      }
+    }
+    return new ArrayList<>();
   }
 
 

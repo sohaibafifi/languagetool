@@ -33,17 +33,16 @@ import org.languagetool.chunking.GermanChunker;
 import org.languagetool.language.German;
 import org.languagetool.rules.RuleMatch;
 
-
 public class SubjectVerbAgreementRuleTest {
 
   private static SubjectVerbAgreementRule rule;
-  private static JLanguageTool langTool;
+  private static JLanguageTool lt;
 
   @BeforeClass
   public static void setUp() {
     Language german = Languages.getLanguageForShortCode("de-DE");
     rule = new SubjectVerbAgreementRule(TestTools.getMessages("de"), (German) german);
-    langTool = new JLanguageTool(german);
+    lt = new JLanguageTool(german);
   }
 
   @Test
@@ -108,11 +107,11 @@ public class SubjectVerbAgreementRuleTest {
 
   @Test
   public void testArrayOutOfBoundsBug() throws IOException {
-    rule.match(langTool.getAnalyzedSentence("Die nicht Teil des Näherungsmodells sind"));
+    rule.match(lt.getAnalyzedSentence("Die nicht Teil des Näherungsmodells sind"));
   }
 
   private AnalyzedTokenReadings[] getTokens(String s) throws IOException {
-    return langTool.getAnalyzedSentence(s).getTokensWithoutWhitespace();
+    return lt.getAnalyzedSentence(s).getTokensWithoutWhitespace();
   }
 
   @Test
@@ -303,7 +302,15 @@ public class SubjectVerbAgreementRuleTest {
         "Vier Monate ist die Niederlage nun her.",
         "Sie liebt Kunst und Kunst war auch kein Problem, denn er würde das Geld zurückkriegen.",
         "Bei komplexen und andauernden Störungen ist der Stress-Stoffwechsel des Hundes entgleist.",
-        "Eltern ist der bisherige Kita-Öffnungsplan zu unkonkret"
+        "Eltern ist der bisherige Kita-Öffnungsplan zu unkonkret",
+        "Einer der bedeutendsten Māori-Autoren der Gegenwart ist Witi Ihimaera.",
+        "Start und Ziel ist Innsbruck",
+        "Anfänger wie auch Fortgeschrittene sind herzlich willkommen!",
+        "Die Aussichten für Japans Zukunft sind düster.",
+        "Das Angeln an Mallorcas Felsküsten ist überaus Erfolg versprechend.",
+        "Das bedeutendste Bauwerk und Wahrzeichen der Stadt ist die ehemalige Klosterkirche des Klosters Hofen.",
+        "Das saisonale Obst und Gemüse ist köstlich und oft deutlich günstiger als in der Stadt.",
+        "Gründer und Leiter des Zentrums ist der Rabbiner Marvin Hier, sein Stellvertreter ist Rabbi Abraham Cooper."
     );
     for (String sentence : sentences) {
       assertGood(sentence);
@@ -479,7 +486,7 @@ public class SubjectVerbAgreementRuleTest {
   }
 
   private RuleMatch[] getMatches(String input) throws IOException {
-    return rule.match(langTool.getAnalyzedSentence(input));
+    return rule.match(lt.getAnalyzedSentence(input));
   }
 
 }

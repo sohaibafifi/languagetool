@@ -177,7 +177,7 @@ public final class CommandLineTools {
     for (RuleMatch match : ruleMatches) {
       Rule rule = match.getRule();
       String output = i + prevMatches + ".) Line " + (match.getLine() + 1) + ", column "
-              + match.getColumn() + ", Rule ID: " + rule.getId();
+              + match.getColumn() + ", Rule ID: " + match.getSpecificRuleId(); //rule.getId();
       if (rule instanceof AbstractPatternRule) {
         AbstractPatternRule pRule = (AbstractPatternRule) rule;
         if (pRule.getSubId() != null) {
@@ -189,7 +189,7 @@ public final class CommandLineTools {
         output += " prio=" + priorityForId;
       }
       System.out.println(output);
-      String msg = lang.toAdvancedTypography(match.getMessage().replaceAll("<suggestion>", lang.getOpeningDoubleQuote()).replaceAll("</suggestion>", lang.getClosingDoubleQuote()));
+      String msg = lang.toAdvancedTypography(match.getMessage()); //.replaceAll("<suggestion>", lang.getOpeningDoubleQuote()).replaceAll("</suggestion>", lang.getClosingDoubleQuote())
       System.out.println("Message: " + msg);
       List<String> replacements = match.getSuggestedReplacements();
       if (!replacements.isEmpty()) {
@@ -237,39 +237,40 @@ public final class CommandLineTools {
     int matchCount = 0;
     int sentCount = 0;
     RuleMatchAsXmlSerializer serializer = new RuleMatchAsXmlSerializer();
-    PrintStream out = new PrintStream(System.out, true, "UTF-8");
-    if (isXmlFormat) {
-      out.print(serializer.getXmlStart(null, null));
-    }
-    for (StringPair srcAndTrg : reader) {
-      List<RuleMatch> curMatches = Tools.checkBitext(
-              srcAndTrg.getSource(), srcAndTrg.getTarget(),
-              srcLt, trgLt, bRules);
-      List<RuleMatch> fixedMatches = new ArrayList<>();
-      for (RuleMatch thisMatch : curMatches) {
-        fixedMatches.add(
-                trgLt.adjustRuleMatchPos(thisMatch,
-                        reader.getSentencePosition(),
-                        reader.getColumnCount(),
-                        reader.getLineCount(),
-                        reader.getCurrentLine(), null));
+    try (PrintStream out = new PrintStream(System.out, true, "UTF-8")) {
+      if (isXmlFormat) {
+        out.print(serializer.getXmlStart(null, null));
       }
-      ruleMatches.addAll(fixedMatches);
-      if (fixedMatches.size() > 0) {
-        if (isXmlFormat) {
-          String xml = serializer.ruleMatchesToXmlSnippet(fixedMatches,
-                  reader.getCurrentLine(), contextSize);
-          out.print(xml);
-        } else {
-          printMatches(fixedMatches, matchCount, reader.getCurrentLine(), contextSize, trgLt.getLanguage());
-          matchCount += fixedMatches.size();
+      for (StringPair srcAndTrg : reader) {
+        List<RuleMatch> curMatches = Tools.checkBitext(
+          srcAndTrg.getSource(), srcAndTrg.getTarget(),
+          srcLt, trgLt, bRules);
+        List<RuleMatch> fixedMatches = new ArrayList<>();
+        for (RuleMatch thisMatch : curMatches) {
+          fixedMatches.add(
+            trgLt.adjustRuleMatchPos(thisMatch,
+              reader.getSentencePosition(),
+              reader.getColumnCount(),
+              reader.getLineCount(),
+              reader.getCurrentLine(), null));
         }
+        ruleMatches.addAll(fixedMatches);
+        if (fixedMatches.size() > 0) {
+          if (isXmlFormat) {
+            String xml = serializer.ruleMatchesToXmlSnippet(fixedMatches,
+              reader.getCurrentLine(), contextSize);
+            out.print(xml);
+          } else {
+            printMatches(fixedMatches, matchCount, reader.getCurrentLine(), contextSize, trgLt.getLanguage());
+            matchCount += fixedMatches.size();
+          }
+        }
+        sentCount++;
       }
-      sentCount++;
-    }
-    displayTimeStats(startTime, sentCount, isXmlFormat);
-    if (isXmlFormat) {
-      out.print(serializer.getXmlEnd());
+      displayTimeStats(startTime, sentCount, isXmlFormat);
+      if (isXmlFormat) {
+        out.print(serializer.getXmlEnd());
+      }
     }
     return ruleMatches.size();
   }

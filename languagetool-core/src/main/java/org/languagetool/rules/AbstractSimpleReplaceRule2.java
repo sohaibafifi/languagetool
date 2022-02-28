@@ -145,9 +145,9 @@ public abstract class AbstractSimpleReplaceRule2 extends Rule {
 
         if (checkingCase) {
           String[] parts = line.split("=");
-          line = parts[0].toLowerCase() + "=" + parts[0];
+          line = parts[0].toLowerCase().trim() + "=" + parts[0].trim();
           if (parts.length == 2) {
-            line = line + "\t" + parts[1];
+            line = line + "\t" + parts[1].trim();
           } 
         }
 
@@ -259,12 +259,9 @@ public abstract class AbstractSimpleReplaceRule2 extends Rule {
           int startPos = prevTokensList.get(len - crtWordCount).getStartPos();
           int endPos = prevTokensList.get(len - 1).getEndPos();
           RuleMatch ruleMatch;
+          ruleMatch = new RuleMatch(this, sentence, startPos, endPos, msg, getShort());
           if (subRuleSpecificIds) {
-            String desc = getDescription(crt + " / " + msgSuggestions.replace("<suggestion>", "").replace("</suggestion>", ""));
-            String id = StringTools.toId(getId() + "_" + crt);
-            ruleMatch = new RuleMatch(new SpecificIdRule(id, desc, messages), sentence, startPos, endPos, msg, getShort());
-          } else {
-            ruleMatch = new RuleMatch(this, sentence, startPos, endPos, msg, getShort());
+            ruleMatch.setSpecificRuleId(StringTools.toId(getId() + "_" + crt));
           }
           if (!isCaseSensitive() && StringTools.startsWithUppercase(crt)) {
             for (int k = 0; k < replacements.size(); k++) {
@@ -322,28 +319,6 @@ public abstract class AbstractSimpleReplaceRule2 extends Rule {
     @Override
     public int hashCode() {
       return Objects.hash(paths, lang, caseSensitive);
-    }
-  }
-
-  static class SpecificIdRule extends AbstractSimpleReplaceRule {
-    private final String id;
-    private final String desc;
-    SpecificIdRule(String id, String desc, ResourceBundle messages) {
-      super(messages);
-      this.id = Objects.requireNonNull(id);
-      this.desc = desc;
-    }
-    @Override
-    protected Map<String, List<String>> getWrongWords() {
-      throw new RuntimeException("not implemented");
-    }
-    @Override
-    public String getId() {
-      return id;
-    }
-    @Override
-    public String getDescription() {
-      return desc;
     }
   }
 

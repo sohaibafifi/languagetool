@@ -475,6 +475,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
     </rulegroup>
 
     <rulegroup id="RAHUVATYSIA_SCHO" name="Рахуватися, що">
+      <antipattern>
+        <token regexp="yes">з|із</token>
+        <token inflected="yes">який</token>
+        <token inflected="yes">рахуватися</token>
+      </antipattern>
       <rule>
         <pattern>
           <marker>
@@ -491,6 +496,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
         <example correction="(вважати)|(гадати)">... <marker>рахуючи</marker>, що все буде гаразд.</example>
         <example>Він вважав, що все буде гаразд.</example>
         <example>От і рахуйте, що корисніше</example>
+        <example>інституціями, з якими рахуються, що роблять</example>
         <!-- TODO: fix
             <example>Він вважав, що з ним рахуються, що він є головним.</example>
         -->
@@ -510,19 +516,15 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
           </marker>
         </pattern>
         <message>Правильно: <suggestion><match no="1" postag_regexp="yes" postag="(verb|advp).*">вважатися</match> за <match
-          no="2" postag_regexp="yes" postag="(.*)v_oru(.*)" postag_replace="$1v_zna:(rinanim|ranim)?$2"/> <match
+          no="2" postag_regexp="yes" postag="(.*)v_oru(.*)" postag_replace="$1v_zna(:rinanim|:ranim)?$2"/> <match
           no="3" postag_regexp="yes" postag="(.*)v_oru(.*)" postag_replace="$1v_zna$2"/></suggestion></message>
 
         <url>http://kurylo.wikidot.com/23-deiaki-khybno-vzhyvani-slova</url>
         <example correction="Вважатись за депутата|Вважатися за депутата"><marker>Рахуватися депутатом</marker></example>
-        <example correction="Вважатись за народний депутата|Вважатись за народного (депутатом)|Вважатися за народне (депутатом)"><marker>Рахуватися народним депутатом</marker></example>
+        <example correction="Вважатись за народне депутата|Вважатись за народний депутата|Вважатись за народного депутата|Вважатися за народне депутата|Вважатися за народний депутата|Вважатися за народного депутата"><marker>Рахуватися народним депутатом</marker></example>
         <example correction="Вважатись за директрису|Вважатися за директрису"><marker>Рахуватися директрисою</marker></example>
         <example correction="(Вважатися) за директрису"><marker>Рахуючись директрисою</marker></example>
-        <!--
-            <example correction="вважавсь за торгівельний осередок|вважався за торгівельний осередок"><marker>рахувався торгівельним осередком</marker></example>
-            <example correction="вважавсь за торгівельне осередок|вважавсь за торгівельний осередок|вважавсь за торгівельного осередок|вважався за торгівельне осередок|вважався за торгівельний осередок|вважався за торгівельного осередок"><marker>рахувався торгівельним осередком</marker></example>
-        -->
-        <example correction="вважавсь за торгівельний осередок|вважавсь за торгівельного (осередком)|вважався за торгівельне (осередком)"><marker>рахувався торгівельним осередком</marker></example>
+        <example correction="вважавсь за торгівельне осередок|вважавсь за торгівельний осередок|вважавсь за торгівельного осередок|вважався за торгівельне осередок|вважався за торгівельний осередок|вважався за торгівельного осередок"><marker>рахувався торгівельним осередком</marker></example>
         <example>рахувалися разом</example>
         <example>витрати рахувалися мільйонами</example>
         <example>Але чи рахувалася ФРН із позицією</example>
@@ -1614,6 +1616,45 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
       </rule>
     </rulegroup>
 
+    <rulegroup id="V_CHYSLI" name="В числі">
+      <rule>
+        <pattern>
+          <marker>
+            <token regexp="yes">[ву]</token>
+            <token>числі</token>
+          </marker>
+          <token postag_regexp="yes" postag="num.*" min="0" max="2"/>
+          <token postag_regexp="yes" postag="(noun|adj).*:v_rod.*">
+            <exception>Пі</exception>
+          </token>
+        </pattern>
+        <message>Правильно: <suggestion>серед</suggestion>, <suggestion>поміж</suggestion></message>
+        <example correction="серед|поміж"><marker>в числі</marker> яких</example>
+        <example correction="серед|поміж"><marker>у числі</marker> 11 найвпливовіших</example>
+        <example correction="серед|поміж"><marker>у числі</marker> двох найкращих</example>
+        <example correction="серед|поміж">Українці були <marker>в числі</marker> 15 тис. радянських військовополонених</example>
+        <example>серед яких</example>
+        <example>у числі 13 є дві цифри</example>
+        <example>в числі Пі</example>
+      </rule>
+
+      <rule>
+        <pattern>
+          <marker>
+            <token regexp="yes">і?з</token>
+            <token>числа</token>
+          </marker>
+          <token postag_regexp="yes" postag="num.*" min="0" max="2"/>
+          <token postag_regexp="yes" postag="(noun|adj).*v_rod.*"/>
+        </pattern>
+        <message>Правильно: <suggestion>з-поміж</suggestion></message>
+        <example correction="з-поміж">навіть <marker>із числа</marker> її знайомих</example>
+        <example correction="з-поміж">навіть <marker>з числа</marker> французьких акторів</example>
+        <example correction="з-поміж"><marker>з числа</marker> 3,5 тис. польських військових</example>
+        <example>з числа 33 викреслюємо останню цифру</example>
+      </rule>
+    </rulegroup>
+
     <rulegroup id="vyrazhaty" name="Виражати">
       <rule>
         <pattern>
@@ -1857,7 +1898,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
               <exception postag_regexp="yes" postag=".*:(prop)"/>
               </token>
           -->
-          <token regexp="yes" inflected="yes" postag_regexp="yes" postag=".*(v_zna|v_rod).*">.+[аеєя]ння|біда|.*вбивство|вибух|випадок|відмова|вчинок|диверсія|дія|забудова|загроза|замах|злочин|злочинність|катастрофа|конфлікт|криза|насильство|наслідок|нашестя|небезпека|обстріл|пандемія|передача|підрив|провокація|прояв|розвиток|ситуація|скоєння|спроба|тенденція|теракт|торгівля|хвороба
+          <token regexp="yes" inflected="yes" postag_regexp="yes" postag="noun:inanim:.:(v_zna|v_rod).*">.+[аеєя]ння|біда|.*вбивство|вибух|випадок|відмова|вчинок|диверсія|дія|забудова|загроза|замах|злочин|злочинність|катастрофа|конфлікт|криза|насильство|наслідок|нашестя|небезпека|обстріл|пандемія|передача|підрив|провокація|прояв|розвиток|ситуація|скоєння|спроба|тенденція|теракт|торгівля|хвороба
             <exception regexp="yes">видання|відділення|дослідження|зарання|засідання|зрання|командування|населення|оточення|самоврядування|скорочення</exception>
           </token>
         </pattern>
@@ -1876,8 +1917,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
           <token postag_regexp="yes" postag="adj:.:v_zna.*" min="0"/>
           <token regexp="yes" inflected="yes" postag_regexp="yes" postag="noun:inanim:.:v_zna.*">поразка|крах|фіаско|біда|неудача|невдача|втрата</token>
         </pattern>
-        <message>Правильно: <suggestion>зазнати <match no="2" postag_regexp="yes" postag="(adj:.:)v_...(.*)" postag_replace="$1v_rod.*"/> <match no="3" postag_regexp="yes" postag="(noun:inanim:.:)v_...(.*)" postag_replace="$1v_rod"/></suggestion></message>
+        <message>Правильно: <suggestion>зазнати <match no="2" postag_regexp="yes" postag="(adj:.:)v_...(.*)" postag_replace="$1v_rod.*"/> <match no="3" postag_regexp="yes" postag="(noun:inanim:.:)v_...(.*)" postag_replace="$1v_rod.*"/></suggestion></message>
         <example correction="зазнати нищівної поразки"><marker>потерпів нищівну поразку</marker></example>
+        <example correction="зазнати повного фіаско"><marker>потерпів повне фіаско</marker></example>
       </rule>
 
       <rule id="bez_visty" name="Без вісти/безвісти">
@@ -3952,6 +3994,32 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
       </rule>
     </rulegroup>
 
+    <rulegroup id="kloyvannya_vagannya" name="Коливання та вагання">
+      <rule>
+        <pattern>
+          <token>без</token>
+          <marker>
+            <token>коливань</token>
+          </marker>
+        </pattern>
+        <message>Коли йдеться про сумніви, нерішучість, говоримо: <suggestion>вагань</suggestion></message>
+        <example correction="вагань">без <marker>коливань</marker>.</example>
+        <example>30 коливань</example>
+      </rule>
+
+      <rule>
+        <pattern>
+          <token>не</token>
+          <marker>
+            <token>коливаючись</token>
+          </marker>
+        </pattern>
+        <message>Коли йдеться про сумніви, нерішучість, говоримо: <suggestion>вагаючись</suggestion></message>
+        <example correction="вагаючись">стрибнув не <marker>коливаючись</marker>.</example>
+        <example>коливаючись на вітру</example>
+      </rule>
+    </rulegroup>
+
     <rulegroup id="SYOGODNYASHNIY_DEN" name="Сьогодняшній день">
       <rule>
         <pattern>
@@ -4337,42 +4405,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
       <message>Правильно: <suggestion>облиплий</suggestion></message>
       <example correction="облиплий">Штани <marker>в обтяжку</marker>.</example>
     </rule>
-
-    <rulegroup id="V_CHYSLI" name="В числі">
-      <rule>
-        <pattern>
-          <marker>
-            <token regexp="yes">[ву]</token>
-            <token>числі</token>
-          </marker>
-          <token postag_regexp="yes" postag="num.*" min="0"/>
-          <token postag_regexp="yes" postag="(noun|adj).*:v_rod.*">
-            <exception>Пі</exception>
-          </token>
-        </pattern>
-        <message>Правильно: <suggestion>серед</suggestion>, <suggestion>поміж</suggestion></message>
-        <example correction="серед|поміж"><marker>в числі</marker> яких</example>
-        <example correction="серед|поміж"><marker>у числі</marker> 11 найвпливовіших</example>
-        <example correction="серед|поміж"><marker>у числі</marker> двох найкращих</example>
-        <example>серед яких</example>
-        <example>у числі 13 є дві цифри</example>
-        <example>в числі Пі</example>
-      </rule>
-      <rule>
-        <pattern>
-          <marker>
-            <token regexp="yes">і?з</token>
-            <token>числа</token>
-          </marker>
-          <token postag_regexp="yes" postag="num.*" min="0"/>
-          <token postag_regexp="yes" postag="(noun|adj).*v_rod.*"/>
-        </pattern>
-        <message>Правильно: <suggestion>з-поміж</suggestion></message>
-        <example correction="з-поміж">навіть <marker>із числа</marker> її знайомих</example>
-        <example correction="з-поміж">навіть <marker>з числа</marker> французьких акторів</example>
-        <example>з числа 33 викреслюємо останню цифру</example>
-      </rule>
-    </rulegroup>
 
     <rulegroup id="bilshe_togo" name="Більше того">
       <rule>
@@ -5189,10 +5221,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
       <rule>
         <pattern>
           <token>по</token>
-          <token postag_regexp="yes" postag="noun:inanim:.:v_dav.*" regexp="yes" inflected="yes">пошта|телефон|тел\.|інтернет|мережа</token>
+          <token postag_regexp="yes" postag="noun:inanim:.:v_mis.*" regexp="yes" inflected="yes">пошта|телефон|тел\.|інтернет|мережа</token>
         </pattern>
-        <message>Правильно: <suggestion><match no="2" postag_regexp="yes" postag="(noun:inanim:.):v_dav(.*)" postag_replace="$1:v_oru$2"/></suggestion></message>
-        <suggestion>через <match no="2" postag_regexp="yes" postag="(noun:inanim:.):v_dav(.*)" postag_replace="$1:v_zna$2"/></suggestion>
+        <message>Правильно: <suggestion><match no="2" postag_regexp="yes" postag="(noun:inanim:.):v_mis(.*)" postag_replace="$1:v_oru$2"/></suggestion></message>
+        <suggestion>через <match no="2" postag_regexp="yes" postag="(noun:inanim:.):v_mis(.*)" postag_replace="$1:v_zna(:rinanim)?$2"/></suggestion>
         <example correction="поштою|через пошту">отримувати <marker>по пошті</marker></example>
         <example correction="телефоном|через телефон">звертатися <marker>по телефону</marker></example>
         <example>поштою</example>
@@ -5201,12 +5233,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
       <rule>
         <pattern>
           <token>по</token>
-          <token postag_regexp="yes" postag="adj.*:v_dav.*"/>
-          <token postag_regexp="yes" postag="noun:inanim:.:v_dav.*" regexp="yes" inflected="yes">пошта|телефон|інтернет|мережа</token>
+          <token postag_regexp="yes" postag="adj.*:v_mis.*"/>
+          <token postag_regexp="yes" postag="noun:inanim:.:v_mis.*" regexp="yes" inflected="yes">пошта|телефон|інтернет|мережа</token>
         </pattern>
-        <message>Правильно: <suggestion><match no="2" postag_regexp="yes" postag="(adj.*):v_dav(.*)" postag_replace="$1:v_oru$2"/> <match no="3" postag_regexp="yes" postag="(noun:inanim:.):v_dav(.*)" postag_replace="$1:v_oru$2"/></suggestion></message>
-        <suggestion>через <match no="2" postag_regexp="yes" postag="(adj.*):v_dav(.*)" postag_replace="$1:v_zna$2"/> <match no="3" postag_regexp="yes" postag="(noun:inanim:.):v_dav(.*)" postag_replace="$1:v_zna$2"/></suggestion>
+        <message>Правильно: <suggestion><match no="2" postag_regexp="yes" postag="(adj.*):v_mis(.*)" postag_replace="$1:v_oru$2"/> <match no="3" postag_regexp="yes" postag="(noun:inanim:.):v_mis(.*)" postag_replace="$1:v_oru$2"/></suggestion></message>
+        <suggestion>через <match no="2" postag_regexp="yes" postag="(adj.*):v_mis(.*)" postag_replace="$1:v_zna(:rinanim)?$2"/> <match no="3" postag_regexp="yes" postag="(noun:inanim:.):v_mis(.*)" postag_replace="$1:v_zna$2"/></suggestion>
         <example correction="електронною поштою|через електронну пошту">надсилати <marker>по електронній пошті</marker></example>
+        <example correction="соціальними мережами|через соціальні мережі">ширитися <marker>по соціальних мережах</marker></example>
         <example>електронною поштою</example>
       </rule>
 
@@ -5215,10 +5248,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
           <token regexp="yes" inflected="yes">йти|іти|бігти|бігати|їхати|гуляти|прогулюватися|рухатися|[йі]дучи|йшовши|їдучи|їхавши|рухавшись|рухаючись</token>
           <marker>
             <token>по</token>
-            <token postag_regexp="yes" postag="noun:inanim:.:v_dav.*" regexp="yes" inflected="yes">вулиця|дорога|шлях|стежка|берег|місто</token>
+            <token postag_regexp="yes" postag="noun:inanim:.:v_mis.*" regexp="yes" inflected="yes">вулиця|дорога|шлях|стежка|берег|місто</token>
           </marker>
         </pattern>
-        <message>Краще: <suggestion><match no="3" postag_regexp="yes" postag="(noun:inanim:.):v_dav(.*)" postag_replace="$1:v_oru$2"/></suggestion></message>
+        <message>Краще: <suggestion><match no="3" postag_regexp="yes" postag="(noun:inanim:.):v_mis(.*)" postag_replace="$1:v_oru$2"/></suggestion></message>
         <example correction="вулицею">йти <marker>по вулиці</marker></example>
         <example correction="містом">йдучи <marker>по місту</marker></example>
         <example>йти вулицею</example>
@@ -5229,11 +5262,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
           <token regexp="yes" inflected="yes">йти|іти|бігти|бігати|їхати|гуляти|прогулюватися|рухатися</token>
           <marker>
             <token>по</token>
-            <token postag_regexp="yes" postag="adj.*:v_dav.*"/>
-            <token postag_regexp="yes" postag="noun:inanim:.:v_dav.*" regexp="yes" inflected="yes">вулиця|дорога|шлях|стежка|берег|місто</token>
+            <token postag_regexp="yes" postag="adj.*:v_mis.*"/>
+            <token postag_regexp="yes" postag="noun:inanim:.:v_mis.*" regexp="yes" inflected="yes">вулиця|дорога|шлях|стежка|берег|місто</token>
           </marker>
         </pattern>
-        <message>Краще: <suggestion><match no="3" postag_regexp="yes" postag="(.*):v_dav(.*)" postag_replace="$1:v_oru$2"/> <match no="4" postag_regexp="yes" postag="(noun:inanim:.):v_dav(.*)" postag_replace="$1:v_oru$2"/></suggestion></message>
+        <message>Краще: <suggestion><match no="3" postag_regexp="yes" postag="(.*):v_mis(.*)" postag_replace="$1:v_oru$2"/> <match no="4" postag_regexp="yes" postag="(noun:inanim:.):v_mis(.*)" postag_replace="$1:v_oru$2"/></suggestion></message>
         <example correction="широкою вулицею">бігти <marker>по широкій вулиці</marker></example>
         <example correction="гарним містом">гуляти <marker>по гарному місту</marker></example>
         <example correction="цією дорогою">гуляти <marker>по цій дорозі</marker></example>
@@ -5672,13 +5705,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             <token inflected="yes">масло</token>
           </unify>
         </pattern>
-        <message>Правильно: <suggestion><match no="1" postag_regexp="yes" postag="(adj)(:n)(.*)" postag_replace="$1(:f)(?!:v_zna:ranim)$3.*"/> <match no="2" postag="(noun:inanim):n:(.*)" postag_replace="$1:f:$2.*">олія</match></suggestion></message>
-        <example correction="рослинною олією">полити <marker>рослинним маслом</marker>.</example>
+        <message>Правильно: <suggestion><match no="1" postag_regexp="yes" postag="(adj)(:n)?(:p)?(:v_...)(.*)" postag_replace="$1(:f)?$3$4$5"/> <match no="2" postag="(noun:inanim)(:n)?(:p)?(.*)" postag_replace="$1(:f)?$3$4">олія</match></suggestion></message>
+        <example correction="рослинним олією|рослинною олією">полити <marker>рослинним маслом</marker>.</example>
         <example correction="пальмова олію|пальмову олію">взяти <marker>пальмове масло</marker>.</example>
         <example correction="оливкової олії">проти <marker>оливкового масла</marker>.</example>
-        <!-- 
+        <example correction="ефірні олії">про <marker>ефірні масла</marker>.</example>
         <example correction="рослинних олій">з <marker>рослинних масел</marker>.</example>
-         -->
       </rule>
 
       <rule>
@@ -5840,7 +5872,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
         <token inflected="yes">божий</token>
         <token inflected="yes">корівка</token>
       </pattern>
-      <message>Правильно: <suggestion><match no="1" postag=".*(:v_[^:]*).*" postag_replace="noun:anim:n$1:xp1" postag_regexp="yes">сонечко</match></suggestion></message>
+      <message>Правильно: <suggestion><match no="1" postag=".*(:v_[^:]*).*" postag_replace="noun:anim:n$1" postag_regexp="yes">сонечко</match></suggestion></message>
       <example correction="сонечко">О, диви, <marker>божа корівка</marker></example>
       <example correction="сонечка">я підійшов до <marker>божої корівки</marker></example>
     </rule>
@@ -5974,6 +6006,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
       <suggestion><match no="2" postag_regexp="yes" postag="(noun:inanim:[mp]:v_...).*" postag_replace="$1:xp1.*">шлем</match></suggestion>
       <url>http://sum.in.ua/s/shlem</url>
       <example correction="шлему">серії Великого <marker>шолому</marker>.</example>
+      <!--  TODO: need plural in the dict
+      <example correction="шлемів">сезону «Великих <marker>шоломів</marker>»</example>
+       -->
     </rule>
 
     <rule id="shlem_vs_sholom" name="Шлем/шолом">
@@ -6329,16 +6364,25 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 
     <rule id="bilya_num" name="Біля + числівник">
       <pattern>
-        <token>біля</token>
-        <token postag_regexp="yes" postag="number|numr:p:v_rod.*">
-          <exception postag_regexp="yes" postag="numr.*pron.*"/> <!--одних|багатьох -->
-          <exception regexp="yes">обох|одних</exception>
-        </token>
-        <token postag_regexp="yes" postag="(noun|numr).*v_rod.*"/>
+        <marker>
+          <token>біля</token>
+          <token min="0" regexp="yes">[$€]</token>
+          <token postag_regexp="yes" postag="number|numr:p:v_rod.*">
+            <exception postag_regexp="yes" postag="numr.*pron.*"/> <!--одних|багатьох -->
+            <exception regexp="yes">обох|одних</exception>
+          </token>
+        </marker>
+        <or>
+          <token postag_regexp="yes" postag="(noun|numr).*v_rod.*"/>
+          <token min="0" regexp="yes">[$€%]</token>
+        </or>
       </pattern>
-      <message>Правильно: <suggestion>близько <match no="2"/> <match no="3"/></suggestion></message>
-      <example correction="близько п'яти відсотків"><marker>біля п'яти відсотків</marker></example>
-      <example correction="близько 1 млрд."><marker>біля 1 млрд.</marker> осіб</example>
+      <message>Правильно: <suggestion>близько <match no="2"/><match no="3"/></suggestion></message>
+      <example correction="близько п'яти"><marker>біля п'яти</marker> відсотків</example>
+      <example correction="близько 1"><marker>біля 1</marker> млрд. осіб</example>
+      <example correction="близько $1"><marker>біля $1</marker> млрд.</example>
+      <example correction="близько 1"><marker>біля 1</marker>€ млрд. інвестицій</example>
+      <example correction="близько 1"><marker>біля 1</marker>%.</example>
       <example>біля одного воза він зупинився</example>
       <example>біля обох воріт</example>
       <example>біля одних дверей</example>
@@ -6736,6 +6780,23 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
       <example correction="по п'яному|напідпитку|з п'яних очей">загинув <marker>по п'яні</marker>.</example>
     </rule>
 
+    <rule id="a_raptom" name="А раптом">
+      <pattern>
+        <marker>
+          <token>а</token>
+          <token>раптом</token>
+        </marker>
+        <token min="0" max="2">
+          <exception postag_regexp="yes" postag="verb.*futr.*" />
+        </token>
+        <token postag_regexp="yes" postag="verb.*futr.*" />
+      </pattern>
+      <message>Правильно: <suggestion>а що як</suggestion></message>
+      <suggestion>ану (ж)</suggestion>
+      <url>http://yak-my-hovorymo.wikidot.com/pryslivnyky#raptom-a-shho-yak-anu-zh</url>
+      <example correction="а що як|ану (ж)"><marker>а раптом</marker> він прийде до нас.</example>
+    </rule>
+
     <rule id="glupyi" name="Глупий">
       <pattern>
         <token inflected="yes">глупий
@@ -6804,6 +6865,57 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
       </rule>
     </rulegroup>
 
+    <rulegroup id="pyayetsia" name="Питається">
+      <url>http://yak-my-hovorymo.wikidot.com/pytayetsya-postaye-vynykaye-pytannya-spytaty-b</url>
+
+      <rule>
+        <pattern>
+          <token postag="SENT_START"/>
+          <token min="0">а</token>
+          <marker>
+            <token>питається</token>
+          </marker>
+          <token regexp="yes">[,:—–-]</token>
+        </pattern>
+        <message>Дієслово питатися в українській мові стоїть завжди в особовій формі</message>
+        <suggestion>постає питання</suggestion>
+        <suggestion>от питання</suggestion>
+        <suggestion>спитати б</suggestion>
+        <example correction="Постає питання|От питання|Спитати б"><marker>Питається</marker>, що робити.</example>
+      </rule>
+
+      <rule>
+        <pattern>
+          <token regexp="yes">[,:—–-]</token>
+          <token min="0">а</token>
+          <marker>
+            <token>питається</token>
+          </marker>
+          <token>,</token>
+        </pattern>
+        <message>Дієслово питатися в українській мові стоїть завжди в особовій формі</message>
+        <suggestion>постає питання</suggestion>
+        <suggestion>от питання</suggestion>
+        <suggestion>спитати б</suggestion>
+        <example correction="постає питання|от питання|спитати б">і, <marker>питається</marker>, що робити.</example>
+      </rule>
+
+      <rule>
+        <pattern>
+          <token regexp="yes">[,—–-]</token>
+          <marker>
+            <token>питається</token>
+          </marker>
+          <token postag="SENT_END"/>
+        </pattern>
+        <message>Дієслово питатися в українській мові стоїть завжди в особовій формі</message>
+        <suggestion>постає питання</suggestion>
+        <suggestion>от питання</suggestion>
+        <suggestion>спитати б</suggestion>
+        <example correction="постає питання|от питання|спитати б">хто це зробив, <marker>питається</marker>.</example>
+      </rule>
+    </rulegroup>
+
     <rule id="de_ne_vizmys" name="Де (звідки) не візьмись">
       <pattern>
         <token regexp="yes">де|звідки</token>
@@ -6816,6 +6928,17 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
       <suggestion>коли це</suggestion>
       <suggestion>звідкись (не знати звідки, казна-звідки) узявся</suggestion>
       <example correction="де не взявся|де взявся|аж ось і|коли це|звідкись (не знати звідки, казна-звідки) узявся"><marker>де не візьмись</marker> прийшов він.</example>
+    </rule>
+
+    <rule id="z_opaskoyu" name="З опаскою">
+      <pattern>
+        <token regexp="yes">і?з</token>
+        <token>опаскою</token>
+      </pattern>
+      <message>Правильно: <suggestion>з побоюванням</suggestion></message>
+      <suggestion>з острахом</suggestion>
+      <suggestion>бережко</suggestion>
+      <example correction="з побоюванням|з острахом|бережко">поглядав <marker>з опаскою</marker>.</example>
     </rule>
 
     <rule id="derzhatysia_v_storoni" name="Держатися(триматися, бути) в стороні">
@@ -6881,6 +7004,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
         <token>за
           <exception scope="previous" inflected="yes" regexp="yes">[ій]ти</exception>
         </token>
+        <token min="0">власним</token>
         <token>смаком</token>
       </pattern>
       <message>Правильно: <suggestion>(собі) до смаку</suggestion>.</message>
@@ -6889,6 +7013,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
       <suggestion>на смак</suggestion>
       <suggestion>(нагадувати тощо) смаком</suggestion>
       <example correction="(собі) до смаку|на (свій) смак|до свого смаку|на смак|(нагадувати тощо) смаком">Додай собі цукор <marker>за смаком</marker>.</example>
+      <example correction="(собі) до смаку|на (свій) смак|до свого смаку|на смак|(нагадувати тощо) смаком">Додай собі цукор <marker>за власним смаком</marker>.</example>
       <example>повністю йдуть за смаком глядача</example>
     </rule>
 
@@ -7022,6 +7147,29 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
       <message>Краще: <suggestion>мешкати за адресою</suggestion></message>
       <suggestion>\1 на вулиці</suggestion>
       <example correction="мешкати за адресою|проживати на вулиці"><marker>проживати по вулиці</marker> Ушакова.</example>
+    </rule>
+
+    <rule id="z_hodu" name="З ходу">
+      <pattern>
+        <marker>
+          <token regexp="yes">і?з|с</token>
+          <token>ходу</token>
+        </marker>
+      </pattern>
+      <message>Краще: <suggestion>спрожогу</suggestion></message>
+      <suggestion>з наскоку</suggestion>
+      <example correction="спрожогу|з наскоку">і <marker>з ходу</marker> випалив</example>
+    </rule>
+
+    <rule id="pry_vyhlyadi" name="При вигляді">
+      <pattern>
+        <marker>
+          <token>при</token>
+          <token>вигляді</token>
+        </marker>
+      </pattern>
+      <message>Правильно: <suggestion>бачучи</suggestion>, <suggestion>побачивши</suggestion></message>
+      <example correction="бачучи|побачивши">і <marker>при вигляді</marker> цього</example>
     </rule>
 
 <!--  Too many false positives with надоїти, moved to replace.txt

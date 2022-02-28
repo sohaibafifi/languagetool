@@ -63,10 +63,13 @@ public abstract class Rule {
   private ITSIssueType locQualityIssueType = ITSIssueType.Uncategorized;
   private Category category;
   private URL url;
+  private boolean isPremium;
   private boolean defaultOff;
   private boolean defaultTempOff;
   private boolean officeDefaultOn = false;
   private boolean officeDefaultOff = false;
+  private int minPrevMatches = 0; // minimum number of previous matches to show the rule
+  private int distanceTokens = -1; // distance (number of tokens) between matches to consider a repetition
 
   public Rule() {
     this(null);
@@ -276,7 +279,7 @@ public abstract class Rule {
    * Set the examples that are correct and thus do not trigger the rule.
    */
   public final void setCorrectExamples(List<CorrectExample> correctExamples) {
-    this.correctExamples = Objects.requireNonNull(correctExamples);
+    this.correctExamples = correctExamples.isEmpty() ? null : correctExamples;
   }
 
   /**
@@ -290,7 +293,7 @@ public abstract class Rule {
    * Set the examples that are incorrect and thus do trigger the rule.
    */
   public final void setIncorrectExamples(List<IncorrectExample> incorrectExamples) {
-    this.incorrectExamples = Objects.requireNonNull(incorrectExamples);
+    this.incorrectExamples = incorrectExamples.isEmpty() ? null : incorrectExamples;
   }
 
   /**
@@ -305,7 +308,7 @@ public abstract class Rule {
    * @since 3.5
    */
   public final void setErrorTriggeringExamples(List<ErrorTriggeringExample> examples) {
-    this.errorTriggeringExamples = Objects.requireNonNull(examples);
+    this.errorTriggeringExamples = examples.isEmpty() ? null : examples;
   }
 
   /**
@@ -319,6 +322,7 @@ public abstract class Rule {
   /**
    * @return a category (never null since LT 3.4)
    */
+  @NotNull
   public Category getCategory() {
     return category;
   }
@@ -519,4 +523,27 @@ public abstract class Rule {
     return tags != null && tags.contains(tag);
   }
 
+  public boolean isPremium() {
+    return isPremium;
+  }
+
+  public void setPremium(boolean premium) {
+    isPremium = premium;
+  }
+  
+  public void setMinPrevMatches(int i) {
+    minPrevMatches = i;
+  }
+  
+  public int getMinPrevMatches() {
+    return minPrevMatches;
+  }
+  
+  public void setDistanceTokens(int i) {
+    distanceTokens = i;
+  }
+  
+  public int getDistanceTokens() {
+    return distanceTokens;
+  }
 }

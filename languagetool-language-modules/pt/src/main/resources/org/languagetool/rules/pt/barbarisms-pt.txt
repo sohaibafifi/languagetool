@@ -1,7 +1,7 @@
 # Multi word foreign expressions with Portuguese ones.
 #
-# © 2016–2021 Tiago F. Santos (tiagofsantos81@sapo.pt)
-# © 2018–2021 Marco A.G.Pinto (www.marcoagpinto.com)
+# © 2016–2022 Tiago F. Santos (tiagofsantos81@sapo.pt)
+# © 2018–2022 Marco A.G.Pinto (www.marcoagpinto.com)
 #
 # Licensed under LGPL.
 #
@@ -16,6 +16,8 @@ abat-jour=quebra-luz
 abat-jours=quebra-luzes
 acordéon=acordeão
 acordéons=acordeões
+add-on=extra
+add-ons=extras
 affair=caso amoroso
 affairs=casos amorosos
 afrikaans=africânder
@@ -647,8 +649,8 @@ full-time=tempo inteiro
 full-times=tempo inteiro
 funding=capitalização|financiamento
 fundings=capitalizações|financiamentos
-gadget=aparelho|bugiganga|dispositivo
-gadgets=aparelhos|bugigangas|dispositivos
+gadget=aparelho|bugiganga|dispositivo|utensílio
+gadgets=aparelhos|bugigangas|dispositivos|utensílios
 gaffe=deslize|descuido
 gaffes=deslizes|descuidos
 gag=gracejo
@@ -951,8 +953,6 @@ matinée=sessão da tarde
 matinées=sessões da tarde
 mayonnaise=maionese
 mayonnaises=maioneses
-menu=ementa
-menus=ementas
 meeting=comício|encontro|reunião
 meetings=comícios|encontros|reuniões
 mêlée=confusão
@@ -1190,8 +1190,6 @@ pullover=pulôver
 pullovers=pulôveres
 punaise=pionés
 punaises=pionés
-punch=ponche
-punchs=ponches
 putsch=golpe de Estado
 putschs=golpes de Estado
 pyrex=pirex
@@ -1443,7 +1441,7 @@ star=estrela|celebridade
 stars=estrelas|celebridades
 station=carrinha
 stations=carrinhas
-status=estatuto
+status=estatuto|estado
 stencil=estêncil
 stencils=estênceis
 stereo=estereofónico
@@ -1486,8 +1484,6 @@ task forces=equipas de intervenção
 tattoo=tatuagem
 tattoos=tatuagens
 tax-free=isento de imposto
-team=equipa
-teams=equipas
 teen=adolescente
 teens=adolescentes
 teenager=adolescente

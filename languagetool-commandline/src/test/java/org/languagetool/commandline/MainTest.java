@@ -312,8 +312,8 @@ public class MainTest extends AbstractSecurityTestCase {
     assertTrue("Got: " + output, output.contains("\"message\":\"Possible typo: you repeated a word\""));
     assertTrue("Got: " + output, output.contains("\"sentence\":\"This is an test.\""));
     assertTrue("Doesn't display Time", !output.contains("Time: "));
-    assertTrue("Json start check",output.startsWith("{\"software\":{\"name\":\"LanguageTool\",\"version\":"));
-    assertTrue("Json end check",output.endsWith("}]}"));
+    assertTrue("Json start check", output.contains("{\"software\":{\"name\":\"LanguageTool\",\"version\":"));
+    assertTrue("Json end check", output.endsWith("}]}"));
   }
 
   //test line mode vs. para mode
@@ -436,7 +436,7 @@ public class MainTest extends AbstractSecurityTestCase {
         "&apos;a university&apos;.\" " +
         "shortmsg=\"Wrong article\" " +
         "replacements=\"a\" context=\"This is an test.  This is a test of of language tool.  ...\" " +
-        "contextoffset=\"8\" offset=\"8\" errorlength=\"2\" category=\"Miscellaneous\" categoryid=\"MISC\" locqualityissuetype=\"misspelling\"/>"));
+        "contextoffset=\"8\" offset=\"8\" errorlength=\"2\" url=\"https://languagetool.org/insights/post/indefinite-articles/\" category=\"Miscellaneous\" categoryid=\"MISC\" locqualityissuetype=\"misspelling\"/>"));
   }
 
   @Test

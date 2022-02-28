@@ -25,7 +25,7 @@ USA
 <!--suppress CheckTagEmptyBody -->
 
 <!DOCTYPE rules [
-    <!ENTITY apostrophe "['’`´‘]">
+    <!ENTITY apostrophe "['’`´‘ʻ]">
 
         <!ENTITY weekdays "Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday">
         <!ENTITY abbrevWeekdays "Mon|Mo|Tue|Tu|Wed|We|Thu|Th|Fri|Fr|Sat|Sa|Sun|Su">
@@ -287,6 +287,31 @@ USA
     </category>
 
     <category id="AMERICAN_ENGLISH_STYLE" name="American English Style" type="style">
+        <rule id="ETC_PERIOD" name="period after abbreviation 'etc.'">
+            <antipattern>
+                <token>etc</token>
+                <token regexp="yes">/|_|…|#</token>
+            </antipattern>
+            <pattern>
+                <marker>
+                    <token case_sensitive="yes">etc</token>
+                </marker>
+                <token><exception>.</exception></token>
+            </pattern>
+            <message>A period is needed after the abbreviation 'etc.'</message>
+            <suggestion>etc.</suggestion>
+            <url>https://www.merriam-webster.com/dictionary/etc.</url>
+            <example correction="etc.">Tennis, soccer, baseball, <marker>etc</marker> are outdoor games.</example>
+            <example correction="etc.">I use things like Java, Microsoft, Unix, <marker>etc</marker> at work.</example>
+            <example correction="etc.">Make sure you bring your fishing pole, tackle, bait, <marker>etc</marker> as we will not make any stops.</example>
+            <example correction="etc.">No check engine lights <marker>etc</marker>?</example>
+            <example correction="etc.">Removed the alarm listener and replaced with lights, <marker>etc</marker>, etc.</example>
+            <example>Process: 4264 ExecStart=/etc/rc.d/init.d/newrelic-daemon start (code=exited, status=0/SUCCESS)</example>
+            <example>DND_ETC__List1</example>
+            <example>Device Handlers, etc…</example>
+            <example>root@de1lvapp098p:/etc# ls -l /dev/disk/by-uuid</example>
+            <example>Diversity Dick Liebert reported that questions for the ETC survey are currently being developed.</example>
+        </rule>
         <rule id="MISSING_COMMA_AFTER_YEAR" name="Potentially missing comma after year">
             <pattern>
                 <token regexp="yes">&months;</token>
@@ -297,12 +322,81 @@ USA
                 </marker>
                 <token regexp="yes">[a-z]+</token>
             </pattern>
-            <message>Some style guides suggest that commas should set off the year in a month-day-year date: <suggestion>\4,</suggestion>.</message>
+            <message>Some style guides suggest that commas should set off the year in a month-day-year date.</message>
+            <suggestion>\4,</suggestion>
             <url>http://www.thepunctuationguide.com/comma.html#dates</url>
             <short>Potentially missing comma</short>
             <example correction="2011,">The meeting scheduled for July 10, <marker>2011</marker> was canceled.</example>
             <example>My birthday is October 8, <marker>1983,</marker> but I usually do not celebrate.</example>
         </rule>
+        <rulegroup id="US_ONE_ENTITY" name="The United States are (is) 245 years old" default="temp_off">
+            <rule>  <!-- 'United States', SENT_START -->
+                <antipattern>
+                    <token>united</token>
+                    <token>states</token>
+                    <token postag="VBD" chunk="B-VP">
+                        <exception>broadcast</exception>
+                    </token>
+                </antipattern>
+                <pattern>
+                    <token postag="SENT_START" />
+                    <token min="0">the</token>
+                    <token>united</token>
+                    <token>states</token>
+                    <marker>
+                        <token postag="VBP?" postag_regexp="yes" chunk="B-VP" />
+                    </marker>
+                </pattern>
+                <message>In American English, '\2 \3 \4' is a singular entity and therefore requires a third-person verb form.</message>
+                <suggestion><match no="5" postag="VBZ" /></suggestion>
+                <example correction="is">The United States <marker>are</marker> 245 years old.</example>
+                <example correction="broadcasts">The United States <marker>broadcast</marker> a new radio message announcing a $25 million cash reward for information leading to Osama bin Laden's location or capture.</example>
+                <example>The United States fell 6 places to a ranking of only 22 in Transparency International's‘s list of countries by corruption.</example>
+                <example>The United States saw the Chinese theater as a means to tie up a large number of Japanese troops, as well as being a location for American airbases from which to strike the Japanese home islands.</example>
+            </rule>
+            <rule>  <!-- 'the US', SENT_START -->
+                <antipattern>
+                    <token case_sensitive="yes">US</token>
+                    <token postag="VBD" chunk="B-VP">
+                        <exception>broadcast</exception>
+                    </token>
+                </antipattern>
+                <pattern>
+                    <token postag="SENT_START" />
+                    <token>the</token>
+                    <token case_sensitive="yes">US</token>
+                    <marker>
+                        <token postag="VBP?" postag_regexp="yes" chunk="B-VP" />
+                    </marker>
+                </pattern>
+                <message>In American English, '\2 \3' is a singular entity and therefore requires a third-person verb form.</message>
+                <suggestion><match no="4" postag="VBZ" /></suggestion>
+                <example correction="is">The US <marker>are</marker> 245 years old.</example>
+            </rule>
+            <rule>  <!-- 'the U.S.', SENT_START -->
+                <antipattern>
+                    <token case_sensitive="yes">S</token>
+                    <token>.</token>
+                    <token postag="VBD" chunk="B-VP">
+                        <exception>broadcast</exception>
+                    </token>
+                </antipattern>
+                <pattern>
+                    <token postag="SENT_START" />
+                    <token>the</token>
+                    <token case_sensitive="yes">U</token>
+                    <token>.</token>
+                    <token case_sensitive="yes">S</token>
+                    <token>.</token>
+                    <marker>
+                        <token postag="VBP?" postag_regexp="yes" chunk="B-VP" />
+                    </marker>
+                </pattern>
+                <message>In American English, 'The U.S.' is a singular entity and therefore requires a third-person verb form.</message>
+                <suggestion><match no="7" postag="VBZ" /></suggestion>
+                <example correction="is">The U.S. <marker>are</marker> 245 years old.</example>
+            </rule>
+        </rulegroup>
 
         <rulegroup id="TOILET" name="offensive word 'toilet'">
             <rule>
@@ -420,7 +514,7 @@ USA
             <example correction="In the future"><marker>In future</marker>, we will do better.</example>
             <example><marker>In the future</marker>, we will do better.</example>
         </rule>
-        <rule id="HAVE_A_SHOWER" name="have a shower -> take a shower" default="temp_off">
+        <rule id="HAVE_A_SHOWER" name="have a shower → take a shower">
             <antipattern>
                 <token regexp="yes">\w*(room|house|home)$</token>
                 <token />
@@ -432,9 +526,9 @@ USA
                 <token min="0" postag="RB" />
                 <token postag_regexp="yes" postag="DT|CD" />
                 <token min="0" postag_regexp="yes" postag="JJ|RB"><exception regexp="yes">baby|steam|spacious|big|large|small</exception></token>
-                <token regexp="yes">shower|bath</token>
+                <token regexp="yes" chunk_re="E-NP.*">shower|bath</token>
             </pattern>
-            <message>In the US, the verb <suggestion><match no="1" postag="VB.*">take</match></suggestion> is usually used before '\5'.</message>
+            <message>In American English, the verb <suggestion><match no="1" postag="VB.*">take</match></suggestion> is usually used before '\5'.</message>
             <example correction="took">He <marker>had</marker> a shower before breakfast.</example>
             <example correction="takes">He <marker>has</marker> a shower every day.</example>
             <example correction="taken">I haven't <marker>had</marker> a bath in years.</example>
@@ -451,8 +545,9 @@ USA
             <rule> <!-- We have visited the client on 10/27/2040 -->
                 <pattern>
                     <token inflected="yes" postag="VBD?" postag_regexp="yes" skip="-1">have</token>
-                    <token postag="VBN" skip="-1">
+                    <token postag="VBN" skip="-1" chunk_re=".-VP">
                         <exception>scheduled</exception>
+                        <exception regexp="yes">wed|sat</exception>
                         <exception scope='next' regexp='yes'>before|until|will</exception></token>
                     <marker> &date_mdy_numbers; </marker>
                 </pattern>
@@ -471,7 +566,9 @@ USA
                         <exception regexp='yes'>before|until</exception></token>
                     <marker> &date_mdy_numbers_skip; </marker>
                     <token inflected="yes" postag="VBD?" postag_regexp="yes" skip="-1">have</token>
-                    <token postag="VBN" skip="-1"/>
+                    <token postag="VBN" skip="-1" chunk_re=".-VP">
+                        <exception regexp="yes">wed|sat</exception>
+                    </token>
                 </pattern>
                 <filter class="org.languagetool.rules.en.FutureDateFilter" args="year:\6 month:\2 day:\4"/>
                 <message>The given date is in the future, but the verb is in past tense.</message>
@@ -484,8 +581,10 @@ USA
             </rule>
             <rule> <!-- We visited the client on 27/10/2040  -->
                 <pattern>
-                    <token postag="VBD" skip="-1">
-                        <exception scope='next' regexp='yes'>before|until|will</exception></token>
+                    <token postag="VBD" skip="-1" chunk_re=".-VP">
+                        <exception scope='next' regexp='yes'>before|until|will</exception>
+                        <exception regexp="yes">wed|sat</exception>
+                    </token>
                     <marker> &date_mdy_numbers; </marker>
                 </pattern>
                 <filter class="org.languagetool.rules.en.FutureDateFilter" args="year:\6 month:\2 day:\4"/>
@@ -502,7 +601,9 @@ USA
                     <token>
                         <exception regexp='yes'>before|until</exception></token>
                     <marker> &date_mdy_numbers_skip; </marker>
-                    <token postag="VBD" skip="-1"/>
+                    <token postag="VBD" skip="-1" chunk_re=".-VP">
+                        <exception regexp="yes">wed|sat</exception>
+                    </token>
                 </pattern>
                 <filter class="org.languagetool.rules.en.FutureDateFilter" args="year:\6 month:\2 day:\4"/>
                 <message>The given date is in the future, but the verb is in past tense.</message>
@@ -544,6 +645,6 @@ USA
            <example correction="through">I'm going <marker>thru</marker> hell.</example>
            <example>A thru axle (TA) is a wheel attachment system that secures a wheel on a hub between a pair of dropouts on a bicycle frame or fork.</example>
         </rule>
-    </category>
+        </category>
 
 </rules>

@@ -19,6 +19,7 @@
 package org.languagetool.rules.de;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.languagetool.AnalyzedSentence;
 import org.languagetool.AnalyzedToken;
 import org.languagetool.AnalyzedTokenReadings;
@@ -61,6 +62,153 @@ public class VerbAgreementRule extends TextLevelRule {
 
   private static final List<List<PatternToken>> ANTI_PATTERNS = Arrays.asList(
     Arrays.asList(
+      // "Ken dachte, du wärst ich."
+      token("du"),
+      token("wärst"),
+      token("ich")
+    ),
+    Arrays.asList(
+      token("ich"),
+      token("schlafen"),
+      token("gehe")
+    ),
+    Arrays.asList(
+      token("du"),
+      token("schlafen"),
+      token("gehst")
+    ),
+    Arrays.asList(
+      token("per"),
+      token("du"),
+      tokenRegex("sind|waren|sein|wären|war|ist|gewesen")
+    ),
+    Arrays.asList(
+      token("schnellst"),
+      token("möglich")
+    ),
+    Arrays.asList(
+      // "Da freut er sich, wenn er schlafen geht und was findet."
+      token("er"),
+      token("schlafen"),
+      token("geht")
+    ),
+    Arrays.asList(
+      token("vermittelst")  // "Sie befestigen die Regalbretter vermittelst dreier Schrauben."
+    ),
+    Arrays.asList(
+      token("du"),
+      token("denkst"),
+      token("ich")
+    ),
+    Arrays.asList(
+      token("na"),
+      token("komm")
+    ),
+    Arrays.asList(
+      tokenRegex("muß|mußten?|müßt?en?"), // alte rechtschreibung (andere fehler)
+      tokenRegex("ich|wir|sie|er|es")
+    ),
+    Arrays.asList(
+      token("ich"),
+      tokenRegex("würd|könnt|werd|wollt|sollt|müsst|fürcht"),
+      tokenRegex("['’`´‘]")
+    ),
+    Arrays.asList(
+      tokenRegex("wir|sie|zu"),
+      tokenRegex("seh|steh|geh"),
+      tokenRegex("['’`´‘]"),
+      token("n")
+    ),
+    Arrays.asList(
+      token("ick"), // different error (berlinerisch)
+      tokenRegex("bin|war|wär|hab|hatte")
+    ),
+    Arrays.asList(
+      // hash tag
+      token("#"),
+      posRegex("VER.*")
+    ),
+    Arrays.asList(
+      // wie du war ich auch
+      token("wie"),
+      tokenRegex("du|ihr|er|es|sie"),
+      tokenRegex("bin|war"),
+      token("ich")
+    ),
+    Arrays.asList(
+      // Arabic names: Aryat Abraha bin Sabah Kaaba
+      posRegex("UNKNOWN|EIG.*"),
+      token("bin"),
+      posRegex("UNKNOWN|EIG.*")
+    ),
+    Arrays.asList(
+      // Du scheiß Idiot
+      tokenRegex("du|sie"),
+      tokenRegex("schei(ß|ss)"),
+      posRegex("SUB.*|UNKNOWN")
+    ),
+     Arrays.asList(
+       token("Du"),
+       tokenRegex("bist|warst|wärst")
+     ),
+     Arrays.asList(
+       token("als"),
+       token("auch"),
+       tokenRegex("er|sie|wir|du|ich|ihr")
+     ),
+     Arrays.asList(
+       tokenRegex("so|wie|zu"),
+       token("lange"),
+       tokenRegex("er|sie|wir|du|ich|ihr")
+     ),
+     Arrays.asList(
+       // Ich will nicht so wie er enden.
+       new PatternTokenBuilder().tokenRegex("so|genauso|ähnlich").matchInflectedForms().setSkip(2).build(),
+       token("wie"),
+       tokenRegex("er|sie|du|ihr|ich"),
+       posRegex("VER.*")
+     ),
+    Arrays.asList(
+      // "Bekommst sogar eine Sicherheitszulage"
+      pos("SENT_START"),
+      posRegex("VER:2:SIN:.*"),
+      posRegex("ART.*|ADV.*|PRO:POS.*")
+    ),
+    Arrays.asList(
+      // "A, B und auch ich"
+      token(","),
+      posRegex("EIG:.*|UNKNOWN"),
+      regex("und|oder"),
+      token("auch"),
+      token("ich")
+    ),
+    Arrays.asList( 
+      // "Dallun sagte nur, dass er gleich kommen wird und legte wieder auf."
+      // "Sie fragte, ob er bereit für die zweite Runde ist."
+      posRegex("VER.*"),  // z.B. "Bist"
+      tokenRegex("er|sie|ich|wir|du|es|ihr"),
+      tokenRegex("gleich|bereit|lange|schnelle?|halt|bitte")  // ist hier kein Verb
+    ),
+    Arrays.asList(
+      // "Dallun sagte nur, dass er gleich kommen wird und legte wieder auf."
+      posRegex("ADV.*|KON.*"),
+      tokenRegex("er|sie|ich|wir|du|es|ihr"),
+      tokenRegex("gleich|bereit|lange|schnelle?|halt|bitte")  // ist hier kein Verb
+    ),
+    Arrays.asList(
+      // "Woraufhin ich verlegen lächelte"
+      posRegex("ADV.*|KON.*"),
+      tokenRegex("er|sie|ich|wir|du|es|ihr"),
+      tokenRegex("verlegen"),
+      posRegex("VER.*")
+    ),
+    Arrays.asList(
+      // "Bringst nicht einmal so etwas Einfaches zustande!"
+      pos("SENT_START"),
+      posRegex("VER:2:SIN:.*"),
+      token("nicht")
+    ),
+    Arrays.asList(
       // "Da machte er auch vor dem eigenen Volk nicht halt."
       new PatternTokenBuilder().token("machen").matchInflectedForms().setSkip(-1).build(),
       token("halt")
@@ -78,11 +226,11 @@ public class VerbAgreementRule extends TextLevelRule {
       token("ich")
       ),
     Arrays.asList(
-      // "Einer wie du kennt ..."
-      token("einer"),
+      // "Einer wie du kennt ...", "Aber wenn jemand wie Du daherkommt"
+      tokenRegex("einer?|jemand"),
       token("wie"),
       token("du"),
-      pos("VER:3:SIN:PRÄ:NON")
+      posRegex("VER:3:.*")
     ),
     Arrays.asList(
       // "Kannst mich gerne anrufen" (ugs.)
@@ -160,7 +308,7 @@ public class VerbAgreementRule extends TextLevelRule {
     Arrays.asList(
       pos("VER:IMP:SIN:SFT"),  // "Kümmere du dich mal nicht darum!"
       token("du"),
-      token("dich")
+      tokenRegex("dich|dein|deine[srnm]?")
     ),
     Arrays.asList(
       token("sei"),
@@ -297,18 +445,18 @@ public class VerbAgreementRule extends TextLevelRule {
       for(int i = 2; i < tokens.length; i++) {
         if(",".equals(tokens[i-2].getToken()) && CONJUNCTIONS.contains(tokens[i].getToken())) {
           partialSentence = new AnalyzedSentence(Arrays.copyOfRange(tokens, idx, i));
-          ruleMatches.addAll(match(partialSentence, pos));
+          ruleMatches.addAll(match(partialSentence, pos, sentence));
           idx = i;
         }
       }
       partialSentence = new AnalyzedSentence(Arrays.copyOfRange(tokens, idx, tokens.length));
-      ruleMatches.addAll(match(partialSentence, pos));
+      ruleMatches.addAll(match(partialSentence, pos, sentence));
       pos += sentence.getCorrectedTextLength();
     }
     return toRuleMatchArray(ruleMatches);
   }
 
-  private List<RuleMatch> match(AnalyzedSentence sentence, int pos) {
+  private List<RuleMatch> match(AnalyzedSentence sentence, int pos, AnalyzedSentence wholeSentence) {
 
     AnalyzedTokenReadings finiteVerb = null;
     List<RuleMatch> ruleMatches = new ArrayList<>();
@@ -336,10 +484,6 @@ public class VerbAgreementRule extends TextLevelRule {
     /*int posPossibleVer2Plu = -1;*/
     
     for (int i = 1; i < tokens.length; ++i) { // ignore SENT_START
-
-      if (tokens[i].isImmunized()) {
-        continue;
-      }
 
       String strToken = tokens[i].getToken().toLowerCase();
       strToken = strToken.replace("‚", "");
@@ -397,7 +541,9 @@ public class VerbAgreementRule extends TextLevelRule {
     // "ich", "du", "er", and "wir" must have a matching verb
 
     if (posVer1Sin != -1 && posIch == -1 && !isQuotationMark(tokens[posVer1Sin-1])) { // 1st pers sg verb but no "ich"
-      ruleMatches.add(ruleMatchWrongVerb(tokens[posVer1Sin], pos, sentence));
+      if (!tokens[posVer1Sin].isImmunized()) {
+        ruleMatches.add(ruleMatchWrongVerb(tokens[posVer1Sin], pos, wholeSentence));
+      }
     } else if (posIch > 0 && !isNear(posPossibleVer1Sin, posIch) // check whether verb next to "ich" is 1st pers sg
                && (tokens[posIch].getToken().equals("ich") || tokens[posIch].getStartPos() <= 1 ||
                    (tokens[posIch].getToken().equals("Ich") && posIch >= 2 && tokens[posIch-2].getToken().equals(":")) ||
@@ -406,12 +552,16 @@ public class VerbAgreementRule extends TextLevelRule {
       int plus1 = ((posIch + 1) == tokens.length) ? 0 : +1; // prevent posIch+1 segfault
       BooleanAndFiniteVerb check = verbDoesMatchPersonAndNumber(tokens[posIch - 1], tokens[posIch + plus1], "1", "SIN", finiteVerb);
       if (!check.verbDoesMatchPersonAndNumber && !nextButOneIsModal(tokens, posIch) && !"äußerst".equals(check.finiteVerb.getToken())) {
-        ruleMatches.add(ruleMatchWrongVerbSubject(tokens[posIch], check.finiteVerb, "1:SIN", pos, sentence));
+        if (!tokens[posIch].isImmunized()) {
+          ruleMatches.add(ruleMatchWrongVerbSubject(tokens[posIch], check.finiteVerb, "1:SIN", pos, wholeSentence));
+        }
       }
     }
     
     if (posVer2Sin != -1 && posDu == -1 && !isQuotationMark(tokens[posVer2Sin-1])) {
-      ruleMatches.add(ruleMatchWrongVerb(tokens[posVer2Sin], pos, sentence));
+      if (!tokens[posVer2Sin].isImmunized()) {
+        ruleMatches.add(ruleMatchWrongVerb(tokens[posVer2Sin], pos, wholeSentence));
+      }
     } else if (posDu > 0 && !isNear(posPossibleVer2Sin, posDu)
                &&(!isQuotationMark(tokens[posDu-1]) || posDu < 3 || (posDu > 1 && tokens[posDu-2].getToken().equals(":")))) {
       int plus1 = ((posDu + 1) == tokens.length) ? 0 : +1;
@@ -420,8 +570,10 @@ public class VerbAgreementRule extends TextLevelRule {
           !tokens[posDu+plus1].hasPosTagStartingWith("VER:1:SIN:KJ2") && // "Wenn ich du wäre"
           !(tokens[posDu+plus1].hasPosTagStartingWith("ADJ:") && !tokens[posDu+plus1].hasPosTag("ADJ:PRD:GRU"))&& // "dass du billige Klamotten..."
           !tokens[posDu-1].hasPosTagStartingWith("VER:1:SIN:KJ2") &&
-          !nextButOneIsModal(tokens, posDu)) {
-        ruleMatches.add(ruleMatchWrongVerbSubject(tokens[posDu], check.finiteVerb, "2:SIN", pos, sentence));
+          !nextButOneIsModal(tokens, posDu) &&
+          !tokens[posDu].isImmunized()
+      ) {
+        ruleMatches.add(ruleMatchWrongVerbSubject(tokens[posDu], check.finiteVerb, "2:SIN", pos, wholeSentence));
       }
     }
     
@@ -432,18 +584,22 @@ public class VerbAgreementRule extends TextLevelRule {
       if (!check.verbDoesMatchPersonAndNumber 
               && !nextButOneIsModal(tokens, posEr)
               && !"äußerst".equals(check.finiteVerb.getToken())
-              && !"regen".equals(check.finiteVerb.getToken())) {  // "wo er regen Anteil nahm"
-        ruleMatches.add(ruleMatchWrongVerbSubject(tokens[posEr], check.finiteVerb, "3:SIN", pos, sentence));
+              && !"regen".equals(check.finiteVerb.getToken())  // "wo er regen Anteil nahm"
+              && !tokens[posEr].isImmunized()
+          ) {
+        ruleMatches.add(ruleMatchWrongVerbSubject(tokens[posEr], check.finiteVerb, "3:SIN", pos, wholeSentence));
       }
     }
     
     if (posVer1Plu != -1 && posWir == -1 && !isQuotationMark(tokens[posVer1Plu-1])) {
-      ruleMatches.add(ruleMatchWrongVerb(tokens[posVer1Plu], pos, sentence));
+      if (!tokens[posVer1Plu].isImmunized()) {
+        ruleMatches.add(ruleMatchWrongVerb(tokens[posVer1Plu], pos, wholeSentence));
+      }
     } else if (posWir > 0 && !isNear(posPossibleVer1Plu, posWir) && !isQuotationMark(tokens[posWir-1])) {
       int plus1 = ((posWir + 1) == tokens.length) ? 0 : +1;
       BooleanAndFiniteVerb check = verbDoesMatchPersonAndNumber(tokens[posWir - 1], tokens[posWir + plus1], "1", "PLU", finiteVerb);
-      if (!check.verbDoesMatchPersonAndNumber && !nextButOneIsModal(tokens, posWir)) {
-        ruleMatches.add(ruleMatchWrongVerbSubject(tokens[posWir], check.finiteVerb, "1:PLU", pos, sentence));
+      if (!check.verbDoesMatchPersonAndNumber && !nextButOneIsModal(tokens, posWir) && !tokens[posWir].isImmunized()) {
+        ruleMatches.add(ruleMatchWrongVerbSubject(tokens[posWir], check.finiteVerb, "1:PLU", pos, wholeSentence));
       }
     }
     
@@ -512,8 +668,8 @@ public class VerbAgreementRule extends TextLevelRule {
    */
   private BooleanAndFiniteVerb verbDoesMatchPersonAndNumber(AnalyzedTokenReadings token1, AnalyzedTokenReadings token2,
                                                String person, String number, AnalyzedTokenReadings finiteVerb) {
-    if (StringUtils.equalsAny(token1.getToken(), ",", "und","sowie") ||
-    		StringUtils.equalsAny(token2.getToken(), ",", "und","sowie")) {
+    if (StringUtils.equalsAny(token1.getToken(), ",", "und", "sowie", "&") ||
+    		StringUtils.equalsAny(token2.getToken(), ",", "und", "sowie", "&")) {
       return new BooleanAndFiniteVerb(true, finiteVerb);
     }
    
@@ -562,7 +718,6 @@ public class VerbAgreementRule extends TextLevelRule {
           suggestions.set(i, StringTools.uppercaseFirstChar(suggestions.get(i)));
         }
       }
-      Collections.sort(suggestions);
       return suggestions;
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -630,6 +785,8 @@ public class VerbAgreementRule extends TextLevelRule {
       for (String pronounSuggestion : pronounSuggestions) {
         suggestions.add(pronounSuggestion + " " + verb.getToken());
       }
+      String markedText = sentence.getText().substring(subject.getStartPos(), verb.getStartPos()+verb.getToken().length());
+      sortBySimilarity(suggestions, markedText);
       ruleMatch.setSuggestedReplacements(suggestions);
     } else {
       ruleMatch = new RuleMatch(this, sentence, pos+verb.getStartPos(), pos+subject.getStartPos()+subject.getToken().length(), msg);
@@ -641,12 +798,22 @@ public class VerbAgreementRule extends TextLevelRule {
       for (String pronounSuggestion : pronounSuggestions) {
         suggestions.add(verb.getToken() + " " + pronounSuggestion);
       }
+      String markedText = sentence.getText().substring(verb.getStartPos(), subject.getStartPos()+subject.getToken().length());
+      sortBySimilarity(suggestions, markedText);
       ruleMatch.setSuggestedReplacements(suggestions);
     }
     
     return ruleMatch;
   }
-  
+
+  private void sortBySimilarity(List<String> suggestions, String markedText) {
+    suggestions.sort((o1, o2) -> {
+      int diff1 = LevenshteinDistance.getDefaultInstance().apply(markedText, o1);
+      int diff2 = LevenshteinDistance.getDefaultInstance().apply(markedText, o2);
+      return diff1 - diff2;
+    });
+  }
+
   static class BooleanAndFiniteVerb {
     boolean verbDoesMatchPersonAndNumber;
     AnalyzedTokenReadings finiteVerb;

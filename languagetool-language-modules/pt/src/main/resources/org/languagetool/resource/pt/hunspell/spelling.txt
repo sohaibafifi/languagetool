@@ -1,7 +1,7 @@
 # Portuguese words of all variants.
 #
-# Copyright © 2016-2021 Marco A.G.Pinto (www.marcoagpinto.com)
-# Copyright © 2016-2021 Tiago F. Santos (tiagofsantos81@sapo.pt)
+# Copyright © 2016-2022 Marco A.G.Pinto (www.marcoagpinto.com)
+# Copyright © 2016-2022 Tiago F. Santos (tiagofsantos81@sapo.pt)
 #
 # After validation, add here words suggested by users.
 #
@@ -10,12 +10,35 @@
 # For specific variant words, comment the word before adding it,
 # so it will be added to the specific dictionary later.
 #
+#
+# Structure of this file:
+#  - OBSCENE WORDS
+#  - Antes e depois de Cristo
+#  - Abreviaturas CTT
+#  - Estrangeirismos 2
+#  - Química
+#  - Raças de cavalos
+#  - Raças de cães
+#  - Greek letters
+#  - List of Companies from OpenData500
+#  - Rael / Raël
+#  - Months abbreviated
+#  - KARATE/MARTIAL ARTS
+#  - TAXONOMIC WORDS IN LATIN
+#  - PROPER NAMES, INCLUDING PLACES, UNIVERSITIES AND ORGANIZATIONS
+#  - ALPHABET LETTERS
+#  - Google
+#  - COMPUTERS RELATED
+#  - INTERNETÊS
+#  - CURRENCY CODES (ISO 4217)
+#  - ROMAN NUMERALS
+#
+#
 abdominoplastia
 abdominoplastias
 abetarda
 abetardas
 Abidjan
-Abigail
 abrótea
 abróteas
 abstract # Estrangeirismo
@@ -28,6 +51,8 @@ açaís
 Acapulco
 acareação
 acareações
+acaricida
+acaricidas
 aceiro
 aceiros
 acetilsalicílico
@@ -63,14 +88,14 @@ adunco
 aduncos
 Adwords
 aeroclube
-aeroclube
-aeroclubes
 aeroclubes
 aerocolia
 aerodeslizador
 aerodeslizadores
 aerogare
 aerogares
+aerologia
+aerologias
 aeronavais
 aeronaval
 Aerosmith
@@ -135,10 +160,10 @@ aleatorizado
 aleatorizados
 aleivosia
 aleivosias
-alergénio
-alergénios
 alergénico
 alergénicos
+alergénio
+alergénios
 alergologista
 alergologistas
 alevim
@@ -155,6 +180,8 @@ alíquota
 alíquotas
 aliteração
 aliterações
+aliviante
+aliviantes
 ALNG
 alógeno
 alógenos
@@ -170,6 +197,7 @@ alvanéis
 alvanel
 alvanéu
 alvanéus
+alvejável
 álveola-cinzenta
 álveolas-cinzentas
 amaciador
@@ -205,6 +233,8 @@ Amy
 Anacleto
 Anacom
 anafilaxia
+anarcocapitalismo
+anarcocapitalismos
 ANAREC
 ancabuladas
 ancabulados
@@ -229,6 +259,8 @@ anomização
 anomizações
 anoraque
 anoraques
+anorgasmia
+anorgasmias
 anosmia
 anosmias
 ANOVA
@@ -247,8 +279,6 @@ antevisão
 antevisões
 anti-hipertensor
 anti-histamínico
-anti-histamínico
-anti-histamínicos
 anti-histamínicos
 antiagregante
 antiagregantes
@@ -267,6 +297,8 @@ anticlímax
 anticomunismo
 anticomunista
 anticomunistas
+antiderivada
+antiderivadas
 antidopagem
 antienvelhecimento
 antiepiléptica
@@ -275,6 +307,7 @@ antiepiléptico
 antiepilépticos
 antifosfolipídico
 antiglobalização
+antigoverno
 antimeridiano
 antimeridianos
 antimotim
@@ -298,6 +331,8 @@ antropogénica
 antropogénicas
 antropogénico
 antropogénicos
+antropometria
+antropometrias
 antropomorfização
 antropomorfizações
 antumbra
@@ -305,9 +340,11 @@ anuro
 anuros
 APA
 apagão
-apagão
 apagões
-apagões
+apalpanço
+apalpanços
+aperreado
+aperreados
 API
 apiário
 apiários
@@ -331,6 +368,7 @@ aposemáticos
 aposematismo
 aposematismos
 apostásia
+apostilado
 apuradíssimo
 apuradíssimos
 aquacultura
@@ -341,6 +379,8 @@ aquaplanagens
 aqueloutro
 aquícola
 aquícolas
+aquilão
+aquilões
 Arainho
 aranzéis
 aranzel
@@ -358,6 +398,8 @@ arnês
 arnêses
 aroeira
 aroeiras
+aromaterapeuta
+aromaterapeutas
 arouquense
 arouquenses
 arquetípica
@@ -382,6 +424,8 @@ ASAU
 ASMR # Estrangeirismo
 Asperger
 aspiracional
+asquenaze
+asquenazes
 Assembly
 assepsia
 assepsias
@@ -406,6 +450,8 @@ astecas
 astenosfera
 astigmatismo
 Aston Villa
+astronave
+astronaves
 Asus
 Ataturk
 atávica
@@ -469,6 +515,8 @@ autoproclamado
 autoproclamados
 autorais
 autoral
+autorreproduzir
+autossuficiente
 Avalon
 Avanca
 avatar
@@ -532,6 +580,8 @@ barista
 baristas
 barotraumatismo
 barotraumatismos
+barracada
+barracadas
 barracuda
 barracudas
 Bartlett
@@ -542,8 +592,8 @@ basocelular
 basocelulares
 básquete
 basquete
-basquetes
 básquetes
+basquetes
 Basquiat
 Bastiat
 bateira
@@ -571,12 +621,15 @@ bazucas
 BdP
 BDSM
 BDSS
+bear market
 beatamente
 beatlemania
 Begonha
 beisebol
 bejeca
 bejecas
+benefe
+benefes
 Bengo
 Bentley
 bentónica
@@ -603,18 +656,22 @@ bibelô
 bibelôs
 bifidobactéria
 bifidobactérias
+bifobia
 bimilenar
 bimilenares
 bimilenária
 bimilenárias
 bimilenário
 bimilenários
+bimodalidade
 bin
 Bing
 bioanalítica
 bioanalíticas
 bioanalítico
 bioanalíticos
+bioassinatura
+bioassinaturas
 biociência
 biociências
 biodegradação
@@ -689,6 +746,7 @@ blockchain
 blockchains
 blogger
 Bloomberg
+blue
 BMP
 BMX
 Boavida
@@ -717,6 +775,7 @@ Bollywood
 bombril
 bonobo
 bonobos
+boost
 Bootstrap
 borliú
 Borussia Dortmund
@@ -730,8 +789,8 @@ botulínico
 botulínicos
 botulismo
 Bournemouth
-boxer
 bóxer
+boxer
 bóxeres
 boxers
 BPN
@@ -776,9 +835,12 @@ Bugatti
 buldózer
 buldózeres
 bulimia
+bull market
 bullying
 Bundesbank
 Bundestag
+burca
+burcas
 Burke
 Burnley
 burnout
@@ -790,8 +852,8 @@ burritos
 Butmir
 C de Cochran
 Caála
-cabal
 cabais
+cabal
 Cabedelo
 Cabify
 Cabinda
@@ -803,14 +865,15 @@ cabozes-camarão
 CAC
 caçapo
 caçapos
-chacha
-chachas
 cachaporrada
 cachaporradas
 Cacheu
+cacófato
+cacófatos
 Caconda
 caçula
 caçulas
+cãezitos
 cagalhão
 cagalhões
 cagança
@@ -859,7 +922,6 @@ canídeos
 cantonês
 cantoneses
 cãozito
-cãezitos
 capacitância
 capacitâncias
 capeta
@@ -868,10 +930,6 @@ capotamento
 capotamentos
 capuchino
 caquexia
-caralhada
-caralhadas
-caralho
-caralhos
 Caramulo
 carbamazepina
 carcinogénea
@@ -941,6 +999,7 @@ Catabola
 catalepsia
 catamarã
 catamarãs
+catano
 Catarino
 catastrofista
 catastrofistas
@@ -1000,13 +1059,20 @@ CESAM
 Cessna
 ceviches
 CFOP
+chacha
+chachas
 chacra
 chacras
 Chaffeur Privé
+chairman
+chalupa
+chalupas
 Champalimaud
 champôs
 chango-da-montanha
 changos-da-montanha
+chantra
+chantras
 chaparrais
 chaparral
 Charlie
@@ -1042,9 +1108,12 @@ Chokwé
 choninhas
 choupa
 choupas
-Chrome
 Chromecast
 Chromium
+chunga
+chungaria
+chungas
+chunguice
 CIA
 Ciampino
 ciberdivisa
@@ -1064,12 +1133,8 @@ cimitarra
 cimitarras
 cineol
 cingalês
-cingalês
-cingalesa
 cingalesa
 cingalesas
-cingalesas
-cingaleses
 cingaleses
 cingulada
 cinguladas
@@ -1093,10 +1158,13 @@ cistite
 cistites
 citocina
 citocinas
+citrato
+citratos
 Citroën
 citronela
 civicamente
 civilizadamente
+clamídia
 claraboias
 Clarice
 clementina
@@ -1109,6 +1177,7 @@ clientelismo
 clientelismos
 clímaxes
 Clio
+clipart
 clitoriana
 clitorianas
 clitoriano
@@ -1130,6 +1199,8 @@ coalas
 cobo-do-nilo
 cobos-do-nilo
 Cochran
+codependência
+codependente
 coevolução
 coevoluções
 coformulante
@@ -1138,14 +1209,16 @@ cofundação
 cofundações
 COGOC
 Cointrin
+coital
 colagénio
+colágeno
 colangite
 coleóptero
 coleópteros
 colhão
-colhões
 colhereiro
 colhereiros
+colhões
 colonoscopia
 colonoscopias
 colorretais
@@ -1170,8 +1243,9 @@ completíssimos
 complexificação
 complexificações
 comportamentalismo
-cona
-conas
+comuneiro
+comuneiros
+conceitualmente
 concheiro
 concheiros
 concidadã
@@ -1194,6 +1268,7 @@ consociada
 consociadas
 consociado
 consociados
+constitucionalização
 construtivismo
 construtivista
 construtivistas
@@ -1205,7 +1280,6 @@ contraciclos
 contracultura
 contramedida
 contramedidas
-# contraprestação
 contrariana
 contrarianas
 contrarianismo
@@ -1215,6 +1289,7 @@ contratenor
 contratenores
 conversora
 conversoras
+convolucional
 Copacabana
 coprostasia
 coprostasias
@@ -1230,6 +1305,8 @@ coronavírus
 corporativamente
 córrego
 córregos
+corrigenda
+corrigendas
 corroboração
 corroborações
 corrupio
@@ -1238,6 +1315,7 @@ Cortana
 Cortegaça
 corvina
 corvinas
+cos
 cosmódromo
 cosmódromos
 cossenos
@@ -1274,8 +1352,8 @@ crédulas
 Creutzfeldt-Jakob
 criámo-lo
 criamo-lo
-criámo-los
 criamo-los
+criámo-los
 criomicroscopia
 criomicroscopias
 criopreservação
@@ -1288,6 +1366,7 @@ criptodivisas
 criptomoeda
 criptomoedas
 CRISPR
+cristaloterapia
 cristãozito
 cristãozitos
 cristianofobia
@@ -1296,8 +1375,8 @@ cristianofóbicas
 cristianofóbico
 cristianofóbicos
 criticidade
-crível
 críveis
+crível
 crocante
 crocantes
 cromoscopia
@@ -1333,8 +1412,11 @@ cultuar
 curare
 curgete
 curgetes
+cuscar
 Cusco
 cuscuz
+cúspide
+cúspides
 customizado
 customizados
 cuvete
@@ -1355,7 +1437,6 @@ database
 databases
 Davos
 Daytona
-DDoS # Estrangeirismo
 DDR
 Deadpool
 debatíveis
@@ -1401,11 +1482,19 @@ desabalado
 desabalados
 desagrado
 desagrados
+desalarmar
+desarraigada
+desarraigar
 desbragada
+desbragadamente
 desbragadas
 desbragado
 desbragados
-desbragadamente
+descalibrada
+descalibradas
+descalibrado
+descalibrados
+descalibrar
 descartável
 descomedida
 descomedido
@@ -1448,10 +1537,14 @@ desnuclearização
 desorganizadamente
 despautério
 despautérios
+despencar
+despencarão
 despicienda
 despiciendas
 despiciendo
 despiciendos
+despoletador
+despoletadores
 despoticamente
 desprevenidamente
 dessalinização
@@ -1459,6 +1552,8 @@ dessecação
 destartarização
 destartarizações
 determinadamente
+detraía
+detrair
 deuteranópico
 deuteranópicos
 device
@@ -1486,6 +1581,8 @@ diagnosticantes
 Dickens
 diclofenaco
 dicogamia
+difundíveis
+difundível
 digiKam
 dignitária
 dignitárias
@@ -1546,7 +1643,10 @@ dógicas
 dógico
 dógicos
 dói-dóis
+doidamente
+dólmen
 dólmenes
+dólmens
 dominatrix
 dominatrixes
 Donald
@@ -1603,7 +1703,6 @@ Duterte
 DVDs
 easyJet
 EAU
-eBay
 ébola
 ECG
 eclâmpsia
@@ -1622,6 +1721,7 @@ ecólogos
 ecoturismo
 ecovia
 ecovias
+ECTS
 edáfica
 edáficas
 edáfico
@@ -1696,6 +1796,10 @@ encefalopatia
 encefalopatias
 encilhamento
 encilhamentos
+enconada
+enconadas
+enconado
+enconados
 endemismo
 endemismos
 endocraniana
@@ -1731,6 +1835,9 @@ energúmena
 energúmenas
 energúmeno
 energúmenos
+engatatão
+engatatões
+engomadinho
 engulho
 engulhos
 ENI
@@ -1740,6 +1847,8 @@ enofilia
 enófilo
 enófilos
 enoturismo
+enquistamento
+enquistamentos
 enrabadela
 enrabadelas
 enrabar
@@ -1771,12 +1880,12 @@ envasadas
 envasado
 envasados
 envergonhadamente
+enxovia
+enxovias
 éon
 éons
 EOS
 epidurais
-epidurais
-epidural
 epidural
 epifania
 epifanias
@@ -1852,6 +1961,8 @@ escultóricos
 escusadamente
 esfíncter
 esfíncteres
+esfolamento
+esfolamentos
 esfoliação
 esfoliações
 esfoliante
@@ -1891,10 +2002,6 @@ espigão
 espigões
 espinocelular
 espinocelulares
-esporra
-esporradela
-esporradelas
-esporras
 esquálida
 esquálidas
 esquálido
@@ -1924,6 +2031,8 @@ estepária
 estepárias
 estepário
 estepários
+estepe
+estepes
 estilhaçamento
 estilhaçamentos
 estilisticamente
@@ -1987,8 +2096,6 @@ Eurásia
 Euribor
 Eurobarómetro
 eurocrata
-eurocrata
-eurocratas
 eurocratas
 eurocrato
 eurocratos
@@ -1998,6 +2105,7 @@ euromilionária
 euromilionárias
 euromilionário
 euromilionários
+euromundista
 Europarque
 eurosiberiana
 eurosiberianas
@@ -2015,15 +2123,11 @@ eutópica
 eutópicas
 eutópico
 eutópicos
-eutrófica
-eutrófica
 eutrofica
-eutróficas
+eutrófica
 eutróficas
 eutroficas
 eutrófico
-eutrófico
-eutróficos
 eutróficos
 eutrofização
 eutrofizante
@@ -2037,6 +2141,8 @@ evidenciadoras
 evidenciadores
 evo
 evos
+exalçamento
+exalçamentos
 exaurida
 exauridas
 exaurido
@@ -2055,6 +2161,7 @@ Exmo
 exobiologia
 exogamia
 exogamias
+exogenamente
 exoplaneta
 exoplanetas
 experienciar
@@ -2077,6 +2184,8 @@ externalidades
 extirpada
 extracurricular
 extracurriculares
+extremófilo
+extremófilos
 ExxonMobil
 fabulação
 fabulações
@@ -2103,6 +2212,7 @@ FAO
 FAPLA
 far-nos-á
 far-se-ão
+Far-West
 FARC
 farejador
 farejadores
@@ -2120,13 +2230,10 @@ FCTUC
 FdP
 FdPs
 fê-la
-fê-la
-fê-las
 fê-las
 fê-lo
-fê-lo
 fê-los
-fê-los
+febre-amarela
 feed
 feiarrão
 Feirense
@@ -2195,6 +2302,8 @@ fitofarmacêutica
 fitofarmacêuticas
 fitofarmacêutico
 fitofarmacêuticos
+fitofármaco
+fitofármacos
 fitomassa
 fitomassas
 fitonutriente
@@ -2210,6 +2319,7 @@ fitossanitárias
 fitossanitário
 fitossanitários
 Fiumicino
+fizemo-nos
 flanqueamento
 flanqueamentos
 flarte
@@ -2240,6 +2350,7 @@ forfetárias
 forfetário
 forfetários
 formaldeído
+forrageamento
 Fortnite
 fotobiografia
 fotobiografias
@@ -2262,6 +2373,8 @@ fotossintético
 fotossintéticos
 fototropismo
 fototropismos
+fractais
+fractal
 fragrante
 fragrantes
 fraguedo
@@ -2320,10 +2433,11 @@ Gagné
 gaio
 galgamento
 galgamentos
-Galp
 GALP
+Galp
 GAM
 gambozino
+gangbang
 gângster
 gângsteres
 gangue
@@ -2431,12 +2545,14 @@ geriátrica
 geriátricas
 geriátrico
 geriátricos
+geríveis
+gerível
 gestacionais
 gestacional
 Gestalt
 giba
-gibas
 gibão
+gibas
 gibões
 GIF
 gilbardeira
@@ -2511,6 +2627,8 @@ grandiloquente
 grandiloquentes
 granola
 granulometria
+gravaçãozinha
+gravaçõezinhas
 gravímetro
 gravímetros
 grená
@@ -2532,6 +2650,7 @@ GW
 GWh
 half-pipe # Estrangeirismo
 half-pipes # Estrangeirismo
+hail
 Halifax
 halitose
 halitoses
@@ -2550,6 +2669,7 @@ hecatombes
 hedonista
 hedonistas
 HEIC
+heil
 Heinrich
 Hellblazer
 hemangioma
@@ -2579,6 +2699,8 @@ heptacampeão
 heptacampeões
 herniação
 herniações
+herpético
+herpéticos
 herpetóloga
 herpetólogas
 herpetologia
@@ -2624,12 +2746,14 @@ hidroxicloroquina
 hierarca
 hierarcas
 hijab
+híper
 hipercalórica
 hipercalóricas
 hipercalórico
 hipercalóricos
 hipercoagulabilidade
 hipercolesterolemia
+híperes
 hiperglicemia
 hiperinflação
 hipermetropia
@@ -2639,6 +2763,7 @@ hipersexualizada
 hipersexualizadas
 hipersexualizado
 hipersexualizados
+hipersónia
 hipertermia
 hipertermias
 hipertiroidismo
@@ -2692,6 +2817,7 @@ homeotérmico
 homeotérmicos
 homonímia
 homonímias
+honoris
 hortifruticultura
 hortifruticulturas
 hortofrutícola
@@ -2760,8 +2886,8 @@ impassáveis
 impassável
 imperdíveis
 imperdível
-imperecível
 imperecíveis
+imperecível
 impetigo
 implausíveis
 implausível
@@ -2777,6 +2903,7 @@ impreparada
 impreparadas
 impreparado
 impreparados
+imprescindibilidade
 impreterível
 impreterivelmente
 impronunciáveis
@@ -2888,6 +3015,8 @@ integrativas
 integrativo
 integrativos
 Intelligence
+interajuda
+interajudas
 interbancária
 interbancárias
 interbancário
@@ -2899,6 +3028,7 @@ interdentários
 interdimensionais
 interdimensional
 interdisciplinaridade
+interespécies
 interfacetária
 interfacetárias
 interfacetário
@@ -2927,6 +3057,7 @@ internético
 internéticos
 interparlamentar
 interparlamentares
+interplanetariamente
 interrelação
 interrelações
 intersindicais
@@ -3070,11 +3201,11 @@ Kaplan-Meier
 Karen
 Karlowitz
 Kaspersky
+kata
 kcal
 KDE
 kebab
 kebabs
-Kendall
 Kendall
 Kendra
 kernel
@@ -3129,7 +3260,6 @@ lagomorfos
 lagostim-vermelho-do-Louisiana
 lagostins-vermelhos-do-Louisiana
 Lamborghini
-Lamborghini
 Lampedusa
 Lancia
 Landsat
@@ -3148,6 +3278,7 @@ laplaciano
 lapouço
 lapouços
 Lara
+larguinhos
 lastimavelmente
 Launchy
 Laurissilva
@@ -3172,15 +3303,17 @@ lenimento
 lenimentos
 leninista
 leninistas
-Lenovo
 lêntica
 lênticas
 lêntico
 lênticos
+lentificação
 lepidóptero
 lepidópteros
 leptospirose
 leptospiroses
+lerpa
+lerpas
 leucorreia
 leucorreias
 Levpay
@@ -3189,6 +3322,8 @@ LG
 LGBT
 liana
 lianas
+liberação
+liberações
 libertarianismo
 libertarianismos
 LibertyView
@@ -3261,14 +3396,9 @@ longarinas
 Longonjo
 Lorentz
 loxodromia
-loxodromia
-loxodrómica
 loxodrómica
 loxodrómicas
-loxodrómicas
 loxodrómico
-loxodrómico
-loxodrómicos
 loxodrómicos
 LP
 LPN
@@ -3319,6 +3449,8 @@ macronutriente
 macronutrientes
 madrassa
 madrassas
+magala
+magalas
 magnetómetro
 magnetómetros
 magnetosfera
@@ -3332,6 +3464,8 @@ malacológico
 malacológicos
 maleficência
 maleficências
+malgaxe
+malgaxes
 malgrado
 malnutrição
 malparecida
@@ -3386,6 +3520,8 @@ mariscador
 mariscadores
 market
 markets
+marotice
+marotices
 marrancho
 marranchos
 Marraquexe
@@ -3400,6 +3536,7 @@ massificada
 massificadas
 massificado
 massificados
+matematizável
 matiné
 matinés
 Matola
@@ -3457,22 +3594,26 @@ melatonina
 melhorzinho
 meme
 memé
-memes
 memés
+memes
 memorabilidade
 Menongue
 menorá
 menorás
 mentideiro
 mentideiros
+mento
 mentolada
 mentoladas
 mentolado
 mentolados
 mentoria
 mentorias
+mentos
 MEO
 Mercalli
+mercantilidade
+mercantilidades
 Mercedes-Benz
 Mercês
 merdice
@@ -3492,8 +3633,12 @@ meritocrático
 meritocráticos
 Merkel
 MERS
-Mesolítico
+mesoamericana
+mesoamericanas
+mesoamericano
+mesoamericanos
 mesolítico
+Mesolítico
 mesoterapia
 mesotérmica
 mesotérmicas
@@ -3510,6 +3655,10 @@ metabolizados
 metacognição
 metadados
 metaforicamente
+metaleira
+metaleiras
+metaleiro
+metaleiros
 metanálise
 metatética
 metatéticas
@@ -3517,6 +3666,7 @@ metatético
 metatéticos
 meticilina
 meticilinas
+mg
 Michelin
 Michelle
 Mickey
@@ -3561,8 +3711,6 @@ micronizado
 micronizados
 micronizar
 micronutriente
-micronutriente
-micronutrientes
 micronutrientes
 microorganismo
 microorganismos
@@ -3572,6 +3720,8 @@ microplaca
 microplacas
 microplástico
 microplásticos
+micróporo
+micróporos
 micropotência
 micropotências
 MicroSD
@@ -3646,8 +3796,14 @@ mnemotécnicos
 mocassins # Estrangeirismo
 Mocuba
 modicum
+molhante
+molhantes
 moncorvense
 moncorvenses
+monegasca
+monegascas
+monegasco
+monegascos
 Monero
 monitora
 monitoras
@@ -3689,6 +3845,8 @@ morcões
 Moreirense
 morenaça
 morenaças
+morfogénese
+morfogéneses
 moscatéis
 motivacional
 motoclube
@@ -3725,8 +3883,8 @@ multidimensionais
 multidisciplinaridade
 multiespectrais
 multiespectral
-multifocal
 multifocais
+multifocal
 multiformato
 multiformatos
 multilateralismo
@@ -3752,6 +3910,7 @@ mutada
 mutado
 mutualização
 mutualizações
+mutualmente
 MW
 MWh
 MyPaint
@@ -3774,8 +3933,6 @@ nanométricas
 nanómetro
 nanómetros
 nanopartícula
-nanopartícula
-nanopartículas
 nanopartículas
 nanoplástico
 nanoplásticos
@@ -3826,6 +3983,8 @@ negacionista
 negacionistas
 nemátode
 nemátodes
+nematodicida
+nematodicidas
 Nemenyi
 neoconfucionismo
 neoconservador
@@ -3842,9 +4001,7 @@ neoliberalistas
 Neolítico
 neonatais
 neonatal
-neonatal
 neonato
-neonatologia
 neonatologia
 neonatos
 neonazismo
@@ -3916,6 +4073,7 @@ Nextel
 Neyman-Pearson
 NFC
 NFL
+nham
 nhurro
 Niassa
 Nibiru
@@ -4010,15 +4168,17 @@ ODS
 ODT
 Offspring
 Oio
+ok
 Ok
 OK
-ok
 okay
 OLED
 oligossacarídeo
 oligossacarídeos
 Olívia
 OLX
+ómicron
+omícrones
 Ondjiva
 OnePlus
 ONGs
@@ -4028,6 +4188,8 @@ opacificação
 Opel
 OpenGL
 openSUSE
+operabilidade
+operabilidades
 operática
 operáticas
 operático
@@ -4040,6 +4202,11 @@ optometrista
 optometristas
 orangotango-de-bornéu
 orangotangos-de-bornéu
+ordália
+ordálias
+ordálio
+ordálios
+ordeiramente
 ordoliberais
 ordoliberal
 organelo
@@ -4054,14 +4221,9 @@ orquite
 orquites
 ortodontia
 ortodromia
-ortodromia
-ortodrómica
 ortodrómica
 ortodrómicas
-ortodrómicas
 ortodrómico
-ortodrómico
-ortodrómicos
 ortodrómicos
 ortomórfica
 ortomórficas
@@ -4113,6 +4275,8 @@ oxidantes
 oxigenoterapia
 oxímetro
 oxímetros
+pachacha
+pachachas
 paelha
 paelhas
 painho-de-monteiro
@@ -4247,10 +4411,10 @@ pentaneto
 pentanetos
 pentatlo
 pentatlos
-pentavó
 pentavô
-pentavôs
+pentavó
 pentavós
+pentavôs
 penumbral
 péptido
 péptidos
@@ -4349,13 +4513,11 @@ pizaria
 pizarias
 pizicato
 pizicatos
-planisférica
+placar
+placares
 planisférica
 planisféricas
-planisféricas
 planisférico
-planisférico
-planisféricos
 planisféricos
 plantinha
 plantinhas
@@ -4370,6 +4532,8 @@ players
 plenilúnio
 plesiossauro
 plesiossauros
+pliniano
+plinianos
 plissado
 plissados
 PLOS
@@ -4385,7 +4549,6 @@ pluriprescrição
 plurissignificação
 plurissignificações
 PNB
-PNB
 pneumopatia
 pneumopatias
 PNG
@@ -4394,7 +4557,6 @@ podcast
 podcasts
 podoa
 podoas
-poejo
 poejo
 poejos
 Poisson
@@ -4438,6 +4600,8 @@ politológico
 politológicos
 politólogo
 politólogos
+poliuretano
+poliuretanos
 poncha
 ponchas
 ponderadamente
@@ -4446,13 +4610,17 @@ póquer
 porreiraço
 porreiraços
 Porsche
+porta-moedas
 portefólio
 portefólios
 portossantense
 portossantenses
 Portucel
+portuguesmente
 posologia
 posologias
+postagem
+postagens
 póster
 pósteres
 potamódroma
@@ -4463,10 +4631,10 @@ potenciadoras
 potenciadores
 poucochinho
 poucochinhos
-ppm
 PPM
-PPP
+ppm
 ppp
+PPP
 PPPs
 PPTX
 pralinê
@@ -4586,6 +4754,8 @@ psilocibina
 psiquicamente
 psoríase
 PSV Eindhoven
+pudibundo
+pudibundos
 púdico
 púdicos
 pufe
@@ -4595,24 +4765,22 @@ pulôver
 pulôveres
 pulsante
 pulsantes
+pundonor
+pundonores
 pungência
 pungências
+punheta
+punhetas
 purpurina
 purpurinas
 Pushkin
 pústula
 pústulas
-puta
-putanheiro
-putanheiros
-putas
 putativa
+putativamente
 putativas
 putativo
 putativos
-putéfia
-putéfias
-Putin
 PuTTY
 PVP
 Pyeongchang
@@ -4638,8 +4806,6 @@ Quarteira
 Queensland
 Quéfren
 Queimódromo
-Queimódromo
-Queimódromos
 Queimódromos
 quendo
 queratose
@@ -4669,13 +4835,13 @@ Radeon
 radioamador
 radioamadores
 radiotelefonista
-radiotelefonista
-radiotelefonistas
 radiotelefonistas
 radiotelegrafista
 radiotelegrafistas
+raer
 raide
 raides
+rais
 Rajastão
 Rakhine
 raladíssimo
@@ -4696,7 +4862,6 @@ realistamente
 realocação
 realocações
 reatribuição
-rebaldaria
 rebaldaria
 rebarba
 rebarbadora
@@ -4721,6 +4886,7 @@ reconfirmou
 recontagem
 recontagens
 recorrentemente
+red
 Red Star Belgrade
 redarguiu
 Reddit
@@ -4742,6 +4908,7 @@ reiki
 reikis
 reimosa
 reimosas
+reinação
 reinadio
 reinadios
 reinfeções
@@ -4765,6 +4932,10 @@ rémora
 rémoras
 Renamo
 Renault
+reparatória
+reparatórias
+reparatório
+reparatórios
 repentista
 repentistas
 repescagem
@@ -4772,6 +4943,7 @@ replicável
 represamento
 represamentos
 Repsol
+reputacional
 réquiem
 reset
 ressabiada
@@ -4831,6 +5003,8 @@ robóticos
 robustamente
 roconpatia
 roconpatias
+rodenticida
+rodenticidas
 rodovalho
 rodovalhos
 rohingya
@@ -4862,6 +5036,8 @@ rupícula
 rupículas
 Ruzyne
 Ryanair
+sacanagem
+sacanagens
 sacramentalização
 sacramentalizações
 sacrista
@@ -4888,12 +5064,8 @@ Salisbury
 salmonídeo
 salmonídeos
 salomónica
-salomónica
-salomónicas
 salomónicas
 salomónico
-salomónico
-salomónicos
 salomónicos
 sálvia
 sambódromo
@@ -4947,6 +5119,10 @@ Scribus
 SCUT
 SCUTs
 Seagate
+Seal
+SEAL
+SEALs
+Seals
 Seat
 securitária
 securitárias
@@ -4972,12 +5148,8 @@ semi-idênticos
 semi-intensiva
 semi-intensivas
 seminú
-seminú
-seminua
 seminua
 seminuas
-seminuas
-seminús
 seminús
 semipreciosa
 semipreciosas
@@ -4985,6 +5157,7 @@ semiprecioso
 semipreciosos
 semiprofissionais
 semiprofissional
+sen
 senciência
 senciente
 sencientes
@@ -4993,8 +5166,10 @@ senos
 sépia
 sepse
 sepsia
+sequencia
 sequenciador
 sequenciadores
+sequencias
 seriíssima
 seriíssimas
 seriíssimo
@@ -5038,6 +5213,8 @@ Shutterstock
 SIBS
 Siegel-Tukey
 SIG
+signinho
+signinhos
 silte
 siltes
 siluro
@@ -5109,8 +5286,6 @@ societal
 sociodemográfica
 sociodemográficas
 sociodemográfico
-sociodemográfico
-sociodemográficos
 sociodemográficos
 socioecológica
 socioecológicas
@@ -5128,8 +5303,8 @@ solilóquios
 solitude
 sombreiros
 Somoil
-SONAE
 Sonae
+SONAE
 Sonangol
 sonoplastia
 sonoplastias
@@ -5151,7 +5326,7 @@ Spearman
 Spotify
 sputtering
 SQL
-SRS
+SRS # SRS - Sistema Regional de Saúde
 SSD
 SSDs
 stakeholder
@@ -5199,6 +5374,8 @@ subopções
 subpopulação
 subpopulações
 subsidiodependência
+subtraço
+subtraços
 suicidário
 suicidários
 suídeo
@@ -5224,7 +5401,12 @@ superpotências
 Supertubos
 supervisionamento
 supervisionamentos
+supinamente
+supletiva
 supletivamente
+supletivas
+supletivo
+supletivos
 supracionais
 supracional
 supraconstitucionais
@@ -5235,13 +5417,14 @@ supressivos
 supuração
 supurações
 surfatante
+surreira
+surreiras
 sustentadamente
 SUV
 SUVs
 Suzuki
 SVG
 Swansea
-SWIFT
 SWIFT
 Syncthing
 Synergy
@@ -5264,8 +5447,6 @@ Tajima
 Takeshi
 talassemia
 talibã
-talibã
-talibãs
 talibãs
 taloamina
 tamanduá
@@ -5286,6 +5467,8 @@ tarôs
 Tarrafal
 tartaranhão
 tartaranhões
+tatâmi
+tatâmis
 Taxify
 taxinómica
 taxinómicas
@@ -5304,6 +5487,7 @@ TechDirt
 TEDx
 teen
 teens
+tel
 telecirurgião
 telecirurgiões
 teleconferência
@@ -5320,19 +5504,20 @@ telegénico
 telegénicos
 Telegram
 telemedicina
+telemedicinas
 teleportado
 teleportar
 telesqui
 telesquis
 televendas
-televendas
 telómero
 telómeros
+templária
+templárias
 temporomandibular
 temporomandibulares
 tença
 tenças
-Tenerife
 teneteara
 teorista
 teoristas
@@ -5382,8 +5567,16 @@ TGVs
 Tiananmen
 TIC
 Tinder
+tintóis
+tintol
 tiomersal
+tip
+tips
 tiramina
+tirocinada
+tirocinadas
+tirocinado
+tirocinados
 TMP
 tobogã
 tobogãs
@@ -5394,6 +5587,16 @@ Tombali
 Tomboa
 Tomboco
 Tommy
+tordonha
+tordonhas
+tordoveia
+tordoveias
+toreuta
+toreutas
+torgalho
+torgalhos
+torilo
+torilos
 torque
 torques
 Tottenham
@@ -5428,6 +5631,7 @@ transfobia
 transfundido
 transgénero
 transgéneros
+transgeracional
 transhumanista
 transhumanistas
 transicionais
@@ -5464,6 +5668,7 @@ triatletas
 triatlo
 triatlos
 tricloroetileno
+tricomoníase
 tricóptero
 tricópteros
 trifásica
@@ -5485,11 +5690,13 @@ tripartidária
 tripartidárias
 tripartidário
 tripartidários
+triplamente
 tríptico
 trípticos
 trisais
 trisal
 trissomia
+tristão
 trivela
 trivelas
 trofoblasto
@@ -5497,6 +5704,7 @@ trofoblastos
 troleicarro
 troleicarros
 troll
+trolls
 trotsquismo
 trotsquista
 trotsquistas
@@ -5522,6 +5730,10 @@ Tukey-Duckworth
 tupi
 tupi-guarani
 tupis
+turfosa
+turfosas
+turfoso
+turfosos
 Turing
 turnê
 turnês
@@ -5533,7 +5745,6 @@ tweeters
 Twitch
 TXT
 U de Mann-Whitney
-UA
 UA
 UALLC
 uau
@@ -5547,8 +5758,8 @@ Ubuntu
 UC
 UCB
 UCP
-UÉ
 UE
+UÉ
 ufanar
 UFC
 UFP
@@ -5568,6 +5779,7 @@ ultrasonografias
 ultraterrestre
 ultraterrestres
 UM
+umbílico
 umbra
 umbundo
 UNetbootin
@@ -5575,6 +5787,8 @@ UNG
 Unicista
 unidimensionais
 unidimensional
+unidose
+unidoses
 uniformemente
 unipessoais
 unipessoal
@@ -5653,7 +5867,6 @@ VHC
 VHD
 VHE
 VHF
-VHF
 VHG
 VHS
 víbora-de-Seoane
@@ -5665,6 +5878,7 @@ videogénico
 videogénicos
 videovigilância
 vigilantemente
+vigilantismo
 vilania
 vilanias
 vinagreta
@@ -5711,6 +5925,8 @@ wallabies-da-areia
 wallabies-dama
 wallaby-da-areia
 wallaby-dama
+wargame
+wargames
 watchOS
 Watford
 WAV
@@ -5740,8 +5956,8 @@ woofer
 woofers
 Word
 WWF
-www
 WWW
+www
 X-Men
 Xai-Xai
 xalavar
@@ -5757,6 +5973,8 @@ xávega
 Xbox
 xenólito
 xenólitos
+xenomorfo
+xenomorfos
 xenotransplante
 xenotransplantes
 xerostomia
@@ -5791,6 +6009,8 @@ zelandês
 zelandeses
 Zézinha
 ZIMP
+zingarelho
+zingarelhos
 zlóti
 zlótis
 zoobotânica
@@ -5824,6 +6044,43 @@ zootécnicos
 zooxantela
 zooxantelas
 ZTE
+zwingliana
+zwinglianas
+zwingliano
+zwinglianos
+###################
+# OBSCENE WORDS ###
+###################
+caralhada
+caralhadas
+caralhão
+caralho
+caralhões
+caralhos
+cona
+conas
+esporra
+esporradela
+esporradelas
+esporras
+puta
+putanheiro
+putanheiros
+putas
+putazinha
+putazinhas
+putéfia
+putéfias
+putinha
+putinhas
+putona
+putonas
+############################
+# Antes e depois de Cristo #
+############################
+a.C.
+d.C.
+A.D.
 #################################################################################################
 # Abreviaturas CTT https://pt.wikipedia.org/wiki/Lista_de_abreviaturas_recomendadas_pelos_CTT ###
 #################################################################################################
@@ -7438,6 +7695,10 @@ overbooking
 overbookings
 overdose
 overdoses
+óvni
+óvnis
+ovnilogista
+ovnilogistas
 ozone
 ozones
 paanga
@@ -8334,6 +8595,11 @@ twist
 twists
 tzar
 tzars
+ufo
+ufos
+ufologia
+ufologista
+ufólogo
 umlaut
 umlauts
 underground
@@ -8535,8 +8801,10 @@ on-label
 physalis
 pouf
 poufes
+reggaeton
 startup
 startups
+stealth
 tablet
 tablets
 tawnie
@@ -9747,6 +10015,8 @@ dez
 #########################
 # KARATE/MARTIAL ARTS ###
 #########################
+aikidoka
+aikidokas
 aiquidô
 Budokan
 Chojun
@@ -9756,6 +10026,8 @@ Goju-Ryu
 IOGKF
 Higaonna
 karategi
+karateka
+karatekas
 Karate-Do
 kata
 Kenwa
@@ -9955,6 +10227,7 @@ Zatheria
 # PROPER NAMES, INCLUDING PLACES, UNIVERSITIES AND ORGANIZATIONS ###
 ####################################################################
 Aaron
+Abigail
 Abrunhosa
 Actuel
 Adamski
@@ -9966,22 +10239,30 @@ Alagoas
 Albukamal
 Alcabideche
 Alcoentre
+Alegro
 Aleister
 Alex
 Alexander
 Alexeyevich
+Alf
+Algéria
 Alibaba
 AliExpress
 Alisson
 Allison
+Alvão
+Alyson
 Amidei
 Amparo
+Anaxágoras
 Andrea
 Andreas
 Andrew
 Andrey
 Angelim
 Angelina
+Anocas
+Anquises
 Anunnaki
 ANVISA
 Aquileia
@@ -9998,6 +10279,7 @@ Augustin
 Axtell
 Aylmer
 Ayrton
+Baas
 Bahamas
 Bahia
 Bakounin
@@ -10009,6 +10291,8 @@ Bashar
 Bayes
 BBVA
 Bell
+BlitzMax
+Bohemia Interactive
 Boliqueime
 Bolsonaro
 Bombril
@@ -10031,14 +10315,21 @@ Chelas
 Chiu
 Chris
 Cicciolina
+CIIWA
+CINAMIL
 Cíntia
+Citius
 Claudia
+Clausewitz
+CNPD
 Colbert
 Conan
 Constantina
+Control
 Conway
 Corey
 Corinthians
+Corrêa
 Cosmelli
 Cosmia
 Craig
@@ -10049,16 +10340,25 @@ Culturgest
 Curitiba
 Daesh
 Daguerre
+Dalí
+Dana
 Danielle
+Dawkins
+Defense Advanced Research Projects Agency
 Delpierre
 Dempster
 Deneubourg
+Dezcallar
 Dijkstra
 Dior
 Dockery
 Doka
 Dora
+Drácula
 Drauzio
+Durex
+Eagles
+eBay
 ECDC
 Echelon
 Edilson
@@ -10075,14 +10375,18 @@ Eric
 Érico
 Ericsson
 Erik
+Escola
+Estácio
 Esther
 Euronews
 Europol
 Eurovisão
 Eustáquio
+Evola
 Expo 98
 Fabiana
 Fabíola
+Faculdade
 Fagilde
 Fajã
 Falagueira
@@ -10099,8 +10403,10 @@ Fortaleza
 Foundation
 Fouto
 Frank
+Frattini
 Frédéric
 Frederick
+Frege
 Frelimo
 Fujitsu
 Fukushima
@@ -10111,8 +10417,10 @@ Galilei
 Gamarra
 Gandhi
 Gary
+Gevaerd
 Giovanna
 Glenn
+Globo
 Goes
 Golias
 Goodman
@@ -10125,7 +10433,9 @@ Guangdong
 Guardian
 Guillain-Barré
 Gurué
+Gustava
 Gutenberg
+Haddock
 Hafez
 Hamas
 Haneda
@@ -10140,10 +10450,14 @@ Hassan
 Hatshepsut
 Havai
 Hayek
+Heloísa
 Henry
 Hermengarda
 Hidra
+Hilary
+Hoehler
 Holmes
+Holoceno
 Honda
 Honolulu
 Hosmer-Lemeshow
@@ -10158,6 +10472,7 @@ IADE
 Iberdrola
 Ibiza
 Idanha
+Ideiafix
 Iémen
 Ifigénia
 Ikea
@@ -10168,9 +10483,12 @@ Infarmed
 Infopédia
 Ingrid
 Inhambane
+Instituto
 Interpol
 IPAM
+Ipatinga
 Ipiranga
+Iracema
 Isaltina
 ISCTE
 ISCTE
@@ -10178,8 +10496,10 @@ ISCTE-IUL
 ISEG
 ISG
 ISIS
+Isnard
 ISPA
 IURD
+Ivens
 Jaban
 Jackknife
 Jackwal
@@ -10188,6 +10508,8 @@ Jeff
 Jefferson
 Jennifer
 Jeremy
+Jim
+Jimmy
 Jörg
 Jovino
 Jumbo
@@ -10196,6 +10518,7 @@ Juncker
 June
 Juscelino
 Juventus
+Kaczynski
 Kalbiyya
 Kasparov
 Kelly
@@ -10204,62 +10527,89 @@ Kevin
 Khomeini
 Kim
 Kropotkin
+Kullervo
+Labrousse
 Lanchester
 Langton
 Lapidus
 Lavergne
+Lenovo
 Levassor
 Lidl
+Livingstone
 Lorenz
+Luana
 Luiz
 Lula
 Madeira
+Manaia
 Marcelina
+Mariazinha
+Maricá
+Marine Corps
 Markow
 Marmot
+Marquinho
+Marquito
 Marta
 Marty
+MathWorld
+Mattoso
 Mayara
 Mazarino
 Melbourne
 Messi
 Middlesbrough
+Milheiro
+Minipreço
 Mohamed
+Mossad
+Moyet
 MUFON
 Multicare
 Murai
+My Auchan
 Myers
+Nano
 Nara
 Nash
 Nathalia
 Nélio
 Neumann
 Newton
+Niépce
 Niklaus
 Nilton
 Nimrud
-Minipreço
 Nubank
 Olivier
 OMC
+Oney
 Opera House
+Ophélia
 Ortins
 Oto
 Palmares
 Pandur
 Pandures
+Panoramix
 Penedo
 Phillips
 Piotr
 Pita
+Pleistoceno
+Potsdam
 Priberam
 Princeton
 Prosegur
+Putin
 Qilive
 Quelimane
 Rambo
 Rault
 Recife
+Reinach
+Renata
 René
 Reynold
 RISC
@@ -10269,6 +10619,7 @@ Ronald
 Rouhani
 Rueff
 Ruhollah
+Sabino
 Salgueirinho
 Samara
 Santos
@@ -10282,12 +10633,17 @@ SEIR
 Senna
 Serrão
 Shannon
+Shannon-Weaver
 Sherlock
 SIED
 Silvano
+SIRP
 SIS
 Snow
+Snowden
+Sommerville
 Sotero
+Sputnik
 Steckling
 Suméria
 Surrey
@@ -10295,9 +10651,12 @@ Tabatinga
 Tácito
 Talloires
 Tamagotchi
+Telepac
+Tenerife
 Terceira
 Tércia
 Thatcher
+Theodore
 Thom
 Thomaz
 Tirana
@@ -10310,19 +10669,28 @@ Tzu
 Uber
 Unabomber
 Unilever
+Unity
+Universidade
 Valéria
 Valls
+ValPortugal
 Vargas
+Vélez
 Vestefália
 Viagra
 Vítor
+Voyager
+Voytek
 Weaver
 Willard
+Wolpert
 Woodstock
 Wook
+World Trade Center
 Worten
 Wright
 Wuhan
+Xico
 Zeeman
 Zezualdo
 Zhang
@@ -10356,16 +10724,32 @@ w
 x
 y
 z
+############
+# Google ###
+############
+Chrome
+gmail
+Gmail
+google
+Google
 #######################
 # COMPUTERS RELATED ###
 #######################
+Access
+add-on
+add-ons
 AI
 AmigaOS
+Android
 app
 applet
 applets
 apps
 assembly
+auditada
+auditadas
+auditado
+auditados
 backbone
 backbones
 backdoor
@@ -10376,18 +10760,36 @@ bitcoins
 blu-ray
 blu-rays
 bluetooth
+boid
+boids
 bookmark
 bookmarks
 bot
 bots
 BSD
+build
 CD-ROMs
 Celeron
 CentOS
+ChanServ
+chipada
+chipadas
+chipado
+chipados
 chipe
 chipes
+ciberameaça
+ciberameaças
 CISC
+Citrix
+codec
+codecs
 Commodore
+contactless
+cover disc
+cover discs
+cover disk
+cover disks
 cracker
 crackers
 cracking
@@ -10401,11 +10803,16 @@ crashe
 crashei
 crashes
 crashou
+Crowdin
 CRT
 CTCP
 DALnet
+Dark Web
 DCC
+DDoS # Estrangeirismo
+Deep Web
 default
+desenvolvedor
 desenvolvedores
 desktop
 desktops
@@ -10415,6 +10822,7 @@ diff
 diffs
 downgrade
 downgrades
+downtime
 e-bullying
 e-commerce
 e-democracy
@@ -10425,6 +10833,7 @@ e-newsletter
 e-newsletters
 e-reader
 e-readers
+EAN
 Earth
 Edge
 ENIAC
@@ -10433,6 +10842,7 @@ exabit
 exabits
 exabyte
 exabytes
+Extreme Physical Information
 ezboard
 Facebook
 FAQ
@@ -10445,17 +10855,17 @@ firewall
 firewalls
 firmware
 firmwares
+Fisher Information
 fps
+framework
 FreeBSD
 FTP
 gateway
+gateways
 gigabit
 gigabits
 GIMP
 GitHub
-GMail
-Gmail
-Google
 GPU
 GPUs
 GT
@@ -10491,6 +10901,9 @@ iTunes
 JPEG
 Kubuntu
 LanguageTool
+layer
+layers
+Life
 loop
 loops
 LTS
@@ -10498,28 +10911,44 @@ Lubuntu
 Mac
 MacBook
 macOS
+magic number
 MailChimp
+MailWasher
 Maps
 Mathematica
+MemoServ
 Microsoft
 MiKTeX
+monoutilizador
 MS-DOS
+multiutilizador
 netbanco
 NetBanco
+netiqueta
+netiquette
 newsgroup
 newsgroups
+nick
+nicks
 nickname
 nicknames
+NickServ
 OEM
 off
+old school
+old schools
 on
+open-source
 OpenPGP
 Outlook
 overwrite
+p-value
+p-values
 patch
-patchs
+patches
 PDA
 PDAs
+pen drive
 petabit
 petabits
 petabyte
@@ -10528,12 +10957,17 @@ PGP
 píxeis
 píxel
 Pootle
+powerbank
+powerbanks
 PowerPC
+PowerPoint
+preview
 PTnet
 PureBasic
 px
 Python
 ransomware
+reboot
 roadmap
 roadmaps
 scam
@@ -10541,31 +10975,52 @@ scammer
 scammers
 scams
 screen
+screenshot
+screenshots
+scroll
 SeaMonkey
 SEO
 SimCity
 Spectrum
 SSL
+supercomputação
+swarm
+swarms
 tablet
 tablets
+tagging
 tag
 tags
 TBW
+Teams
 template
 templates
 terabit
 terabits
 terabyte
 terabytes
+threshold
+thresholds
+thunderbolt
 TLD
 TortoiseSVN
 touch
+TPA
 tracking
 Transifex
 trigger
 triggers
 Twitter
+underscore
+underscores
 Unicode
+UPC
+update
+updates
+uptime
+user friendly
+vCard
+vCards
 VDI
 VPN
 webinar
@@ -10578,6 +11033,7 @@ WebTranslateIt
 width
 Windows
 WordPress
+Xperia
 Xubuntu
 yottabit
 yottabits
@@ -10589,6 +11045,14 @@ zettabits
 zettabyte
 zettabytes
 ZX
+################
+# INTERNETÊS ###
+################
+bbiab
+lol
+omg
+rotfl
+wtf
 #########################################
 # CURRENCY CODES (ISO 4217)           ###
 # https://www.iban.com/currency-codes ###
@@ -10767,6 +11231,7 @@ Cooper
 Bernard
 Cynthia
 Campbell
+CPF
 Fred
 Ryan
 Brown

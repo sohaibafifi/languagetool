@@ -20,7 +20,6 @@ package org.languagetool.tagging.en;
 
 import org.languagetool.AnalyzedToken;
 import org.languagetool.AnalyzedTokenReadings;
-import org.languagetool.chunking.ChunkTag;
 import org.languagetool.tagging.BaseTagger;
 import org.languagetool.tools.StringTools;
 
@@ -36,6 +35,8 @@ import java.util.Locale;
  * @author Marcin Milkowski
  */
 public class EnglishTagger extends BaseTagger {
+  public static final EnglishTagger INSTANCE = new EnglishTagger();
+
   public EnglishTagger() {
     // intern tags because we only have 47 types and get megabytes of duplicated strings
     super("/en/english.dict", Locale.ENGLISH, false, true);
@@ -75,6 +76,24 @@ public class EnglishTagger extends BaseTagger {
         final String firstUpper = StringTools.uppercaseFirstChar(lowerWord);
         List<AnalyzedToken> firstupperTaggerTokens = asAnalyzedTokenListForTaggedWords(word, getWordTagger().tag(firstUpper));
         addTokens(firstupperTaggerTokens, l);
+      }
+      
+      if (l.isEmpty() && lowerWord.endsWith("in'")) {
+        String correctedWord = word;
+        if (isAllUpper) {
+          correctedWord = correctedWord.substring(0, correctedWord.length() - 1) + "G";
+        } else {
+          correctedWord = correctedWord.substring(0, correctedWord.length() - 1) + "g";
+        }
+        List<AnalyzedToken> taggerTokens2 = asAnalyzedTokenListForTaggedWords(word, getWordTagger().tag(correctedWord));
+        // normal case:
+        addTokens(taggerTokens2, l);
+        // tag non-lowercase (alluppercase or startuppercase), but not mixed-case words with lowercase word tags:
+        if (!isLowercase && !isMixedCase) {
+          List<AnalyzedToken> lowerTaggerTokens = asAnalyzedTokenListForTaggedWords(word,
+              getWordTagger().tag(correctedWord.toLowerCase()));
+          addTokens(lowerTaggerTokens, l);
+        }
       }
 
       // additional tagging with prefixes   removed: && !isMixedCase

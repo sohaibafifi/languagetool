@@ -1,7 +1,7 @@
 # Portuguese — Grammar and Typo Rules for LanguageTool.
 #
-# Copyright © 2016-2021 Tiago F. Santos (tiagofsantos81@sapo.pt)
-# Copyright © 2018-2021 Marco A.G.Pinto (www.marcoagpinto.com)
+# Copyright © 2016-2022 Tiago F. Santos (tiagofsantos81@sapo.pt)
+# Copyright © 2018-2022 Marco A.G.Pinto (www.marcoagpinto.com)
 #
 # Portuguese multiwords file used for chunking.
 #
@@ -19,36 +19,95 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
 #
+#
+# Structure of this file:
+#  - Nomes próprios e comuns
+#  - Locuções
+#  - Proper nouns
+#  - Major companies
+#  - English names and expressions
+#  - Frases comuns francesas
+#  - Nomes científicos
+#  - Species imported from Catalan multiwords.txt
+#  - Laureados com um Nobel
+#  - Frases comuns em latim
+#  - Latin expressions
+#  - Foreign expressions
+#  - Desporto
+#  - Outros
+#  - Universidades de Portugal
+#  - Universidades do Brasil
+#  - Interjeições
+#
+#
 ####################################################
-###        NOMES PRÓPRIOS E COMUNS               ###
+###        Nomes próprios e comuns               ###
 ####################################################
+Academia Militar	NPFS000
+Academia Militar Portuguesa	NPFS000
 Agência Central de Inteligência	NPFS000
+Agência Lusa	NPFS000
+Alegro Alfragide	NPMS000
 Algoritmo Genético	NPMS000
+AMOS Professional	NPMS000
 Análise Bayesiana	NPFS000
 Análise Combinatória	NPFS000
+Antonio Gallo	NPMS000
 Ataque Eletrónico	NPMS000
 Ataque Informático em Rede	NPMS000
+Atari ST	NPMS000
 Auchan Retail	NPFS000
 autómato celular	NCMS000
 autómatos celulares	NCMP000
+Beira Baixa	NPFSG00
+beta tester	NCMS000
+beta testers	NCMP000
+Big Mac	NPMS000
+Bohemia Interactive	NPFS000
+Camilla Cabello	NPFS000
+Cartão Auchan	NPMS000
+Cartão JUMBO	NPMS000
+Cartão Oney	NPMS000
 Cartão Oney Auchan	NPMS000
+Casa Branca	NPFS000
+Chaves do Areeiro	NPFS000
+Círculo de Leitores	NPMS000
+Código de Processo Civil	NPMS000
 Comandante Global	NPMS000
-Comandantes Globais	NPMP000
 Comandante Local	NPMS000
+Comandantes Globais	NPMP000
 Comandantes Locais	NPMP000
 Comando e Controlo	NPMS000
+Comissão Nacional de Proteção de Dados	NPFS000
+Commodore Amiga	NPMS000
 Companhia da Baía	NPFS000
 Companhia das Índias	NPFS000
+Competitive Intelligence	NPFS000
 Computador Pessoal	NPMS000
 conhecimento contextual	NCMS000
 conhecimento contextualizado	NCMS000
+cover disc	NCFS000
+cover discs	NCFP000
+cover disk	NCFS000
+cover disks	NCFP000
+Dark Web	NPFS000
+Deep Web	NPFS000
+Defense Advanced Research Projects Agency	NPFS000
 Diário de Notícias	NPMS000
+Dicionário Porto Editora	NPMS000
 Dinâmicas Humanas e Sociais	NPFP000
 Disco de Estado Sólido	NPMS000
+Dolce Vita	NPMS000
+Dolce Vita Tejo	NPMS000
 Domínio de Topo	NPMS000
+El Corte Inglés	NPMS000
 Equações de Lanchester	NPFP000
 Estados soberanos	NPMP000
 Estimação de Máxima Verosimilhança	NPFS000
+Executive Education	NPFS000
+Extreme Physical Information	NPFS000
+Fisher Information	NPFS000
+Flash Player	NPMS000
 Força Aérea	NPFS000
 Força Aérea Norte-americana	NPFS000
 Google Chrome	NPMS000_
@@ -57,38 +116,73 @@ home office	NPMS000_
 Home Office	NPMS000_
 Informação Física Extrema	NPFS000
 Inteligência Artificial	NPFS000
+James Webb	NPMS000
+José de Britto	NPMS000
+La Redoute	NPFS000
+Ladislau Netto	NPMS000
+Leroy Merlin	NPFS000
+Livraria Apeiron	NPFS000
+magic number	NCMS000
 Máquina Virtual	NPFS000
 Máquinas Virtuais	NPFP000
+Maria Callas	NPFS000
+Marine Corps	NPFS000
+Master Lock	NPFS000
+Mega Drive	NPFS000
 Modelos Baseados em Agentes	NPMP000
 Modelos Baseados em Indivíduos	NPMP000
+My Auchan	NPFS000
 Número de Euler	NPMS000
+Office Center	NPMS000
+old school	NCCS000
+old schools	NCCP000
 operação stop	NCFS000
 operações stop	NCFP000
-pen drive	NCFS000
-pen drives	NCFP000
+Pan Am	NPFS000
+Pan American	NPFS000
+Pan American World Airways	NPFS000
+Paradise Café	NPMS000
+pen drive	NPFS000
+pen drives	NPFP000
 Píxeis Por Polegada	NPMP000
+Planeta DeAgostini	NPMS000
 Polícia de Segurança Pública	NPFS000
 Polícia Federal	NPFS000
 Polícia Judiciária	NPFS000
 Polícia Metropolitana	NPFS000
 Polícia Municipal	NPFS000
 Pontos Por Polegada	NPMP000
+Porto Editora	NPFS000
 prime time	NCMS000
 Rede Privada Virtual	NPFS000
+Regulamento Geral de Proteção de Dados	NPMS000
 Rendimento Básico Universal	NPMS000
+Sega Saturn	NPFS000
+Sinclair ZX Spectrum	NPMS000
 Sistema de Crenças	NPMS000
 Sistema Operativo	NPMS000
 Sistemas Adaptativos Complexos	NPMP000
 Sistemas de Crenças	NPMP000
+Sistemas Operativos	NPMP000
+Sputnik V	NPFS000
 status bar	NCFS000
+Sun Tzu	NPMS000
+Super Nintendo	NPFS000
 tamanho único	NCCN000
+TC 2048	NPMS000
 Teorema da Probabilidade Inversa	NPMS000
 Teorema de Bayes	NPMS000
 Teoria da Informação	NPFS000
 Teoria da Simulação	NPFS000
 Teoria das Catástrofes	NPFS000
 Terabytes Escritos	NPMP000
+The Document Foundation	NPFS000
 Unidade Central de Processamento	NPFS000
+user friendly	NCCS000
+Wall Street English	NPMS000
+Windows Live Messenger	NPMS000
+World Trade Center	NPMS000
+ZX Spectrum	NPMS000
 ####################################################
 ###              Locuções                        ###
 ####################################################
@@ -1711,6 +1805,7 @@ Microsoft Office	NPMS000_
 Microsoft PowerPoint	NPMS000_
 Microsoft Windows	NPMS000_
 Microsoft Word	NPMS000_
+Microsoft Teams	NPMS000_
 Mike Pence	NPMS000_
 Millard Fillmore	NPMS000_
 Milwaukee Bucks	NPMPG00_
@@ -6757,6 +6852,7 @@ Zhores Alferov	NPMS000_
 ###                            Frases comuns em latim                                ###
 #   https://pt.wikipedia.org/wiki/Lista_de_prov%C3%A9rbios_e_senten%C3%A7as_em_latim ###
 ########################################################################################
+Ars Conjectandi	L_LATIM_
 corpus mysticum	L_LATIM_
 ecce homo	L_LATIM_
 et cetera	L_LATIM_
@@ -10890,7 +10986,7 @@ primus inter	L_LATIM_
 Primus inter	L_LATIM_
 inter pares	L_LATIM_
 #############################################################
-###            Latim expressions                          ###
+###            Latin expressions                          ###
 # Partially from Catalan multiword.txt files - 08-11-2016 ###
 #############################################################
 ad hoc	RG_
@@ -10909,6 +11005,7 @@ ad quadrantum	RG_
 ad triangulum	RG_
 ad valorem	RG_
 alma mater	NCFS000
+almae matres	NCFP000
 cum laude	AQ0CN0_
 honoris causa	AQ0CN0_
 summa cum laude	AQ0CN0_
@@ -10949,7 +11046,7 @@ peccata minuta	NCCN000
 tutti quanti	RG_
 vade retro	NCCN000
 ####################################################
-###                Foreign expression            ###
+###                Foreign expressions           ###
 # From Catalan multiword.txt                     ###
 # Date 14-11-2016                                ###
 ####################################################
@@ -11174,6 +11271,7 @@ Bouquet garni	NCMS000
 Braga Jazz	NPMSO00_
 Braga Park	NPMSG00_
 Braga Parque	NPMSG00_
+Buenos Aires	NPFSG00
 business as usual	NPMS000_
 cabeça de cartaz	NCCS000_
 Cabeça de cartaz	NCCS000_
@@ -11543,7 +11641,7 @@ reunião relâmpago	NCFS000
 reuniões relâmpago	NCFP000
 revista Nature	NCFS000
 Richard Dawkins	NPMS000_
-Rio de Janeiro	NPMSG00_
+Rio de Janeiro	NPMSG00
 Rio Grande do Sul	NPMSG00_
 Robert Zemeckis	NPMS000_
 Roland Garros	NPMS000_
@@ -12515,6 +12613,7 @@ Universidades Unidas do Vale do Araguaia-Barra do Garças	NPFP000
 ###                    Interjeições                     ###
 ### https://pt.wikipedia.org/wiki/Interjei%C3%A7%C3%A3o ###
 ###########################################################
+#Senhor Jesus	I
 Ah, sério	I
 Ai de mim	I
 Ainda bem	I
@@ -12523,17 +12622,30 @@ Até amanhã	I
 Até logo	I
 bai bai	I
 Bai Bai	I
-bye bye	I
+boa noite	I
+boa Páscoa	I
+boa tarde	I
+boas festas	I
+bom ano	I
+bom ano novo	I
+bom dia	I
 Bye Bye	I
+bye bye	I
 Cai fora	I
 com a breca	I
 Com a breca	I
-Com mil demónios	I
 Com mil demônios	I
+Com mil demónios	I
+como o caraças	I
 Crê em Deus pai	I
 cruz credo	I
 Cruz credo	I
-E ai beleza	I
+do caraças	I
+do catano	I
+E aí beleza	I
+és o maior	I
+feliz aniversário	I
+feliz natal	I
 Jesus Maria e José	I
 macacos me mordam	I
 Macacos me mordam	I
@@ -12542,18 +12654,19 @@ Muito bem	I
 Muito obrigada	I
 Mundo, vasto mundo	I
 Nossa senhora	I
+o caraças	I
 Ô olá	I
 O que inferno	I
 Ora viva	I
+para caraças	I
 Pelas barbas do profeta	I
 Pense bem	I
 Por quê	I
 Que bom	I
 Que coisa	I
-Queira Deus	I
 Que medo	I
+Queira Deus	I
 Quem me dera	I
-#Senhor Jesus	I
 Vai nessa	I
 Vai-te embora	I
 Valeu a pena	I
@@ -12562,4 +12675,3 @@ xau xau	I
 Xau Xau	I
 xô pra lá	I
 Xô pra lá	I
-

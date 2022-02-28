@@ -77,6 +77,7 @@ public class EnglishConfusionProbabilityRule extends ConfusionProbabilityRule {
       "have you known",// vs. "know"
       "have I known",// vs. "know"
       "had I known",
+      "hang out", // vs hang our
       "had you known",
       "his fluffy butt",
       "it's now better", // vs. no
@@ -441,6 +442,11 @@ public class EnglishConfusionProbabilityRule extends ConfusionProbabilityRule {
       "us three", // vs is
       "way to go", // vs was
       "way won't", // was
+      "way over", // was
+      "way in the past", // was
+      "way in the future", // was
+      "aisle way", // was
+      "airport way", // was
       "and now him", // vs know
       "and now us,", // vs is
       "to control us", // vs is
@@ -462,7 +468,30 @@ public class EnglishConfusionProbabilityRule extends ConfusionProbabilityRule {
       "in month four", // vs for
       "s day four", // vs for
       "is day four", // vs for
-      "the powers that be" // vs we
+      "bean soup", // vs been
+      "bean soups", // vs been
+      "bean bag", // vs been
+      "bean bags", // vs been
+      "belief in god", // vs good
+      "believe in a god", // vs good
+      "believes in a god", // vs good
+      "believing in a god", // vs good
+      "believed in a god", // vs good
+      "Jesus and god", // vs good
+      "Jesus or god", // vs good
+      "love of god", // vs good
+      "god will be", // vs good
+      "god is doing", // vs good
+      "there may be a god", // vs good
+      "bond with god", // vs good
+      "the powers that be", // vs we
+      "passed out", // vs past
+      "passed vs failed", // vs past
+      "passed vs. failed", // vs past
+      "people from there", // vs their
+      "as you well know", // vs known
+      "as they well know", // vs known
+      "as we well know" // vs known
     );
 
   private static final List<List<PatternToken>> ANTI_PATTERNS = Arrays.asList(
@@ -484,6 +513,11 @@ public class EnglishConfusionProbabilityRule extends ConfusionProbabilityRule {
       token("way"),
       posRegex("DT|PRP\\$"),
       posRegex("NN.*")
+    ),
+    Arrays.asList(
+      // sense vs since: Neubauer has been a youth ambassador of the non-governmental organization ONE since 2016.
+      token("since"),
+      tokenRegex("\\d{1,2}|\\d{4}")
     ),
     Arrays.asList(
       // way vs was

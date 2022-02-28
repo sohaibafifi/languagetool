@@ -385,7 +385,6 @@ Super Mario Maker
 UC Browser
 Facebook Messenger
 Hudson City
-Jetblue Airways
 Rainy River
 Cherry Creek
 West Hempstead
@@ -797,7 +796,6 @@ Genghis Khan
 Henry Ford
 Canary Islands
 Cold War
-Hypertext Markup Language
 Tan Son Nhat International Airport
 Francis Bacon
 Middle Ages
@@ -1010,7 +1008,6 @@ Franklin Pierce
 Commonwealth of Independent States
 Don Quixote
 Gospel of John
-list of Presidents of the United States
 #The Ten Commandments
 Norfolk Island
 John XXIII
@@ -2113,6 +2110,7 @@ Ray Charles
 Ray Lewis
 Electronic Arts
 Humpty Dumpty
+Humpty Dumpties
 Renville County
 Ballon d'Or
 Ballon d’Or
@@ -2511,7 +2509,7 @@ Sesame Street
 Santos Tour Down Under
 UCI World Tour
 The Globe and Mail
-La Presse
+#La Presse
 IP Australia
 Joe Exotic
 Madame Tussauds
@@ -2937,7 +2935,6 @@ US National Guard
 U.S. National Guard
 Diridon Station
 Draper Associates
-Kit Kat
 Tyra Banks
 San Pellegrino
 Hindustan Times
@@ -3107,6 +3104,7 @@ North Carolinians
 New Jerseyan
 New Jerseyans
 New Hampshireman
+New Hampshiremen
 Mickey Rourke
 D-Day
 Eagle County
@@ -3288,7 +3286,6 @@ Soledad de Graciano Sánchez
 Ojo de Agua
 Campeche City
 Valle de Chalco Solidaridad
-La Paz
 Puerto Vallarta
 Ciudad Madero
 San Pablo de las Salinas
@@ -5041,7 +5038,6 @@ Vasilyevsky Island
 Bolshaya Neva
 Malaya Neva
 Reka Malaya Neva
-President Biden
 Chupa Chups
 Gummi Bears
 South Tyrol
@@ -5081,3 +5077,325 @@ JetBlue Airways
 Hainan Airlines
 Goo Goo Dolls
 Crash Bandicoot
+Deutsche Wohnen
+Vantage Towers
+Orlando Bloom
+Arizona Daily Sun
+Boko Haram
+Nez Perce
+Shiba Inu
+Chakri Day
+Chakri Memorial Day
+Tartan Day
+Canis Major
+Canis Minor
+Alpha Canis Minoris
+Alpha Canis Majoris
+Hillside Strangler
+Hillside Stranglers
+Ally McBeal
+Rémy Martin
+Jason Sudeikis
+Juno Temple
+Otto Beisheim
+Kenny Chesney
+Kenny Rogers
+Albert Uderzo
+René Goscinny
+Percy Jackson
+Reed Hastings
+Guillermo Lasso
+Sagrada Família
+Sagrada Familia
+Roland Emmerich
+Matt Gaetz
+Liz Cheney
+Gwen Stefani
+Stefan Löfven
+Evander Holyfield
+Daunte Wright
+ABC News
+Monterey Park
+Air Independence
+Air Maroc
+Royal Air Maroc
+Writers Guild of America
+Writers Guild Awards
+Thermo Fisher Scientific
+Thermo Fisher
+Annlena Baerbock
+WPS Office
+Carly Rae Jepsen
+Tim Ferriss
+Mount Meron
+Lag B'Omer
+Castro Valley
+San Diego Bay
+Operation Warp Speed
+Northrop Grumman
+Chipotle Mexican Grill
+CME Group
+Dhul Hijjah
+Eid al-Fitr
+Eid al-Adha
+Phnom Penh
+Gaza City
+Khan Yunis
+Beit Lahia
+Beit Hanoun
+Deir al-Balah
+Beit Hanoun
+Bani Suheila
+Tel Aviv-Yafo
+Rishon LeZion
+Bnei Brak
+Ramat Gan
+Beit Shemesh
+Kfar Saba
+Kefar Sava
+Clybourne Park
+Bruce Norris
+Levi Strauss
+Captain Kirk
+Gardner Museum
+Isabella Stewart Gardner Museum
+Paramount Pictures
+Barry Callebaut
+Cyclone Tauktae
+Ant-Man
+Google Lens
+Naomi Campbell
+Les Bleus
+Jason Momoa
+Willem Dafoe
+Saint Moritz
+Saint Pölten
+Wiener Neustadt
+Peter Dinklage
+Jean-Claude Van Damme
+Van Damme
+Rod Laver
+Rod Laver Arena
+Lori Lightfoot
+Mayor Lightfoot
+Carnegie Hall
+Abu Zubaydah
+VW Jetta
+Wang Yi
+Reconciliation Day
+Ray Dalio
+Lake Maggiore
+Mark Benioff
+AMD Ryzen
+Larry Fink
+Bryan Cranston
+Five Star Movement
+Bocconi University
+Van der Bellen
+Sarah's Scribbles
+Booom Supersonic
+Core Web Vitals
+Bam Margera
+Logan Paul
+German Marshall Fund
+Sun Yat-sen
+Carla Bruni
+Citrix Workspace
+Citrix Receiver
+Hall of Famer
+Hall of Famers
+Yair Lapid
+Campo Bahia
+Paul Pogba
+Amazon Studios
+JP Morgan
+De Croo
+Fête de la Musique
+Fete de la Musique
+Kit Kat
+Kit Kats
+Eric Cartman
+AWS Fargate
+Lady Di
+San Bernardo
+Copa del Rey
+Lina Khan
+Hyannis Port
+Johan Cruyff
+HyperText Markup Language
+NY City
+Obi-Wan
+Obi-Wan Kenobi
+Toyota Supra
+Doctor Zhivago
+Rio Negro
+Río Negro
+Aquidneck Island
+Bank of Marin
+ZZ Top
+Ponte Vecchio
+Marengo County
+Port Moresby
+Simone Biles
+Salpointe Catholic High School
+John Kirby
+Raksha Bandhan
+Stade de Reims
+Dave Grohl
+Kurt Cobain
+Janis Joplin
+Hurricane Ida
+New Line Cinema
+Jolly Jumper
+Warby Parker
+Adobe Creative Cloud
+Stan Lee
+Resident Evil
+Resident Evil Resistance
+Lennox Lewis
+Galaxy Z Fold
+#Pall Mall
+Élysée Palace
+Place de la Concorde
+James Webb Space Telescope
+James Webb Telescope
+Venice Film Festival
+Venice International Film Festival
+Cannes Film Festival
+Berlin International Film Festival
+Berlin Film Festival
+Venice Biennale
+Ark Invest
+Cathie Wood
+Irina Shayk
+Hansi Flick
+Leona Lewis
+New Hamphirite
+New Hamphirites
+Université Libre de Bruxelles
+Floki Inu
+Dai Nippon
+Junior Mesa
+Gravewood High
+Gravity Heroes
+Quantum Replica
+Apex Legends
+Muay Thai
+Scuderia Ferrari
+Jean Todt
+Durham University
+Miu Miu
+LaQuan Smith
+Isabel Marant
+Owen Wilson
+Tuff Gong
+Chuckie Egg
+ZX Spectrum
+Jamie Lee Curtis
+Amy Schumer
+Bill Hader
+John Cena
+Pitney Bowes
+Bebe Rexha
+G-Eazy
+Magister Juris
+Ana de Armas
+Django Unchained
+Billy Idol
+Miss Moneypenny
+Rishabh Pant
+Virat Kohli
+KL Rahul
+Shreyas Iyer
+Rohit Sharma
+Pandora Papers
+Panama Papers
+Baggy Green
+Ford Falcon
+Lou Bega
+Kid Ink
+Kylie Minogue
+Jason Derulo
+Eva Braun
+Rick Astley
+BBC iPlayer
+Tyson Fury
+Teton County
+Teton Range
+Grand Teton Park
+Kathy Hochul
+Stibo DX
+Bruno Le Maire
+John le Carré
+Beagle Channel
+La Vanguardia
+Cumbre Vieja
+Johnnie Walker
+Captain Morgan
+Swedish House Mafia
+Joe Manchin
+Kyrsten Sinema
+Guantánamo Bay
+Tsai Ing-wen
+Aer Lingus
+Mia Khalifa
+Microsoft Ignite
+MS Ignite
+Jack Daniels
+Pikmin Bloom
+Tetra Pak
+George Michael
+Cobequid Bay
+Agatha Christie
+Aston Villa
+Young Dolph
+Uri Geller
+Nyan Cat
+Hailey Bieber
+Athletic Bilbao
+Citizen Kane
+Al Bayt Stadium
+Tamim bin Hamad Al Thani
+Al-Janoub Stadium
+Al Janoub Stadium
+Ahmed bin Ali Stadium
+Ed Hardy
+Euro NCAP
+Toto Wolff
+Isla Holbox
+UEFA Nations League
+Adobe Captivate
+Bill Maher
+AirPods Max
+Matrix Resurrections
+Jake Paul
+Swiss German
+Teen Choice Awards
+Sunset Strip
+Madden NFL
+Marco Tozzi
+Neumayer Station
+Herod the Great
+Marty McFly
+Liz Truss
+Jean-Yves Le Drian
+Peggy Sue
+Need for Speed Underground
+Number One Observatory Circle
+Gustave Le Bon
+SoFi Stadium
+Kalmius River
+Keir Starmer
+Ned Flanders
+Miss Piggy
+Supercar Blondie
+Wye River
+Taba Summit
+Panera Bread
+Dnieper River
+Nord Stream
+Boardwalk Empire
+Gülen Movement
+Edvard Munch
+DK Metcalf
+Uncle Kracker

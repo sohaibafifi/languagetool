@@ -43,7 +43,7 @@ import static java.util.Comparator.comparing;
 public final class RuleOverview {
 
   private static final List<String> langSpecificWebsites = Arrays.asList(
-          "br", "ca", "zh", "da", "nl", "eo", "fr", "gl", "de", "it", "pl", "pt", "ru", "es", "uk"
+          "ca", "nl", "fr", "de", "it", "pl", "pt", "ru", "es", "uk"
   );
 
   enum SpellcheckSupport {
@@ -69,7 +69,7 @@ public final class RuleOverview {
     System.out.println("  <th valign='bottom' align=\"left\" width=\"60\">XML<br/>rules</th>");
     System.out.println("  <th></th>");
     System.out.println("  <th align=\"left\" width=\"60\">Java<br/>rules</th>");
-    System.out.println("  <th align=\"left\" width=\"60\">Spell<br/>check*</th>");
+    System.out.println("  <th align=\"left\" width=\"60\">Spell<br/>check</th>");
     System.out.println("  <th align=\"left\" width=\"60\">Confusion<br/>pairs</th>");
     //System.out.println("  <th valign='bottom' width=\"65\">Auto-<br/>detected</th>");
     System.out.println("  <th valign='bottom' align=\"left\" width=\"90\">Activity</th>");
@@ -144,14 +144,16 @@ public final class RuleOverview {
       System.out.print("<td valign=\"top\" align=\"right\">" + countConfusionPairs(lang) + "</td>");
 
       // activity:
-      int commits = activity.getActivityFor(lang, 365/2);
-      int width = (int) Math.max(commits * 0.5, 1);
+      int commits = activity.getActivityFor(lang, 365/4);
+      int width = (int) Math.max(commits * 0.25, 1);
       String images = "";
       if (width > 50) {
-        images += "<img title='" + commits + " commits in the last 6 months' src='images/bar-end.png' width='22' height='10'/>";
+        images += "<img title='" + commits + " commits in the last 3 months' src='images/bar-end.png' width='22' height='10'/>";
         width = 50;
+      } else if (width == 1 && commits > 0) {
+        width = 3;
       }
-      images += "<img title='" + commits + " commits in the last 6 months' src='images/bar.png' width='" + width + "' height='10'/>";
+      images += "<img title='" + commits + " commits in the last 3 months' src='images/bar.png' width='" + width + "' height='10'/>";
       System.out.print("<td valign=\"top\" align=\"right\"><span style='display:none'>" + commits + "</span>" + images + "</td>");
       
       // maintainer information:

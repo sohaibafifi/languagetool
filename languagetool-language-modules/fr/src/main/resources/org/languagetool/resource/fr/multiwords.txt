@@ -1,4 +1,418 @@
 #French multiwords file used for chunking
+#separatorRegExp=[\t;]
+barber shop; N e sp
+en effet; A
+par ailleurs; A
+de plus en plus; A
+maintes fois; A
+Le Mans; Z m sp
+US Army;Z e sp
+Central Water Authority; Z e sp
+LYRA NETWORK; Z e sp
+pâte à tartiner; N f s
+Clean boost; Z e sp
+Azure Window; Z e sp
+Carrera Séptima; Z e sp
+Casa Sports; Z e sp
+rock'n'roll; N m sp
+rock and roll; N m sp
+les Pende; Z e sp
+les Ramones; Z e sp
+à bon port; A
+à tue-tête;A
+Burn Out; N m sp
+le Queen Ann; Z e sp
+Queen Elizabeth Hospital; Z e sp
+Queen Elizabeth Hall; Z e sp
+Visa Checkout; Z e sp
+Range Rover; Z e sp
+Beat Generation; Z f sp
+banana bread; N m sp
+off shore; N m s
+Naf Naf; Z e sp
+Île d'Yeu; Z e sp
+off shores; N m p
+off shore; J m s
+off shores; J m p
+Hit Parade; Z e sp
+Beats Mixr; Z e sp
+doggy bag; N m s
+Socket Dance; N f sp
+doggy bags; N m p
+Fat Beats; Z e sp
+le Queen Elizabeth; Z e sp
+le Queen Mary; Z e sp
+pure players; N m sp
+le plein été; N m sp
+Kit Kat; Z e sp
+attrape soleil; N m sp
+à titre indicatif;A
+bel et bien; A
+pire encore; A
+faits divers; N m sp
+parti pris; N m sp
+France 24; Z e sp
+sans conteste; A
+attache remorque; N m sp
+table de nuit; N f s
+burn out;N m sp
+table à langer;N f s
+tables à langer; N f p
+Divers gauche; Z e sp
+à la con; A
+Divers droite; Z e sp
+tables de nuit; N f p
+Star Wars; Z e sp
+Machine Learning; N m sp
+drama queen; N f sp
+Luna Park; Z e sp
+bar Mitzvah; Z f sp
+la la land; Z e sp
+pyjama party; N f sp
+M&M's;Z e sp
+R&G Productions; Z e sp
+S&P 500; Z e sp
+Circo all’inCirca; Z e sp
+App Store; Z e sp
+Consumer Preview; Z e sp
+J&J Auditorium; Z e sp
+goutte à goutte; N m sp
+tous anti-Covid; A
+drag queens; N f p
+touche à tout; N m sp
+stand up paddle; N m sp
+Royal Bank of Scotland; Z f sp
+Central Coast Mariners; Z e sp
+escape game; N m s
+escape games; N m p
+must have;N m sp
+fortune cookies; N m sp
+Royal Canin; Z e sp
+Data mining; N m sp
+street art; N m sp
+street artist; N m s
+street artists; N m p
+Street Fighters; Z e sp
+boys band; N m s
+boys bands; N m p
+vidéo poker; N m sp
+shopping list; N f sp
+National Australia Bank; N f sp
+lunch box; N f sp
+baby shower; N f s
+baby showers; N f p
+rock star; N f s
+rock stars; N f p
+US Dax;Z e sp
+US Open;Z e sp
+junior class;N f s
+junior classes;N f p
+master class;N f sp
+Star Trek;Z m s
+compte entreprise;N m s
+comptes entreprise;N m p
+Coco Pops;Z e sp
+Non Import Draft;Z e sp
+Black Hawk;N m s
+Black Hawks;N m p
+simple dames;N m sp
+simple messieurs;N m sp
+double dames;N m sp
+double messieurs;N m sp
+Grand Central Station;Z e sp
+porte épingles;N m sp
+MG Midget;Z f sp
+Sud-Ouest;Z m sp
+crash test;N m s
+crash tests;N m p
+Grand Tortue-Ahmeyim;Z e sp
+Grand Tortue Ahmeyim;Z e sp
+n'importe quoi;A
+n'importe qui;A
+n'importe quel;A
+noir et blanc	J e sp
+top model	N e s
+top models	N e p
+auto tamponneuse	N f s
+autos tamponneuses	N f p
+carrosserie arrière	N f s
+haute définition	N f s
+un à un	A
+une à une	A
+plusiers fois	A
+Notre Père	N m s
+tout pile	A
+Royal Canin	Z e sp
+Sympa Tif	Z e sp
+mass media	N m p
+The Butterfly Effect	Z e sp
+Il mondo del Vetro	Z e sp
+Matos	Z e sp
+Chanel Biz	Z e sp
+Frisquet	Z e sp
+Kawa	Z e sp
+Tignasse	Z e sp
+Trail Boss	Z e sp
+Undercover Boss 	Z e sp
+#Comment tuer son boss	Z e sp
+Edith Piaf	Z f s
+Violon Dingue	Z e sp
+à tout va	A
+à tout-va	A
+ST Media	Z e sp
+Sciences Po	Z e sp
+Rolls Royce	Z e sp
+state of the art	N m s
+state-of-the-art	A
+info presse	N f s
+infos presse	N f p
+gel douche	N m s
+gels douche	N m p
+visières bulle	N f p
+visière bulle	N f s
+gaming zone	N f s
+Gaming Zone	N f s
+bon allez	A
+un peu vite fait; A
+Royal Warrant	N m s
+Royal Warrants	N m p
+STI TAF	Z e sp
+Kiff No Beat	Z e sp
+Super Bowl	Z e sp
+Racaille Blues	Z e sp
+Violon Dingue	Z e sp
+La Bagnole	Z e sp
+Gen Con	Z e sp
+George Braque	N m sp
+copier/coller	N m sp
+Minas Gerais	Z e sp
+à contre-courant	A
+à contre courant	A
+à rebrousse-poil	A
+en face	A
+love hotel	N m s
+de jure	A
+de facto	A
+Palma de Mallorca	Z f s
+Mata Hari	Z f s
+trait d'union	N m s
+traits d'union	N m p
+Trinity College	Z m s
+d'habitude	A
+Marvel Cinematic Universe	Z m s
+à l'occasion	A
+aux premiers abords	A
+pour pas très cher	A
+pour pas trop cher	A
+en tout cas	A
+qualité brouillon	N f s
+ici bas	A
+par définition	A
+transformateur basse fréquence	N m s
+transformateurs basse fréquence	N m p
+plantes concasseur	N f p
+plante concasseur	N f s
+business email compromise	N m sp
+Business Email Compromise	N m sp
+boy band	N m s
+boy bands	N m p
+post mortem	A
+Ruby on Rails	Z e sp
+fonctionnalité enceinte	N f s
+fonctionnalités enceinte	N f p
+ampoule graisseur	N f s
+ampoules graisseur	N f p
+vitesse grand V	N f s
+Original Motion Picture Soundtrack	N e sp
+de surcroît	A
+sinistre auto	N m s
+sinistres auto	N m p
+raccourci clavier	N m s
+raccourcis clavier	N m p
+bien sûr	A
+par contre	A
+à la fois	A
+tout au moins	A
+tout du moins	A
+tout au plus	A
+tout du plus	A
+à peine	A
+à nouveau	A
+sans doute	A
+sans cesse	A
+en même temps	A
+en son temps	A
+à dire vrai	A
+à vrai dire	A
+chaud boulette	J e sp
+#état-nation	N m s
+#états-nations	N m p
+état nation	N m s
+états nations	N m p
+tabula rasa	N e sp
+coûte que coûte	A
+fait main	J m s
+faits main	J m p
+faite main	J f s
+faites main	J f p
+d'ailleurs	A
+tout de suite	A
+par mégarde	A
+Pôle Entreprise	N m s
+pôle entreprise	N m s
+en règle générale	A
+côte à côte	A
+en rouge	A
+orge mondé	N f s
+orge perlé	N f s
+National Football League	Z f s
+Premier League	Z f s
+Royal Shakespeare Company	Z f s
+empreinte carbone	N f s
+empreintes carbone	N f p
+Pearl Harbor	Z m s
+National Geographic	Z m s
+Golden Globes	Z m p
+Golden Globe Awards	Z m p
+Fox Film	Z f s
+Fox Film Corporation	Z f s
+tortue luth	N f s
+tortues luth	N f p
+Pizza Hut	Z e sp
+Black Lives Matter	Z e sp
+black lives matter	Z e sp
+in fine	A
+Points Seuil	Z e sp
+Virgin Mobile USA	Z e sp
+Final Fantasy	Z e sp
+Daily Commercial Gazette	Z f s
+Commercial Union	Z f s
+Direct Assurance	Z f s
+Direct Assurances	Z f p
+Central City	Z f s
+Central Station	Z f s
+Atlantique Productions	Z f p
+Aquitaine Limousin Poitou Charentes	Z e s
+double-corps	J e sp
+double corps	J e sp
+cache culbuteurs	N m s
+au contraire	A
+à l'aise	A
+social media	N e sp
+Social Media	N e sp
+fait-maison	J e sp
+fait maison	J e sp
+Michael Jackson	Z m s
+Century 21	Z e sp
+Business Email Compromise	Z e sp
+Al Pacino	Z m s
+Victoria and Albert Museum	Z m s
+base jump	N m s
+tous ensemble	A
+toutes ensemble	A
+à peu près	A
+Plus belle la vie	Z m s
+effet liftant	N m s
+effet lifting	N m s
+pour le moment	A
+au demeurant	A
+de la tête aux pieds	A
+d'ordinaire	A
+état partie	N m s
+états parties	N m p
+#Valeurs actuelles	Z e sp
+Point Vert	Z e sp
+Wayward Pines	Z e sp
+#émission de télévision	Z e sp
+double face	N f s
+doubles faces	N f p
+close combat	N m s
+Tel Farah	Z e s
+Tel Aviv	Z e s
+Tel-Aviv	Z e s
+Tel Aviv-Jaffa	Z e s
+Tel-Aviv-Jaffa	Z e s
+Day 1 Studios	Z e sp
+de manière à	P
+vite fait bien fait	A
+#États-Unis	Z m p
+Union européenne	Z f s
+Union Européenne	Z f s
+entreprise sponsor	N f s
+entreprises sponsors	N f p
+Dalaï Lama	N m s
+Dalaï-Lama	N m s
+Dalaï-lama	N m s
+torse nu	N m s
+rouge vif	N m s
+gris foncé	N m s
+en tout état de cause	A
+grand place	N f s
+mètre cube	N m s
+mètres cube	N m p
+lèche botte	N m s
+lèche bottes	N m p
+Mind Fruits	Z e sp
+marque constructeur	N f s
+#base de données	N f s
+#bases de données	N f p
+#site de rencontres	N m s
+point retrait	N m s
+points retrait	N m p
+monnaies actif	N f p
+monnaie actif	N f s
+par inadvertence	A
+à proprement parler	A
+pure souche	J e sp
+rayons X	N m p
+US Marine Corps	Z e sp
+US Air Force	Z e sp
+US Navy	Z e sp
+Marine Corps	Z e sp
+au mieux	A
+charge acquéreur	N f ss
+charge vendeur	N f s
+bas de contention	N m sp
+#satisfaction client	N f s
+#relation client	N f s
+#fiche client	N f s
+#fiches client	N f p
+#base de données client	N f s
+#bases de données client	N f p
+un tantinet	A
+#langue maternelle	N f s
+#mauvais goût	N m s
+tout de même	A
+à première vue	A
+à plusieurs reprises	A
+plan cul	N m s
+plans cul	N m p
+plan rencontre	N m s
+plans rencontre	N m p
+mis à part	P
+tout à coup	A
+moyenne générale	N f s
+moyennes générales	N f p
+garantie constructeur	N f s
+grand public	A
+grand champs	N m s
+coupes bise	N m p
+coupe bise	N m s
+tarif entreprise	N m s
+tarifs entreprise	N m p
+plus démunis	N m sp
+par la suite	A
+bande dessinée	N f s
+bandes dessinées	N f p
+double corps	N m s
+ayant droit	N m s
+ayants droit	N m p
+à droite	A
+à gauche	A
+de forfaits	A
+tout à fait	A
+Force India	Z e sp
+Sahara Force India	Z e sp
 Zsa Zsa Gabor	Z f s
 von Neumann	Z e sp
 à la con	J e sp
@@ -69,19 +483,43 @@ Marvel Comics	Z e sp
 Marvel DC	Z e sp
 Hydro-Québec DC	Z e sp
 en dehors	A
-un tiens vaut mieux que deux tu l'auras	A
+#un tiens vaut mieux que deux tu l'auras	A
 interface utilisateur	N f s
 au premier abord	A
 de prime abord	A
 d'ici peu	A
 peu à peu	A
-à l'origine	A
 a priori	A
 d'abord	A
+tout d'abord	A
 un peu	A
 à moitié	A
 en aucune manière	A
 noir sur blanc	A
+de nouveau	A
+en large majorité	A
+au loin	A
+le plus souvent	A
+tour à tour	A
+en masse	A
+fait divers	N m s
+faits divers	N m p
+quantitative easing	N m s
+goutte à goutte	N m s
+de derrière	P
+rayon laser	N m s
+rayons laser	N m p
+par le fait	A
+pour sa part	A
+porte passager	N f s
+porte conducteur	N f s
+portes passager	N f p
+portes conducteur	N f p
+mise à jour	N f s
+mise à niveau	N f s
+mises à jour	N f p
+mises à niveau	N f p
+Bertin de la Doué	Z e sp
 Eugénie Grandet	Z f s
 brosse à dents	N f s
 brosses à dents	N f p
@@ -300,6 +738,7 @@ octante et un	D m p
 octante et une	D f p
 nonante et un	D m p
 nonante et une	D f p
+Beverly Hills	Z e sp
 
 #########################################################################
 ###                        Noms scientifiques                         ###
@@ -771,6 +1210,7 @@ Drosophila yakuba	Z e sp
 Dwarf minke	Z e sp
 Dwarf sp	Z e sp
 Dwarf spp	Z e sp
+E. coli	Z e sp
 Echinops sp	Z e sp
 Echinops spp	Z e sp
 Echinops telfairi	Z e sp
@@ -1932,8 +2372,68 @@ Vibrio cholerae	Z e sp
 Vibrio comma	Z e sp
 Vibrio parahaemolyticus	Z e sp
 Vibrio sp	Z e sp
+tortue ninja; N f s
+tortues ninja; N f p
+melting pot; N e sp
+aide ménagère; N f s
+J’Run; Z e sp
+bas de gamme; A
+Dar L’Ftour; Z e sp
+bling bling; I
+Cinéma le Grand Action; Z e sp
+Primetime Emmy Awards; Z e sp
+African journals; Z e sp
+20minutes.fr; Z e sp
+L'Obs; Z e sp
+Hercule Poirot; Z e sp
+mama mia; I
+Naomi Watts; Z e sp
+fab lab; N m s
+fab labs; N mp
+Notre-Dame-d'Estrées-Corbon; Z e sp
+Saint-Jean-d'Ardières; Z e sp
+Céline Dion; Z e sp
+al dente; N e sp
+dare dare; I
+Christ Church; N f sp
+oh la la; I
+Robert de Niro; Z e sp
+Porto Vecchio; Z e sp
+Miley Cyrus; Z f sp
+Johnson & Johnson; Z e sp
+Sinovac Biotech; Z e sp
+pass vaccinal; N m s
+Scarlett Johansson; Z e sp
+Cécile Borne; Z e sp
+Joint European Disruptive Initiative; Z f sp
+Cloud Security Alliance; Z f sp
+on line; A
+J&R Savard; Z e sp
+Hôpital d'Instruction des Armées; Z e sp
+Artisan Déco; Z e sp
+Audible Studios; Z e sp
+Mai Tai; Z e sp
+prime time; N m s
+prime times; N m p
+grec ancien; N m sp
+Direction générale des Impôts; Z e sp
+Estes Park; Z e sp
+fil de nouvelles; N m s
+fils de nouvelles; N m p
+aides ménagères; N f p
+France Bleu; Z e sp
+Central Intelligence Agency; Z e sp
+Grand Paris; N m sp
+Rio Grande; Z e sp
+Sales Manager; N e sp
+Sidi Bel Abbés; Z e sp
+Eurico Sales; Z e sp
+Commodity Futures Trading Commission; Z e sp
+Future Man; Z e sp
+Égypte Ancienne; N m s
 Vibrio spp	Z e sp
 Vibrio vulnificus	Z e sp
+Société des Instruments Anciens; Z e sp
 Vicugna pacos	Z e sp
 Vicugna sp	Z e sp
 Vicugna spp	Z e sp

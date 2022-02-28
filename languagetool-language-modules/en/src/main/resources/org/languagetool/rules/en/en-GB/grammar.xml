@@ -24,7 +24,7 @@ USA
 -->
 
 <!DOCTYPE rules [
-    <!ENTITY apostrophe "['’`´‘]">
+    <!ENTITY apostrophe "['’`´‘ʻ]">
 
     <!ENTITY hyphen "(?:[-‑])">
 
@@ -94,6 +94,28 @@ USA
 <rules lang="en-GB" xsi:noNamespaceSchemaLocation="../../../../../../../../../../languagetool-core/src/main/resources/org/languagetool/rules/rules.xsd"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <category id="AMERICAN_ENGLISH" name="American English phrases" type="locale-violation">
+        <rulegroup id="LUNCH_ROOM" name="lunchroom">
+            <rule>
+                <pattern>
+                    <token>lunchroom</token>
+                </pattern>
+                <message>This term is chiefly North American English. Consider a replacement.</message>
+                <suggestion>canteen</suggestion>
+                <suggestion>cafeteria</suggestion>
+                <suggestion>break room</suggestion>
+                <example correction="canteen|cafeteria|break room">Tom is having a break in the <marker>lunchroom</marker>.</example>
+            </rule>
+            <rule>
+                <pattern>
+                    <token>lunchrooms</token>
+                </pattern>
+                <message>This term is chiefly North American English. Consider a replacement.</message>
+                <suggestion>canteens</suggestion>
+                <suggestion>cafeterias</suggestion>
+                <suggestion>break rooms</suggestion>
+                <example correction="canteens|cafeterias|break rooms">Tom is having a break in the <marker>lunchrooms</marker>.</example>
+            </rule>
+        </rulegroup>
         <rule id="DRIVERS_LICENSE" name="driver's licence/driving licence">
             <pattern>
                 <token>driver</token>
@@ -197,6 +219,11 @@ USA
             <example correction="petrol">More <marker>gas</marker>.</example>
         </rule>
         <rule id="LICENCE_LICENSE_NOUN_SINGULAR" name="License/Licence (noun)">
+            <antipattern>
+                <token postag="TO|MD" postag_regexp="yes" />
+                <token postag="RB" min="0" />
+                <token>license</token>
+            </antipattern>
             <pattern>
                 <token negate_pos="yes" postag="VB|VBD|VBG|VBN|VBP|VBZ" postag_regexp="yes">license</token>
             </pattern>
@@ -403,7 +430,7 @@ USA
         <!-- For general notes and design decisions, refer to OXFORD_SPELLING_ISE_VERBS. Rules developed by Mike Unwalla. -->
         <!-- Not uppercase: https://github.com/languagetool-org/languagetool/issues/1292 -->
         <!-- No suggestions: https://github.com/languagetool-org/languagetool/issues/2764 -->
-            <url>https://www.lexico.com/grammar/ize-ise-or-yse</url>
+            <url>https://languagetool.org/insights/post/ise-ize/</url>
             <antipattern><!-- Dans l'organisation de ces autonomies... -->
                 <token>l</token>
                 <token spacebefore="no" regexp="yes">&apostrophe;</token>
@@ -463,7 +490,7 @@ USA
                 <pattern>
                     <token postag_regexp="yes" postag="VB.*" inflected="yes" regexp="yes">([a-z]+?-?[a-z]+?)ise
                         <exception regexp="yes">(?-i)[A-Z-]+</exception>
-                        <exception regexp="yes">advertise|advertised|advertises|advertising|arose|braise|braises|chastise|merchandise|merchandised|merchandises|merchandising|misadvise|prise|prised|prises|prising|uprose|raised</exception><!-- suppress_misspelled does not work with these verbs. Aside: some z spellings are not verbs but are correct spellings: example 'braize' is a fish. -->
+                        <exception inflected="yes" regexp="yes">advertise|arise|braise|chastise|merchandise|misadvise|prise|raise|uprise</exception><!-- suppress_misspelled does not work with these verbs. Aside: some z spellings are not verbs but are correct spellings: example 'braize' is a fish. -->
                     </token>
                     <!-- Remove uppercase from the rule: case_sensitive="yes" in the token does not work; (?-i)([a-zA-Z][a-z]+... in the regexp does not work. Use an exception. -->
                 </pattern>
@@ -485,13 +512,12 @@ USA
                 <example>All ~ise-only verbs are in an exception. As a fail-safe test, keep this list of inflections that previously caused incorrect warnings: alias [aliased], arise [arose], porpoise [aviation slang], trellis [VBZ = trellises]</example>
                 <example>These rare/obsolete ~ise-only verbs have no postag: annalise, bepraise, debruise, disseise, grandise, grise, hoise, marmalise, misprise, remise, re-rise, rerise, seise, sensibilise, unpromise, </example>
                 <example><marker>recentralise</marker> is not found because suppress_misspelled="yes". 'Recentralize' has no pos.</example><!-- TODO: get a more obscure example as a test. -->
-
-                <example>These verbs are always ~ise: abscise, abscised, abscises, abscising, advertise, advertised, advertises, advertising, advise, advised, advises, advising, affranchise, affranchised, affranchises, affranchising, alias, aliased, aliases, aliasing, appraise, appraised, appraises, appraising, arise, arose, arises, arising, braise, braised, braises, braising, bruise, bruised, bruises, bruising, chastise, chastised, chastises, chastising, circumcise, circumcised, circumcises, circumcising, comprise, comprised, comprises, comprising, compromise, compromised, compromises, compromising, counterpoise, counterpoised, counterpoises, counterpoising, cruise, cruised, cruises, cruising, demise, demised, demises, demising, despise, despised, despises, despising, devise, devised, devises, devising, disenfranchise, disenfranchised, disenfranchises, disenfranchising, disfranchise, disfranchised, disfranchises, disfranchising, disguise, disguised, disguises, disguising, dispraise, dispraised, dispraises, dispraising, enfranchise, enfranchised, enfranchises, enfranchising, equipoise, equipoised, equipoises, equipoising, excise, excised, excises, excising, exercise, exercised, exercises, exercising, franchise, franchised, franchises, franchising, fundraise, fundraised, fundraises, fundraising, improvise, improvised, improvises, improvising, incise, incised, incises, incising, liaise, liaised, liaises, liaising, merchandise, merchandised, merchandises, merchandising, misadvise, misadvised, misadvises, misadvising, misraise, misraised, misraises, misraising, mortise, mortised, mortises, mortising, noise, noised, noises, noising, outraise, outraised, outraises, outraising, overexercise, overexercised, overexercises, overexercising, overpraise, overpraised, overpraises, overpraising, overpromise, overpromised, overpromises, overpromising, paralyse, paralysed, paralyses, paralysing, poise, poised, poises, poising, porpoise, porpoised, porpoises, porpoising, practise, practised, practises, practising, praise, praised, praises, praising, premise, premised, premises, premising, previse, prevised, previses, prevising, prise, prised, prises, prising, promise, promised, promises, promising, raise, raised, raises, raising, readvertise, readvertised, readvertises, readvertising, readvise, readvised, readvises, readvising, reappraise, reappraised, reappraises, reappraising, rearise, rearised, rearises, rearising, reprise, reprised, reprises, reprising, repromise, repromised, repromises, repromising, reraise, reraised, reraises, reraising, re-raise, re-raised, re-raises, re-raising, revise, revised, revises, revising, rise, rose, rises, rising, supervise, supervised, supervises, supervising, surmise, surmised, surmises, surmising, surprise, surprised, surprises, surprising, televise, televised, televises, televising, trellis, trellised, trellises, trellising, underpraise, underpraised, underpraises, underpraising, upraise, upraised, upraises, upraising, uprise, uprose, uprises, uprising, wise, wised, wises, wising</example>
+                <example>These verbs are always ~ise: abscise, abscised, abscises, abscising, advertise, advertised, advertises, advertising, advise, advised, advises, advising, affranchise, affranchised, affranchises, affranchising, alias, aliased, aliases, aliasing, appraise, appraised, appraises, appraising, arise, arose, arises, arising, braise, braised, braises, braising, bruise, bruised, bruises, bruising, chastise, chastised, chastises, chastising, circumcise, circumcised, circumcises, circumcising, comprise, comprised, comprises, comprising, compromise, compromised, compromises, compromising, counterpoise, counterpoised, counterpoises, counterpoising, cruise, cruised, cruises, cruising, demise, demised, demises, demising, despise, despised, despises, despising, devise, devised, devises, devising, disenfranchise, disenfranchised, disenfranchises, disenfranchising, disfranchise, disfranchised, disfranchises, disfranchising, disguise, disguised, disguises, disguising, dispraise, dispraised, dispraises, dispraising, enfranchise, enfranchised, enfranchises, enfranchising, equipoise, equipoised, equipoises, equipoising, excise, excised, excises, excising, exercise, exercised, exercises, exercising, franchise, franchised, franchises, franchising, fundraise, fundraised, fundraises, fundraising, improvise, improvised, improvises, improvising, incise, incised, incises, incising, liaise, liaised, liaises, liaising, merchandise, merchandised, merchandises, merchandising, misadvise, misadvised, misadvises, misadvising, misraise, misraised, misraises, misraising, mortise, mortised, mortises, mortising, noise, noised, noises, noising, outraise, outraised, outraises, outraising, overexercise, overexercised, overexercises, overexercising, overpraise, overpraised, overpraises, overpraising, overpromise, overpromised, overpromises, overpromising, paralyse, paralysed, paralyses, paralysing, poise, poised, poises, poising, porpoise, porpoised, porpoises, porpoising, practise, practised, practises, practising, praise, praised, praises, praising, premise, premised, premises, premising, previse, prevised, previses, prevising, prise, prised, prises, prising, promise, promised, promises, promising, raise, Raise (#4744), raised, raises, raising, readvertise, readvertised, readvertises, readvertising, readvise, readvised, readvises, readvising, reappraise, reappraised, reappraises, reappraising, rearise, rearised, rearises, rearising, reprise, reprised, reprises, reprising, repromise, repromised, repromises, repromising, reraise, reraised, reraises, reraising, re-raise, re-raised, re-raises, re-raising, revise, revised, revises, revising, rise, rose, rises, rising, supervise, supervised, supervises, supervising, surmise, surmised, surmises, surmising, surprise, surprised, surprises, surprising, televise, televised, televises, televising, trellis, trellised, trellises, trellising, underpraise, underpraised, underpraises, underpraising, upraise, upraised, upraises, upraising, uprise, uprose, uprises, uprising, wise, wised, wises, wising</example>
             </rule>
             <rule><!-- id="OXFORD_SPELLING_ADJECTIVES" name="Oxford spelling of adjectives (~iz not ~is), **but not adjectives in CAPITALS**"> ~isable, ~isational, ~ised, ~ising -->
                 <pattern>
                     <token postag="JJ" regexp="yes">([a-z]+?-?[a-z]+?)is(able|ational|ed|ing)
-                        <exception>raised</exception>
+                        <exception regexp="yes">rais(ed|ing)</exception>
                         <exception regexp="yes">(?-i)[A-Z-]+</exception>
                     </token>
                 </pattern>
@@ -508,6 +534,8 @@ USA
                 <example>These words are always spelled with ~s (possibly some are AmE only): advisable, advised, advising, bruised, bruising, circumcised, circumcising, compromised, compromising, despisable, devised, devising, disenfranchised, disenfranchising, disguised, disguising, divisible, enfranchised, enfranchising, enterprising, excised, excising, exercisable, exercised, exercising, franchised, franchising, hair-raising, ill-advised, immunocompromised, immunocompromising, improvisational, improvised, improvising, inadvisable, incised, incising, indivisible, invisible, noncompromised, noncompromising, poised, poising, practised, practising, promised, promising, raisable, raised, raising, revised, revising, self-advertising, self-raising, self-rising, supervised, supervising, surprised, surprising, televised, televising, unadvertised, unadvisable, unadvised, unbruised, uncircumcised, uncompromised, uncompromising, undevised, undisguised, unenfranchised, unexcised, unexercised, unfranchised, unimprovised, unincised, unpoised, unpractised, unpromised, unraisable, unraised, unrevised, unsupervised, unsurprised, unsurprising, untelevised, well-advertised</example>
                 <example>For information about the <marker>Conference of Specialised Ministers</marker> refer to www.coe.int/en/web/cm/iguide-chapter6</example><!-- Refer to disambiguation.xml CONFERENCE_OF_SPECIALISED_MINISTERS -->
                 <example>I am also a Texan, Born and Raised.</example>
+                <example>This Raising Agent is contaminated.</example><!-- #5266 -->
+                <example>These Enterprising Young People are a boon to this country.</example><!-- #5266 -->
             </rule>
             <rule><!-- id="OXFORD_SPELLING_ADVERBS" name="Oxford spelling of adverbs (~iz not ~is), **but not adverbs in CAPITALS**"> ~isably, ~isationally) -->
                 <pattern>
@@ -547,8 +575,9 @@ USA
             <rule><!-- We have visited the client on 27/10/2040 -->
                 <pattern>
                     <token inflected="yes" postag="VBD?" postag_regexp="yes" skip="-1">have</token>
-                    <token postag="VBN" skip="-1">
+                    <token postag="VBN" skip="-1" chunk_re=".-VP">
                         <exception>scheduled</exception>
+                        <exception regexp="yes">wed|sat</exception>
                         <exception scope='next' regexp='yes'>before|until|will</exception></token>
                     <marker> &date_dmy_numbers; </marker>
                 </pattern>
@@ -568,7 +597,9 @@ USA
                         <exception regexp='yes'>before|until</exception></token>
                     <marker> &date_dmy_numbers_skip; </marker>
                     <token inflected="yes" postag="VBD?" postag_regexp="yes" skip="-1">have</token>
-                    <token postag="VBN" skip="-1"/>
+                    <token postag="VBN" skip="-1" chunk_re=".-VP">
+                        <exception regexp="yes">wed|sat</exception>
+                    </token>
                 </pattern>
                 <filter class="org.languagetool.rules.en.FutureDateFilter" args="year:\6 month:\4 day:\2"/>
                 <message>The given date is in the future, but the verb is in past tense.</message>
@@ -581,8 +612,10 @@ USA
             </rule>
             <rule><!-- We visited the client on 27/10/2040  -->
                 <pattern>
-                    <token postag="VBD" skip="-1">
-                        <exception scope='next' regexp='yes'>before|until|will</exception></token>
+                    <token postag="VBD" skip="-1" chunk_re=".-VP">
+                        <exception scope='next' regexp='yes'>before|until|will</exception>
+                        <exception regexp="yes">wed|sat</exception>
+                    </token>
                     <marker> &date_dmy_numbers; </marker>
                 </pattern>
                 <filter class="org.languagetool.rules.en.FutureDateFilter" args="year:\6 month:\4 day:\2"/>
@@ -599,7 +632,9 @@ USA
                     <token>
                         <exception regexp='yes'>before|until</exception></token>
                     <marker> &date_dmy_numbers_skip; </marker>
-                    <token postag="VBD" skip="-1"/>
+                    <token postag="VBD" skip="-1" chunk_re=".-VP">
+                        <exception regexp="yes">wed|sat</exception>
+                    </token>
                 </pattern>
                 <filter class="org.languagetool.rules.en.FutureDateFilter" args="year:\6 month:\4 day:\2"/>
                 <message>The given date is in the future, but the verb is in past tense.</message>
@@ -647,6 +682,37 @@ USA
             <short>Style: unusual spelling</short>
             <example correction="awoke|awoken">Such a noise might have <marker>awaked</marker> the dead.</example>
             <example>Such a noise might have <marker>awoken</marker> the dead.</example>
+        </rule>
+
+    </category>
+
+    <category id="TYPOS" name="Possible Typo" type="misspelling">
+
+        <rule id="AIT" name="ait (it)">
+            <antipattern><!-- Context: island, river -->
+                <token skip="-1" postag="SENT_START"/>
+                <token skip="-1" regexp="yes" postag_regexp="yes" postag="NN.*" inflected="yes">island|river</token>
+                <token postag="SENT_END"/>
+            </antipattern>
+            <pattern>
+                <token case_sensitive="yes" regexp="yes">[Aa]it<exception postag="NNP"/></token>
+            </pattern>
+            <message>The rare word '\1' means a small island in a river.</message>
+            <suggestion>air</suggestion>
+            <suggestion>it</suggestion>
+            <url>https://www.lexico.com/definition/ait</url>
+            <short>Possible typo</short>
+            <example correction="Air|It"><marker>Ait</marker> is a good idea.</example>
+            <example correction="air|it">I need some fresh <marker>ait</marker> to clear my mind.</example>
+            <example>An <marker>ait</marker> is a small island.</example>
+            <example>The AIT is governed by a Committee.</example>
+            <example>Stallergenes Greer's approach to allergen immunotherapy(AIT) is focused on individual patient needs.</example>
+            <example>Welcome to all new and returning AiT members. </example>
+            <example>Santo insists young full-back Rayan Ait-Nouri has their 'confidence and total support'...</example>
+            <example>Restricted access - Isleworth Ait. Birdwatching.</example>
+            <example>Isleworth Ait lies offshore from Heron's place.</example>
+            <example>Visit One Over the Ait Pub and Restaurant in Brentford.</example>
+            <example type="triggers_error">Explore releases from Ait! at Discogs.</example>
         </rule>
 
     </category>

@@ -906,7 +906,7 @@ This is also useful for most multi word rules, because of 'inversion' of the sen
 			</rule>
 			<rule>
 				<pattern>
-					<token regexp='yes'>.{5,}kost<exception regexp="yes">(lievelings|winter)kost</exception></token>
+					<token regexp='yes'>.{5,30}kost<exception regexp="yes">(lievelings|winter)kost</exception></token>
 				</pattern>
 				<message>Standaardtaal is <suggestion>\1en</suggestion>.</message>
 				<url>https://taaladvies.net/taal/advies/vraag/474/</url>
@@ -1195,6 +1195,13 @@ This is also useful for most multi word rules, because of 'inversion' of the sen
 				</pattern>
 				<message>In Nederland begrijpt men dit niet, daar is het <suggestion><match no="1" postag="WKW.*" postag_regexp="yes">schroeven</match></suggestion>.</message>
 				<example correction="schroef">Ik <marker>vijs</marker> het vast.</example>
+			</rule>
+			<rule>
+				<pattern>
+					<token inflected="yes">daarrond</token>
+				</pattern>
+				<message>In Nederland verwacht men dit niet, daar is het: <suggestion>daaromheen</suggestion>.</message>
+				<example correction="daaromheen">Met <marker>daarrond</marker> van alles.</example>
 			</rule>
 		</rulegroup>
 	</category>

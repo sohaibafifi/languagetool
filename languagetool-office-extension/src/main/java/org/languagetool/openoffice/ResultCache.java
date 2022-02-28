@@ -46,10 +46,18 @@ class ResultCache implements Serializable {
     this(null);
   }
 
-  ResultCache(ResultCache cache) {
+  public ResultCache(ResultCache cache) {
     this.entries = Collections.synchronizedMap(new HashMap<>());
+    replace(cache);
+  }
+
+  /**
+   * Replace the cache content
+   */
+  synchronized void replace(ResultCache cache) {
+    entries.clear();
     if (cache != null) {
-      synchronized(cache.entries) {
+      synchronized(cache) {
         this.entries.putAll(cache.entries);
       }
     }
@@ -58,36 +66,49 @@ class ResultCache implements Serializable {
   /**
    * Remove all cache entries for a paragraph
    */
-  void remove(int numberOfParagraph) {
+  synchronized void remove(int numberOfParagraph) {
     entries.remove(numberOfParagraph);
   }
 
   /**
    * Remove all cache entries between firstParagraph and lastParagraph
    */
-  void removeRange(int firstParagraph, int lastParagraph) {
+  synchronized void removeRange(int firstParagraph, int lastParagraph) {
     for (int i = firstParagraph; i <= lastParagraph; i++) {
       entries.remove(i);
     }
   }
 
   /**
-   * Remove all cache entries between firstPara (included) and lastPara (included)
+   * Remove all cache entries between firstPara (included) and lastPara (excluded)
    * shift all numberOfParagraph by 'shift'
    */
-  void removeAndShift(int firstParagraph, int lastParagraph, int shift) {
-    for (int i = firstParagraph; i <= lastParagraph; i++) {
+  synchronized void removeAndShift(int firstParagraph, int lastParagraph, int shift) {
+    if (lastParagraph < firstParagraph || shift == 0) {
+      return;
+    }
+    for (int i = firstParagraph; i < lastParagraph - shift - 1; i++) {
       entries.remove(i);
     }
     Map<Integer, CacheEntry> tmpEntries = entries;
     entries = Collections.synchronizedMap(new HashMap<>());
     synchronized (tmpEntries) {
-      for (int i : tmpEntries.keySet()) {
-        if (i >= firstParagraph && i + shift >= 0) {
-          entries.put(i + shift, tmpEntries.get(i));
-        } else if (i < firstParagraph + shift) {
-          entries.put(i, tmpEntries.get(i));
-        } 
+      if (shift > 0) {
+        for (int i : tmpEntries.keySet()) {
+          if (i >= firstParagraph) {
+            entries.put(i + shift, tmpEntries.get(i));
+          } else {
+            entries.put(i, tmpEntries.get(i));
+          } 
+        }
+      } else {
+        for (int i : tmpEntries.keySet()) {
+          if (i >= lastParagraph && i + shift >= 0) {
+            entries.put(i + shift, tmpEntries.get(i));
+          } else if (i < firstParagraph) {
+            entries.put(i, tmpEntries.get(i));
+          } 
+        }
       }
     }
   }
@@ -95,21 +116,30 @@ class ResultCache implements Serializable {
   /**
    * add or replace a cache entry
    */
-  void put(int numberOfParagraph, List<Integer> nextSentencePositions, SingleProofreadingError[] errorArray) {
+  synchronized void put(int numberOfParagraph, List<Integer> nextSentencePositions, SingleProofreadingError[] errorArray) {
     entries.put(numberOfParagraph, new CacheEntry(nextSentencePositions, errorArray));
   }
 
   /**
    * add or replace a cache entry for paragraph
    */
-  void put(int numberOfParagraph, SingleProofreadingError[] errorArray) {
+  synchronized void put(int numberOfParagraph, SingleProofreadingError[] errorArray) {
     entries.put(numberOfParagraph, new CacheEntry(null, errorArray));
+  }
+
+  /**
+   * add proof reading errors to a cache entry for paragraph
+   */
+  synchronized void add(int numberOfParagraph, SingleProofreadingError[] errorArray) {
+    CacheEntry cacheEntry = entries.get(numberOfParagraph);
+    cacheEntry.addErrorArray(errorArray);
+    entries.put(numberOfParagraph, cacheEntry);
   }
 
   /**
    * Remove all cache entries
    */
-  void removeAll() {
+  synchronized void removeAll() {
     entries.clear();
   }
 
@@ -195,7 +225,7 @@ class ResultCache implements Serializable {
    * Compares to Entries
    * true if the both entries are identically
    */
-  private boolean areDifferentEntries(CacheEntry newEntries, CacheEntry oldEntries) {
+  static boolean areDifferentEntries(CacheEntry newEntries, CacheEntry oldEntries) {
     if (newEntries == null || oldEntries == null) {
       return true;
     }
@@ -295,9 +325,9 @@ class ResultCache implements Serializable {
   /**
    * Class of serializable cache entries
    */
-  private class CacheEntry implements Serializable {
+  public class CacheEntry implements Serializable {
     private static final long serialVersionUID = 2L;
-    final SerialProofreadingError[] errorArray;
+    SerialProofreadingError[] errorArray;
     List<Integer> nextSentencePositions = null;
 
     CacheEntry(List<Integer> nextSentencePositions, SingleProofreadingError[] sErrorArray) {
@@ -319,6 +349,22 @@ class ResultCache implements Serializable {
         eArray[i] = errorArray[i].toSingleProofreadingError();
       }
       return eArray;
+    }
+    
+    /**
+     * Add an SingleProofreadingError array to an existing one
+     */
+    void addErrorArray(SingleProofreadingError[] errors) {
+      if (errors == null || errors.length == 0) {
+        return;
+      }
+      SerialProofreadingError newErrorArray[] = new SerialProofreadingError[errorArray.length + errors.length];
+      for (int i = 0; i < errorArray.length; i++) {
+        newErrorArray[i] = errorArray[i];
+      }
+      for (int i = 0; i < errors.length; i++) {
+        newErrorArray[errorArray.length + i] = new SerialProofreadingError(errors[i]);
+      }
     }
   }
   

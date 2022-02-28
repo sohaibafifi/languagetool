@@ -4131,21 +4131,22 @@
 
     <rule id="num_gen" name="dopełniacz po liczbach > 5">
         <pattern>
-            <token regexp="yes">\d*[5-9]|\d+0|1[1-9]
+            <token regexp="yes">\d*[5-9]\d*|\d+0\d*|1[1-9]\d*
                 <exception scope="previous" inflected="yes">rok</exception>
                 <exception regexp="yes">1\d{3}</exception>
             </token>
             <marker>
-                <token postag="(?:adj|ger|subst|pact|ppas):pl.*gen.*|brev.*" postag_regexp="yes"/>
+                <token postag="(?:adj|ger|subst|pact|ppas):pl.*gen.*|brev.*" postag_regexp="yes"><exception>gram</exception></token>
             </marker>
         </pattern>
         <disambig action="filterall"/>
         <example type="untouched">Do teorii ruchów Browna wiele wniósł w latach 1906–1917 Marian Smoluchowski.</example>
+        <example type="untouched">Kupił 100 gram amfetaminy.</example>
     </rule>
 
     <rule id="num_tys_gen" name="dopełniacz po liczbach > 5 ze skrótem tys.">
         <pattern>
-            <token regexp="yes">\d*[5-9]|\d+0|1[1-9]</token>
+            <token regexp="yes">\d*[5-9]\d*|\d+0\d*|1[1-9]\d*</token>
             <token>tys</token>
             <token>.</token>
             <marker>
@@ -4202,6 +4203,53 @@
             </marker>
         </pattern>
         <disambig postag="subst:sg:gen:m3"/>
+    </rule>
+
+    <rule id="brev_min" name="liczba + min = skrót od „minuta”">
+        <pattern>
+            <token regexp="yes">\d+</token>
+            <marker>
+                <token>min</token>
+            </marker>
+        </pattern>
+        <disambig postag="brev:npun"/>
+        <example type="untouched">Nie rób głupich min.</example>
+        <example type="ambiguous" inputform="min[mina/subst:pl:gen:f,minimum/brev:pun,minuta/brev:npun]" outputform="min[minuta/brev:npun]">To trwało 29 <marker>min</marker>.</example>
+    </rule>
+
+    <rule id="jeden_dzien" name="1 dzień - to nie dzienia">
+        <pattern>
+            <token regexp="yes">jeden|1</token>
+            <marker>
+                <token>dzień</token>
+            </marker>
+        </pattern>
+        <disambig action="filter" postag="subst:sg.*"/>
+    </rule>
+
+    <rule id="prep_num_unify_1" name="unifikacja przyimka nad liczbą">
+        <pattern>
+            <unify>
+                <feature id="case"/>
+                <token postag="prep.*" postag_regexp="yes"/>
+                <unify-ignore><token>1</token></unify-ignore>
+                <token postag="(adj|subst):sg.*" postag_regexp="yes"/>
+            </unify>
+        </pattern>
+        <disambig action="unify"/>
+    </rule>
+
+
+    <rule id="prep_num_unify" name="unifikacja przyimka nad liczbą">
+        <pattern>
+            <unify>
+                <feature id="case"/>
+            <token postag="prep.*" postag_regexp="yes"/>
+                <unify-ignore><token regexp="yes">\d*[234]</token></unify-ignore>
+                <token postag="(adj|subst):pl:.*" postag_regexp="yes"/>
+            </unify>
+        </pattern>
+        <disambig action="unify"/>
     </rule>
 
     <rule id="num_wzrosly" name="liczebnik + wzrosły, spadły...">
@@ -4974,7 +5022,8 @@
         <rule>
             <pattern>
                 <unify> <feature id="case"/>
-                    <token postag="prep.*" postag_regexp="yes"><exception postag="prep.*|burk" negate_pos="yes" postag_regexp="yes"/><exception>co</exception></token>              <unify-ignore><token regexp="yes">\d+|I{1,3}|I?VI{0,3}|I?XI{0,3}</token></unify-ignore>
+                    <token postag="prep.*" postag_regexp="yes"><exception postag="prep.*|burk" negate_pos="yes" postag_regexp="yes"/><exception>co</exception></token>
+                    <unify-ignore><token regexp="yes">\d+|I{1,3}|I?VI{0,3}|I?XI{0,3}</token></unify-ignore>
                     <token postag="(?:adj|depr|ger|num|subst|ppron.*|ppas|pact|siebie):.*" postag_regexp="yes"><exception>co</exception><exception postag="qub"/></token>
                 </unify>
             </pattern>
@@ -7416,20 +7465,137 @@
         <example type="untouched">Jedź, tylko żebyś nikogo nie zabił!</example>
     </rule>
 
+    <rulegroup name="to jest/są + mianownik" id="to_jest_nom_adj_subst">
+        <rule>
+            <pattern>
+                <token>to</token>
+                <marker>
+                    <unify><feature id="number"/>
+                        <token regexp="yes">jest|są|był[ayo]?</token>
+                        <token postag="subst.*nom.*" postag_regexp="yes"></token>
+                    </unify>
+                </marker>
+            </pattern>
+            <disambig action="unify"/>
+        </rule>
+        <rule>
+        <pattern>
+            <token>to</token>
+            <marker>
+            <unify><feature id="number"/>
+                <token regexp="yes">jest|są|był[ayo]?</token>
+                <token postag="adj.*nom.*" postag_regexp="yes"></token>
+                <token postag="subst.*nom.*" postag_regexp="yes"></token>
+            </unify>
+            </marker>
+        </pattern>
+        <disambig action="unify"/>
+       </rule>
+        <rule>
+            <pattern>
+                <token>to</token>
+                <marker>
+                    <unify><feature id="number"/>
+                        <token regexp="yes">jest|są|był[ayo]?</token>
+                        <unify-ignore>
+                            <token postag="adv.*|qub" postag_regexp="yes"/>
+                        </unify-ignore>
+                        <token postag="adj.*nom.*" postag_regexp="yes"></token>
+                        <token postag="subst.*nom.*" postag_regexp="yes"></token>
+                    </unify>
+                </marker>
+            </pattern>
+            <disambig action="unify"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>to</token>
+                <marker>
+                    <unify><feature id="number"/>
+                        <token regexp="yes">jest|są|był[ayo]?</token>
+                        <token postag="adj.*nom.*" postag_regexp="yes"></token>
+                        <unify-ignore>
+                            <token regexp="yes">[,ia]|lub|oraz</token>
+                        </unify-ignore>
+                        <token postag="adj.*nom.*" postag_regexp="yes"></token>
+
+                        <token postag="subst.*nom.*" postag_regexp="yes"></token>
+                    </unify>
+                </marker>
+            </pattern>
+            <disambig action="unify"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>to</token>
+                <marker>
+                    <unify><feature id="number"/>
+                        <token regexp="yes">jest|są|był[ayo]?</token>
+                        <token postag="adj.*nom.*" postag_regexp="yes"></token>
+                        <unify-ignore>
+                            <token regexp="yes">[,ia]|lub|oraz</token>
+                            <token postag="adv.*|qub" postag_regexp="yes"/>
+                        </unify-ignore>
+                        <token postag="adj.*nom.*" postag_regexp="yes"></token>
+
+                        <token postag="subst.*nom.*" postag_regexp="yes"></token>
+                    </unify>
+                </marker>
+            </pattern>
+            <disambig action="unify"/>
+        </rule>
+        <rule>
+            <pattern>
+                <token>to</token>
+                <marker>
+                    <unify><feature id="number"/>
+                        <token regexp="yes">jest|są|był[ayo]?</token>
+                        <unify-ignore>
+                            <token postag="adv.*|qub" postag_regexp="yes"/>
+                        </unify-ignore>
+
+                        <token postag="adj.*nom.*" postag_regexp="yes"></token>
+                        <unify-ignore>
+                            <token regexp="yes">[,ia]|lub|oraz</token>
+                            <token postag="adv.*|qub" postag_regexp="yes"/>
+                        </unify-ignore>
+                        <token postag="adj.*nom.*" postag_regexp="yes"></token>
+
+                        <token postag="subst.*nom.*" postag_regexp="yes"></token>
+                    </unify>
+                </marker>
+            </pattern>
+            <disambig action="unify"/>
+        </rule>
+    </rulegroup>
+
+
+    <rule id="to_pred_byc" name="to + jest/są -> predykatyw">
+        <pattern>
+            <marker>
+                <token>to</token>
+            </marker>
+            <token regexp="yes">jest|są|był[ayo]?</token>
+        </pattern>
+        <disambig action="replace"><wd lemma="to" pos="pred"/></disambig>
+    </rule>
+
     <rule name="mianownik + jest + mianownik" id="nom_jest_nom">
         <pattern>
             <unify>
-                <feature id="number"/>
+                <feature id="number"/><feature id="gender"/>
                 <marker>
                     <token postag="(?:adj|pact|subst|ger|ppas).*nom[:\.].*" postag_regexp="yes"/>
-                    <token postag="verb:fin.*:ter:imperf:nonrefl" inflected="yes" postag_regexp="yes">być</token>
+                    <unify-ignore>
+                        <token postag="verb:fin.*:ter:imperf:nonrefl" inflected="yes" postag_regexp="yes">być</token>
+                    </unify-ignore>
                     <token postag="(?:adj|pact|subst|ger|ppas).*nom[:\.].*" postag_regexp="yes"/>
                 </marker>
             </unify>
         </pattern>
         <disambig action="unify"/>
         <example type="ambiguous" inputform="niewielkie[niewielki/adj:pl:acc:m2.m3.f.n1.n2.p2.p3:pos,niewielki/adj:pl:nom.voc:m2.m3.f.n1.n2.p2.p3:pos,niewielki/adj:sg:acc:n1.n2:pos,niewielki/adj:sg:nom.voc:n1.n2:pos]"
-                 outputform="niewielkie[niewielki/adj:sg:nom.voc:n1.n2:pos]">Zasadne jest <marker>niewielkie</marker> podtopienie.</example>
+                 outputform="niewielkie[niewielki/adj:pl:nom.voc:m2.m3.f.n1.n2.p2.p3:pos,niewielki/adj:sg:nom.voc:n1.n2:pos]">Zasadne jest <marker>niewielkie</marker> podtopienie.</example>
     </rule>
 
     <rule name="mianownik + conj + jest + mianownik" id="nom_conj_jest_nom">
@@ -7487,8 +7653,8 @@
         <example type="ambiguous" inputform="jedna[jeden/adj:sg:nom.voc:f:pos,jednać/verb:fin:sg:ter:imperf:refl.nonrefl]"
                  outputform="jedna[jeden/adj:sg:nom.voc:f:pos]">Widząc to <marker>jedna</marker> szpetna starucha...</example>
         <example type="untouched">Dyktator jedna się z narodem co czwartek.</example>
-        <example type="ambiguous" inputform="jedna[jeden/adj:sg:nom.voc:f:pos,jednać/verb:fin:sg:ter:imperf:refl.nonrefl]" outputform="jedna[jeden/adj:sg:nom.voc:f:pos]">To jest przecież <marker>jedna</marker> osoba.</example>
-        <example type="ambiguous" inputform="jedna[jeden/adj:sg:nom.voc:f:pos,jednać/verb:fin:sg:ter:imperf:refl.nonrefl]" outputform="jedna[jeden/adj:sg:nom.voc:f:pos]">To jest ta <marker>jedna</marker> jedyna.</example>
+        <example type="ambiguous" inputform="jedna[jeden/adj:sg:nom.voc:f:pos,jednać/verb:fin:sg:ter:imperf:refl.nonrefl]" outputform="jedna[jeden/adj:sg:nom.voc:f:pos]">Oto przecież <marker>jedna</marker> osoba.</example>
+        <example type="ambiguous" inputform="jedna[jeden/adj:sg:nom.voc:f:pos,jednać/verb:fin:sg:ter:imperf:refl.nonrefl]" outputform="jedna[jeden/adj:sg:nom.voc:f:pos]">Oto ta <marker>jedna</marker> jedyna.</example>
     </rule>
     <rule>
             <pattern>
@@ -7670,7 +7836,7 @@
         </pattern>
         <disambig action="remove"><wd lemma="krajać"/></disambig>
         <example type="ambiguous" inputform="kraje[kraj/subst:pl:acc:m3,kraj/subst:pl:nom:m3,kraj/subst:pl:voc:m3,krajać/verb:fin:sg:ter:imperf:refl.nonrefl]"
-                 outputform="kraje[kraj/subst:pl:acc:m3,kraj/subst:pl:nom:m3,kraj/subst:pl:voc:m3]">To były <marker>kraje</marker> NATO.</example>
+                 outputform="kraje[kraj/subst:pl:acc:m3,kraj/subst:pl:nom:m3,kraj/subst:pl:voc:m3]">Tak wyglądają <marker>kraje</marker> NATO.</example>
     </rule>
 
     <rule id="PANSTWO_MLODZI" name="państwo młodzi">
@@ -7691,7 +7857,7 @@
         </pattern>
         <disambig action="unify"/>
         <example type="ambiguous" inputform="bliźni[bliźni/adj:pl:nom.voc:m1.p1:pos,bliźni/adj:sg:acc:m3:pos,bliźni/adj:sg:nom.voc:m1.m2.m3:pos,bliźni/subst:pl:nom:m1,bliźni/subst:pl:voc:m1,bliźni/subst:sg:nom:m1,bliźni/subst:sg:voc:m1,bliźnić/verb:fin:sg:ter:imperf:refl,bliźny/adj:pl:nom.voc:m1.p1:pos,bliźny/subst:pl:nom:m1,bliźny/subst:pl:voc:m1]"
-                 outputform="bliźni[bliźni/subst:sg:nom:m1,bliźni/subst:sg:voc:m1]">To jest mój <marker>bliźni</marker>.</example>
+                 outputform="bliźni[bliźni/subst:sg:nom:m1,bliźni/subst:sg:voc:m1]">Oto mój <marker>bliźni</marker>.</example>
     </rule>
 
     <rule id="WLASNE_OSIEDLA" name="osiedla jako rzeczownik">
@@ -9268,7 +9434,7 @@
         <disambig action="unify"/>
         <example type="untouched">Antoni lata Tupolowem.</example>
         <example type="ambiguous" inputform="lata[latać/verb:fin:sg:ter:imperf:nonrefl,lato/subst:pl:acc:n2,lato/subst:pl:nom:n2,lato/subst:pl:voc:n2,lato/subst:sg:gen:n2,rok/subst:pl:acc:m3,rok/subst:pl:nom:m3,rok/subst:pl:voc:m3]"
-                 outputform="lata[rok/subst:pl:acc:m3,rok/subst:pl:nom:m3,rok/subst:pl:voc:m3]">To były <marker>lata</marker> dziewięćdziesiąte!</example>
+                 outputform="lata[rok/subst:pl:acc:m3,rok/subst:pl:nom:m3,rok/subst:pl:voc:m3]">Ech, <marker>lata</marker> dziewięćdziesiąte!</example>
     </rule>
 
 
@@ -12769,7 +12935,7 @@
             </pattern>
             <disambig action="add"><wd lemma="co" pos="co_innego">co</wd></disambig>
             <example type="untouched">To było coś innego.</example>
-            <example type="ambiguous" inputform="co[co/comp,co/prep:acc,co/prep:nom,co/qub,co/subst:sg:acc:n2,co/subst:sg:gen:n2,co/subst:sg:nom:n2]" outputform="co[co/co_innego,co/comp,co/prep:acc,co/prep:nom,co/qub,co/subst:sg:acc:n2,co/subst:sg:gen:n2,co/subst:sg:nom:n2]">To było <marker>co</marker> innego.</example>
+            <example type="ambiguous" inputform="co[co/comp,co/prep:acc,co/prep:nom,co/qub,co/subst:sg:acc:n2,co/subst:sg:gen:n2,co/subst:sg:nom:n2]" outputform="co[co/co_innego,co/comp,co/prep:acc,co/prep:nom,co/qub,co/subst:sg:acc:n2,co/subst:sg:gen:n2,co/subst:sg:nom:n2]">Ale to już <marker>co</marker> innego.</example>
         </rule>
         <rule>
             <pattern>
@@ -13532,6 +13698,24 @@
                 <token>masz</token>
         </pattern>
         <disambig action="ignore_spelling"/>
+    </rule>
+
+    <rule id="wezej" name="wężej">
+        <pattern>
+            <marker>
+                <token>wężej</token>
+            </marker>
+        </pattern>
+        <disambig action="ignore_spelling"></disambig>
+    </rule>
+
+    <rule id="austryjacki" name="austryjacki">
+        <pattern>
+            <marker>
+                <token regexp="yes">austryjack.*|Austryja.*</token>
+            </marker>
+        </pattern>
+        <disambig action="ignore_spelling"></disambig>
     </rule>
 
 </rules>

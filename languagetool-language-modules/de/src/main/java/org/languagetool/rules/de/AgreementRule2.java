@@ -48,12 +48,15 @@ import static org.languagetool.rules.patterns.PatternRuleBuilderHelper.*;
 public class AgreementRule2 extends Rule {
 
   private static final List<List<PatternToken>> ANTI_PATTERNS = asList(
-    asList(csRegex("Gelegentlich|Antizyklisch|Unbedingt|Natürlich|Äußerlich|Erfolgreich|Spät|Länger|Vorrangig|Rechtzeitig|Typisch|Wöchentlich|Inhaltlich|Täglich|Komplett|Genau|Gerade|Bewusst|Vereinzelt|Gänzlich|Ständig|Okay|Meist|Generell|Ausreichend|Genügend|Reichlich|Regelmäßig(e|es)?|Unregelmäßig|Hauptsächlich"), posRegex("SUB:.*")),  // "Regelmäßig Kiwis und Ananas zu essen...", "Reichlich Inspiration bietet..."
+    asList(csRegex("Gelegentlich|Antizyklisch|Unbedingt|Zusätzlich|Natürlich|Äußerlich|Erfolgreich|Spät|Länger|Vorrangig|Rechtzeitig|Typisch|Wöchentlich|Inhaltlich|Täglich|Komplett|Genau|Gerade|Bewusst|Vereinzelt|Gänzlich|Ständig|Okay|Meist|Generell|Ausreichend|Genügend|Reichlich|Regelmäßig(e|es)?|Unregelmäßig|Hauptsächlich"), posRegex("SUB:.*")),  // "Regelmäßig Kiwis und Ananas zu essen...", "Reichlich Inspiration bietet..."
     asList(csRegex("Überraschend"), posRegex("SUB:.*"), posRegex("VER:.*")),  // "Überraschend Besuch bekommt er dann von ..."
     asList(regex("Nachhaltig"), posRegex("SUB:NOM:.*"), pos("VER:INF:SFT")),  // 'nachhaltig Yoga praktizieren'
     asList(regex("\\d0er"), regex("Jahren?")),
     asList(token("Schwäbisch"), token("Hall")),
-    asList(token("Voller"), token("Mitleid")),
+    asList(regex("echt|absolut|voll|total"), regex("Wahnsinn|Klasse")),
+    asList(pos("SENT_START"), pos("ADJ:PRD:GRU"), posRegex("SUB:NOM:SIN:NEU:INF")),  // "Ruhig Schlafen & Zentral Wohnen"
+    asList(tokenRegex("voll|voller"), posRegex("SUB:NOM:SIN:.*")),  // "Voller Mitleid", "Voller Mitleid"
+    asList(token("einzig"), posRegex("SUB:NOM:.*")),  // "Einzig Fernschüsse brachten Erfolgsaussichten"
     asList(token("Smart"), token("Updates")),
     asList(token("Intelligent"), token("Design")),
     asList(token("Alternativ"), token("Berufserfahrung")),  // "Alternativ Berufserfahrung im Bereich ..."
@@ -67,6 +70,7 @@ public class AgreementRule2 extends Rule {
     asList(token("psychisch"), regex("Kranken?")),
     asList(token("sportlich"), regex("Aktiven?")),
     asList(token("politisch"), regex("Interessierten?")),
+    asList(token("voraussichtlich"), regex("Ende|Anfang")),
     asList(regex("gesetzlich|privat"), regex("Versicherten?")),
     asList(token("typisch"), posRegex("SUB:.*"), regex("[!?.]")),  // "Typisch November!"
     asList(token("lecker"), token("Essen")),  // "Lecker Essen an Weihnachten."
@@ -90,6 +94,7 @@ public class AgreementRule2 extends Rule {
     asList(token("ausschliesslich")),
     asList(token("bloß")),       // "Bloß Anhängerkupplung und solche Dinge..."
     asList(token("einfach")),    // "Einfach Bescheid sagen ..."
+    asList(token("egal")),
     asList(token("endlich")),    // "Endlich Mittagspause!"
     asList(token("unbemerkt")),    // "Unbemerkt Süßigkeiten essen"
     asList(token("Typisch"), tokenRegex("Mann|Frau")),    // "Einfach Bescheid sagen ..."
@@ -108,11 +113,13 @@ public class AgreementRule2 extends Rule {
     asList(token("Total"), tokenRegex("Tankstellen?")),
     asList(token("Ganz"), token("Gentleman")),
     asList(token("Golden"), token("Gate")),
+    asList(token("Wirtschaftlich"), tokenRegex("Berechtigte[rn]?")),
     asList(token("Russisch"), token("Roulette")),
     asList(token("Clever"), tokenRegex("Shuttles?")), // name
     asList(token("Personal"), tokenRegex("(Computer|Coach|Trainer|Brand).*")),
-    asList(tokenRegex("Digital|Regional|Global|Bilingual|International|National|Visual|Final|Rapid|Dual|Golden"), tokenRegex("(Initiative|Connection|Bootcamp|Leadership|Sales|Community|Service|Management|Board|Identity|City|Paper|Transfer|Transformation|Power|Shopping|Brand|Master|Gate).*")),
+    asList(tokenRegex("Digital|Regional|Global|Bilingual|International|National|Visual|Final|Rapid|Dual|Golden"), tokenRegex("(Initiative|Connection|Bootcamp|Leadership|Sales|Community|Service|Management|Board|Identity|City|Paper|Transfer|Transformation|Power|Shopping|Brand|Master|Gate|Drive).*")),
     asList(token("Smart"), tokenRegex("(Service|Home|Meter|City|Hall|Shopper|Shopping).*")),
+    asList(token("International"), tokenRegex("Society|Olympic|Space")),
     asList(token("GmbH"))
   );
   private final Supplier<List<DisambiguationPatternRule>> antiPatterns;

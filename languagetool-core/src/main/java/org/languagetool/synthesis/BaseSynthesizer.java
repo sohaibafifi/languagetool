@@ -25,6 +25,7 @@ import morfologik.stemming.WordData;
 import org.languagetool.AnalyzedToken;
 import org.languagetool.JLanguageTool;
 import org.languagetool.Language;
+import org.languagetool.rules.spelling.morfologik.MorfologikSpeller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,7 +35,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -49,6 +50,7 @@ public class BaseSynthesizer implements Synthesizer {
   private final IStemmer stemmer;
   private final ManualSynthesizer manualSynthesizer;
   private final ManualSynthesizer removalSynthesizer;
+  private final ManualSynthesizer removalSynthesizer2;
   private final String sorosFileName;
   private final Soros numberSpeller;
   
@@ -81,6 +83,14 @@ public class BaseSynthesizer implements Synthesizer {
       } else {
         this.removalSynthesizer = null;
       }
+      String removalPath2 = "/" + lang.getShortCode() + "/do-not-synthesize.txt";
+      if (JLanguageTool.getDataBroker().resourceExists(removalPath2)) {
+        try (InputStream stream = JLanguageTool.getDataBroker().getFromResourceDirAsStream(removalPath2)) {
+          this.removalSynthesizer2 = new ManualSynthesizer(stream);
+        }
+      } else {
+        this.removalSynthesizer2 = null;
+      }
       
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -102,8 +112,7 @@ public class BaseSynthesizer implements Synthesizer {
       synchronized (this) {
         dict = this.dictionary;
         if (dict == null) {
-          URL url = JLanguageTool.getDataBroker().getFromResourceDirAsUrl(resourceFileName);
-          this.dictionary = dict = Dictionary.read(url);
+          dictionary = dict = MorfologikSpeller.getDictionaryWithCaching(resourceFileName);
         }
       }
     }
@@ -166,6 +175,12 @@ public class BaseSynthesizer implements Synthesizer {
         results.removeAll(removeForms);
       }
     }
+    if (removalSynthesizer2 != null) {
+      List<String> removeForms = removalSynthesizer2.lookup(lemma, posTag);
+      if (removeForms != null) {
+        results.removeAll(removeForms);
+      }
+    }
     return results;
   }
 
@@ -182,30 +197,36 @@ public class BaseSynthesizer implements Synthesizer {
       return new String[] {getSpelledNumber(token.getToken())};
     }
     List<String> wordForms = lookup(token.getLemma(), posTag);
-    return wordForms.toArray(new String[0]);
+    return removeExceptions(wordForms.toArray(new String[0]));
   }
 
   @Override
   public String[] synthesize(AnalyzedToken token, String posTag, boolean posTagRegExp) throws IOException {
     if (posTagRegExp) {
-      initPossibleTags();
-      Pattern p;
       try {
-        p = Pattern.compile(posTag);
+        Pattern p = Pattern.compile(posTag);
+        return synthesizeForPosTags(token.getLemma(), tag -> p.matcher(tag).matches());
       } catch (PatternSyntaxException e) {
         throw new RuntimeException("Error trying to synthesize POS tag " + posTag +
                 " (posTagRegExp: " + posTagRegExp + ") from token " + token.getToken(), e);
       }
-      List<String> results = new ArrayList<>();
-      for (String tag : possibleTags) {
-        Matcher m = p.matcher(tag);
-        if (m.matches()) {
-          results.addAll(lookup(token.getLemma(), tag));
-        }
-      }
-      return results.toArray(new String[0]);
     }
-    return synthesize(token, posTag);
+    return removeExceptions(synthesize(token, posTag));
+  }
+
+  /**
+   * Synthesize forms for the given lemma and for all POS tags satisfying the given predicate.
+   * @since 5.3
+   */
+  public String[] synthesizeForPosTags(String lemma, Predicate<String> acceptTag) throws IOException {
+    initPossibleTags();
+    List<String> results = new ArrayList<>();
+    for (String tag : possibleTags) {
+      if (acceptTag.test(tag)) {
+        results.addAll(lookup(lemma, tag));
+      }
+    }
+    return removeExceptions(results.toArray(new String[0]));
   }
 
   @Override
@@ -253,5 +274,20 @@ public class BaseSynthesizer implements Synthesizer {
     }
     return arabicNumeral;
   }
+
+  protected boolean isException(String w) {
+    return false;  
+  }
+
+  protected String[] removeExceptions(String[] words) {
+    List<String> results = new ArrayList<>();
+    for (String word : words) {
+      if (!isException(word)) {
+        results.add(word);
+      }
+    }
+    return results.toArray(new String[0]);
+  }
+  
 
 }
