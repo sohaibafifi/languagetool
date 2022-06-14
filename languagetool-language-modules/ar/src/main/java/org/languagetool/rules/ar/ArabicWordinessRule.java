@@ -55,6 +55,7 @@ public class ArabicWordinessRule extends AbstractSimpleReplaceRule2 {
   }
 
   @Override
+
   public final List<String> getFileNames() {
     return Collections.singletonList(FILE_NAME);
   }

@@ -137,6 +137,14 @@ public class StringToolsTest {
   }
 
   @Test
+  public void testremoveTashkeel() {
+    //assertEquals(null, StringTools.removeDiacritics(null));
+    assertEquals("", StringTools.removeTashkeel(""));
+    assertEquals("a", StringTools.removeTashkeel("a"));
+    assertEquals("öäü", StringTools.removeTashkeel("öäü"));
+    assertEquals("كتب", StringTools.removeTashkeel("كَتَب"));
+  }
+  @Test
   public void testReaderToString() throws IOException {
     String str = StringTools.readerToString(new StringReader("bla\nöäü"));
     assertEquals("bla\nöäü", str);

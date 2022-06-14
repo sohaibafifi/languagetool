@@ -25,6 +25,7 @@ import org.languagetool.rules.Categories;
 import org.languagetool.rules.Example;
 import org.languagetool.rules.ITSIssueType;
 
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -54,8 +55,10 @@ public class ArabicDiacriticsRule extends AbstractSimpleReplaceRule2 {
   }
 
   @Override
+
   public final List<String> getFileNames() {
     return Collections.singletonList(FILE_NAME);
+
   }
 
   @Override
@@ -74,6 +77,7 @@ public class ArabicDiacriticsRule extends AbstractSimpleReplaceRule2 {
   }
 
   @Override
+
   public String getMessage() {
     return "'$match' كلمة يشيع نطقها نطقا خاطئا لذا نقترح تشكيلها كالآتي: $suggestions";
   }

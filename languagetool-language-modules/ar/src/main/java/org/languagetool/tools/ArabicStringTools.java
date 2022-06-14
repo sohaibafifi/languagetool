@@ -27,7 +27,7 @@ import java.text.Normalizer;
  */
 public class ArabicStringTools {
 
-  public static final String TASHKEEL_CHARS =
+  public static final String HARAKAT_CHARS =
     "\u064B"    // Fathatan
     + "\u064C"  // Dammatan
     + "\u064D"  // Kasratan
@@ -41,6 +41,10 @@ public class ArabicStringTools {
     + "\u0655"  // Hamza Below
     + "\u0656"  // Subscript Alef
     + "\u0640"; // Tatweel
+  public static final String TASHKEEL_CHARS =
+    HARAKAT_CHARS
+    + "\u0651"  // Shadda
+    + "\u0640"; // Tatweel
 
   /**
    * Return <code>str</code> without tashkeel characters
@@ -50,6 +54,17 @@ public class ArabicStringTools {
     String s = Normalizer.normalize(str, Normalizer.Form.NFD);
      String striped = str.replaceAll("["
       + TASHKEEL_CHARS
+      + "]", "");
+     return striped;
+   }
+   /**
+   * Return <code>str</code> without Harakat characters, keep Shadda
+   * @param str input str
+   */
+  public static String removeHarakat(String str) {
+    String s = Normalizer.normalize(str, Normalizer.Form.NFD);
+     String striped = str.replaceAll("["
+      + HARAKAT_CHARS
       + "]", "");
      return striped;
    }

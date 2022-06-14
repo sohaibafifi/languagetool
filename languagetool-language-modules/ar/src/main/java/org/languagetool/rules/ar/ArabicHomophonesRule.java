@@ -19,6 +19,7 @@
  */
 package org.languagetool.rules.ar;
 
+
 import org.languagetool.language.Arabic;
 import org.languagetool.rules.AbstractSimpleReplaceRule2;
 import org.languagetool.rules.Categories;
@@ -27,6 +28,7 @@ import org.languagetool.rules.Example;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+
 import java.util.ResourceBundle;
 
 
@@ -38,6 +40,7 @@ import java.util.ResourceBundle;
  * @since 5.0
  */
 
+
 public class ArabicHomophonesRule extends AbstractSimpleReplaceRule2 {
 
   public static final String AR_HOMOPHONES_REPLACE = "AR_HOMOPHONES_REPLACE";
@@ -47,14 +50,17 @@ public class ArabicHomophonesRule extends AbstractSimpleReplaceRule2 {
   public ArabicHomophonesRule(final ResourceBundle messages) {
     super(messages, new Arabic());
     super.setCategory(Categories.CONFUSED_WORDS.getCategory(messages));
+
     addExamplePair(Example.wrong("<marker>ضن</marker>"),
       Example.fixed("<marker>ظن</marker>"));
   }
 
 
+
   @Override
   public List<String> getFileNames() {
     return Collections.singletonList(RESOURCE_FILENAME);
+
   }
 
   @Override
@@ -69,12 +75,13 @@ public class ArabicHomophonesRule extends AbstractSimpleReplaceRule2 {
 
   @Override
   public String getShort() {
-    return "كلمات متشابهة لفظا يرجى التحقق منها";
+    return "كلمات صحيحة متشابهة لفظا يرجى التحقق منها";
   }
+
 
   @Override
   public String getMessage() {
-    return "قل $suggestions";
+    return "؟ربما تقصد $suggestions";
   }
 
   @Override
@@ -86,6 +93,7 @@ public class ArabicHomophonesRule extends AbstractSimpleReplaceRule2 {
   @Override
   public Locale getLocale() {
     return AR_LOCALE;
+
   }
 
 }

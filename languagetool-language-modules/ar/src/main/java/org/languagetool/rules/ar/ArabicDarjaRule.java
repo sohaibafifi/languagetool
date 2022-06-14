@@ -43,8 +43,10 @@ public class ArabicDarjaRule extends AbstractSimpleReplaceRule2 {
   private static final String FILE_NAME = "/ar/darja.txt";
 
   @Override
+
   public final List<String> getFileNames() {
     return Collections.singletonList(FILE_NAME);
+
   }
 
   public ArabicDarjaRule(ResourceBundle messages) {
@@ -71,9 +73,11 @@ public class ArabicDarjaRule extends AbstractSimpleReplaceRule2 {
   }
 
   @Override
+
   public String getMessage() {
     return "الكلمة عامية  أو أجنبية يفضل أن يقال $suggestions";
   }
+
 
   @Override
   public String getSuggestionsSeparator() {

@@ -30,28 +30,28 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
-public class ArabicTransVerbRuleTest {
-  private ArabicTransVerbRule rule;
+public class ArabicTransVerbIndirectToIndirectRuleTest {
+  private ArabicTransVerbIndirectToIndirectRule rule;
   private JLanguageTool lt;
 
   @Before
   public void setUp() throws IOException {
-    rule = new ArabicTransVerbRule(TestTools.getEnglishMessages());
+    rule = new ArabicTransVerbIndirectToIndirectRule(TestTools.getEnglishMessages());
     lt = new JLanguageTool(Languages.getLanguageForShortCode("ar"));
   }
 
   @Test
   public void testRule() throws IOException {
-
-    // correct sentences:
-    assertCorrect("كان أَفَاضَ في الحديث");
-
-    // errors:
-    assertIncorrect("كان أفاض من الحديث");
-    assertIncorrect("لقد أفاضت من الحديث");
-    assertIncorrect("لقد أفاضت الحديث");
-    assertIncorrect("كان أفاضها الحديث");
-    assertIncorrect("إذ استعجل الأمر");
+    // Correct sentences:
+    assertCorrect("يتردد إلى المعهد");
+    assertCorrect("يتردد الولد إلى المعهد");
+    assertCorrect("فسيتردد الولد إلى المعهد");
+    assertCorrect("يترددون إليه");
+//    // errors:
+    assertIncorrect("يتردد على المعهد", 6);
+    assertIncorrect("يتردد الولد على المعهد", 6);
+    assertIncorrect("فسيتردد الولد على المعهد", 6);
+    assertIncorrect("يترددون عليه", 2);
   }
 
   private void assertCorrect(String sentence) throws IOException {
@@ -59,9 +59,11 @@ public class ArabicTransVerbRuleTest {
     assertEquals(0, matches.length);
   }
 
-  private void assertIncorrect(String sentence) throws IOException {
+  private void assertIncorrect(String sentence, int index) throws IOException {
     RuleMatch[] matches = rule.match(lt.getAnalyzedSentence(sentence));
-    assertEquals(1, matches.length);
+    assertEquals(index, matches.length);
   }
 
+
 }
+

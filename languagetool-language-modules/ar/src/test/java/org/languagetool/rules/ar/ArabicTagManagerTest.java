@@ -48,6 +48,26 @@ public class ArabicTagManagerTest {
     assertEquals(tagManager.setConjunction("NJ-;M1I-;---","W"),"NJ-;M1I-;W--");
     assertEquals(tagManager.setConjunction("V-1;M1I----;---","W"),"V-1;M1I----;W--");
     assertEquals(tagManager.getConjunctionPrefix("V-1;M1I----;W--"),"و");
+
+    // test merge postag
+    // verb to verb
+    assertEquals(tagManager.mergePosTag("V-1;M1I----;W-H","VW1;-------;---"),"VW1;M1I----;W-H");
+    // noun to noun
+    assertEquals(tagManager.mergePosTag("NJ-;M1I-;-BL","NM-;----;---"),"NM-;M1I-;-BL");
+
+    // stopword to stopword
+    assertEquals(tagManager.mergePosTag("PRD;---;W-H","PR-;---;---"),"PR-;---;W-H");
+    // stopword to verb/Noun
+    assertEquals(tagManager.mergePosTag("PRD;---;W-H","VW1;-------;---"),"VW1;-------;--H");
+    assertEquals(tagManager.mergePosTag("PRD;---;W-H","NM-;----;---"),"NM-;----;--H");
+    // verb/Noun To StopWord
+    assertEquals(tagManager.mergePosTag("V-1;M1I----;W-H", "PR-;---;---"),"PR-;---;--H");
+    assertEquals(tagManager.mergePosTag("NJ-;M1I-;-BL","PR-;---;---"),"PR-;---;---");
+    assertEquals(tagManager.mergePosTag("NJ-;M1I-;-BH","PR-;---;---"),"PR-;---;--H");
+    // verb vs Noun
+    assertEquals(tagManager.mergePosTag("V-1;M1I----;W-H", "NM-;----;---"),"NM-;----;W-H");
+    assertEquals(tagManager.mergePosTag("NJ-;M1I-;WBL","VW1;-------;---"),"VW1;-------;W--");
+    assertEquals(tagManager.mergePosTag("NJ-;M1I-;WBH","VW1;-------;---"),"VW1;-------;W-H");
   }
 
 }
