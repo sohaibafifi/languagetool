@@ -51,7 +51,7 @@ public class ArabicTransVerbIndirectToIndirectRule extends AbstractSimpleReplace
     tagger = new ArabicTagger();
     tagger.enableNewStylePronounTag();
     tagmanager = new ArabicTagManager();
-    synthesizer = new ArabicSynthesizer(new Arabic());
+    synthesizer = ArabicSynthesizer.INSTANCE;
 
     super.setCategory(Categories.MISC.getCategory(messages));
     setLocQualityIssueType(ITSIssueType.Inconsistency);
@@ -101,7 +101,7 @@ public class ArabicTransVerbIndirectToIndirectRule extends AbstractSimpleReplace
   @Override
   public RuleMatch[] match(AnalyzedSentence sentence) {
     List<RuleMatch> ruleMatches = new ArrayList<>();
-    if (wrongWords.size() == 0) {
+    if (wrongWords.isEmpty()) {
       return toRuleMatchArray(ruleMatches);
     }
     AnalyzedTokenReadings[] tokens = sentence.getTokensWithoutWhitespace();
@@ -110,14 +110,12 @@ public class ArabicTransVerbIndirectToIndirectRule extends AbstractSimpleReplace
       AnalyzedTokenReadings token = tokens[i];
       int prevTokenIndex = i - 1;
       AnalyzedTokenReadings prevToken = prevTokenIndex > 0 ? tokens[prevTokenIndex] : null;
-      AnalyzedTokenReadings nextToken = i + 1 < tokens.length ? tokens[i + 1] : null;
       String prevTokenStr = prevTokenIndex > 0 ? tokens[prevTokenIndex].getToken() : null;
 
       if (prevTokenStr != null) {
         // test if the preposition token is suitable for verb token (previous)
-        List<String> prepositions = new ArrayList<>();
-        String sugMsg = "";
-        StringBuilder replacement = new StringBuilder("");
+        List<String> prepositions;
+        StringBuilder replacement = new StringBuilder();
         AnalyzedTokenReadings currentTokenReading = token;
         // browse each verb with each preposition
         for (AnalyzedToken verbTok : prevToken.getReadings()) {
@@ -141,14 +139,19 @@ public class ArabicTransVerbIndirectToIndirectRule extends AbstractSimpleReplace
             if (prepositionsWithMessage != null) {
 
               prepositions = Arrays.asList(prepositionsWithMessage.getSuggestion().split("\\|"));
-              sugMsg = prepositionsWithMessage.getMessage();
-              sugMsg = sugMsg != null ? sugMsg : "";
+              String sugMsg = Optional.ofNullable(prepositionsWithMessage.getMessage()).orElse("");
               for (String prep : prepositions) {
                 String inflectPrep = inflectSuggestedPreposition(currentToken, prep);
-                replacement.append("<suggestion>" + prevTokenStr + " " + skippedString + " " + inflectPrep + "</suggestion>");
+                replacement.append("<suggestion>")
+                        .append(prevTokenStr)
+                        .append(" ")
+                        .append(skippedString)
+                        .append(" ")
+                        .append(inflectPrep)
+                        .append("</suggestion>");
               }
 
-              String msg = "الفعل ' " + prevTokenStr + " ' متعدِ بحرف آخر ،" + sugMsg + ". فهل تقصد؟" + replacement.toString();
+              String msg = "الفعل ' " + prevTokenStr + " ' متعدِ بحرف آخر ،" + sugMsg + ". فهل تقصد؟" + replacement;
               RuleMatch match = new RuleMatch(
                 this, sentence, prevToken.getStartPos(), currentTokenReading.getEndPos(),
                 prevToken.getStartPos(), currentTokenReading.getEndPos(), msg, "خطأ في الفعل المتعدي بحرف ");
@@ -163,75 +166,17 @@ public class ArabicTransVerbIndirectToIndirectRule extends AbstractSimpleReplace
     return toRuleMatchArray(ruleMatches);
   }
 
-  /* lookup for candidat verbs with preposition */
-  private boolean isCandidateVerb(AnalyzedTokenReadings mytoken, AnalyzedTokenReadings nexttoken) {
-    return (getSuggestedPreposition(mytoken, nexttoken) != null);
-  }
-
   private String getSkippedString(AnalyzedTokenReadings[] tokens, int start, int end) {
-    StringBuilder skipped = new StringBuilder("");
+    StringBuilder skipped = new StringBuilder();
     for (int i = start; i < end; i++) {
       skipped.append(tokens[i].getToken());
       skipped.append(" ");
     }
 
     return skipped.toString();
-
   }
 
-  /* lookup for candidat verbs with preposition */
-  private SuggestionWithMessage getSuggestedPreposition(AnalyzedTokenReadings mytoken, AnalyzedTokenReadings nexttoken) {
-
-    List<AnalyzedToken> verbTokenList = mytoken.getReadings();
-    List<AnalyzedToken> prepTokenList = nexttoken.getReadings();
-    for (AnalyzedToken verbTok : verbTokenList) {
-      String verbLemma = verbTok.getLemma();
-      String verbPostag = verbTok.getPOSTag();
-
-      // if postag is attached
-      // test if verb is in the verb list
-      if (verbPostag != null && tagmanager.isVerb(verbPostag)) {
-        for (AnalyzedToken prepTok : prepTokenList) {
-          String prepLemma = prepTok.getLemma();
-          String prepPostag = prepTok.getPOSTag();
-          // We might need to add isBreak to tagmannager
-
-          if (prepPostag != null && tagmanager.isStopWord(prepPostag) && !tagmanager.isBreak(prepPostag)) {
-            // the candidate string is composed of verb + preposition
-            String candidateString = verbLemma + " " + prepLemma;
-            // lookup in WrongWords
-            // use 0 here since the sentence contains spaces between words
-            SuggestionWithMessage verbLemmaMatch = wrongWords.get(0).get(candidateString);
-            // The lemma is found in the dictionary file
-            if (verbLemmaMatch != null)
-              return verbLemmaMatch;
-          }
-          // case of Lam Jar and Beh Jar as indirect transitive preposition
-          // a noun with a jar but without conjugation
-          // لعبت بالكرة:right
-          // لعبت وبالكرةWrong
-          else if (prepPostag != null && tagmanager.isNoun(prepPostag) &&
-            (tagmanager.hasJar(prepPostag) && !tagmanager.hasConjunction(prepPostag))) {
-            // the candidate string is composed of verb + preposition
-            prepLemma = tagger.getProclitic(prepTok);
-            String candidateString = verbLemma + " " + prepLemma;
-
-            // lookup in WrongWords
-            // use 0 here since the sentence contains spaces between words
-            SuggestionWithMessage verbLemmaMatch = wrongWords.get(0).get(candidateString);
-            // The lemma is found in the dictionary file
-            if (verbLemmaMatch != null) {
-              return verbLemmaMatch;
-            }
-          }
-        }
-
-      }
-    }
-    return null;
-  }
-
-  /* lookup for candidat verbs with preposition */
+  /* lookup for candidate verbs with preposition */
   private SuggestionWithMessage getSuggestedPreposition(AnalyzedToken verbTok, AnalyzedToken prepTok) {
 
     String verbLemma = verbTok.getLemma();
@@ -258,10 +203,10 @@ public class ArabicTransVerbIndirectToIndirectRule extends AbstractSimpleReplace
       // لعبت بالكرة:right
       // لعبت وبالكرةWrong
       else if (prepPostag != null && tagmanager.isNoun(prepPostag) &&
-        (tagmanager.hasJar(prepPostag) && !tagmanager.hasConjunction(prepPostag))) {
+              tagmanager.hasJar(prepPostag) && !tagmanager.hasConjunction(prepPostag)) {
         // the candidate string is composed of verb + preposition
-        prepLemma = tagger.getProclitic(prepTok);
-        String candidateString = verbLemma + " " + prepLemma;
+        String proclitic = tagger.getProclitic(prepTok);
+        String candidateString = verbLemma + " " + proclitic;
 
         // lookup in WrongWords
         // use 0 here since the sentence contains spaces between words
@@ -273,6 +218,7 @@ public class ArabicTransVerbIndirectToIndirectRule extends AbstractSimpleReplace
       }
 
     }
+
     return null;
   }
 
@@ -291,8 +237,7 @@ public class ArabicTransVerbIndirectToIndirectRule extends AbstractSimpleReplace
 
     // الجالة الأولى
     String postag = currentPrepTok.getPOSTag();
-    String currentWord = currentPrepTok.getToken();
-    boolean isAttachedJar = (suggPrepLemma.equals("ب") || suggPrepLemma.equals("ل"));
+    boolean isAttachedJar = suggPrepLemma.equals("ب") || suggPrepLemma.equals("ل");
     String suffix = tagger.getEnclitic(currentPrepTok);
     String newWord = "";
     //1- الحالي حرف منفصل والتصحيح حرف منفصل
@@ -311,7 +256,7 @@ public class ArabicTransVerbIndirectToIndirectRule extends AbstractSimpleReplace
       if (!isAttachedJar) {
         // remove jar procletic if exists
         // add unattached jar and a space
-        currentWord = synthesizer.setJarProcletic(currentPrepTok, "");
+        String currentWord = synthesizer.setJarProcletic(currentPrepTok, "");
         newWord = suggPrepLemma + " " + currentWord;
       } else {
         //4- الحالي اسما مجرورا والتصحيح حرف متصل
@@ -328,24 +273,17 @@ public class ArabicTransVerbIndirectToIndirectRule extends AbstractSimpleReplace
     int tokReadIndex = currentIndex;
     int maxLength = min(currentIndex + MAX_CHUNK, tokens.length);
 
-
-    int tokIndex = 0;
     int[] indexes = {-1, -1};
-    // browse all next  tokens to assure that proper preposition doesn't exist
-    boolean isWrongPreposition = false;
-    // used to save skipped tokens
-    // initial as first token
-    AnalyzedTokenReadings currentTokenReading = tokens[currentIndex];
 
-    while (tokReadIndex < maxLength && !isWrongPreposition) {
-      currentTokenReading = tokens[tokReadIndex];
-      tokIndex = 0;
-      while (tokIndex < currentTokenReading.getReadings().size() && !isWrongPreposition) {
+    // browse all next  tokens to assure that proper preposition doesn't exist
+    while (tokReadIndex < maxLength) {
+      AnalyzedTokenReadings currentTokenReading = tokens[tokReadIndex];
+      int tokIndex = 0;
+      while (tokIndex < currentTokenReading.getReadings().size()) {
         AnalyzedToken curTok = currentTokenReading.getReadings().get(tokIndex);
         SuggestionWithMessage prepositionsWithMessage = getSuggestedPreposition(verbToken, curTok);
 
-        isWrongPreposition = (prepositionsWithMessage != null);
-        if (isWrongPreposition) {
+        if (prepositionsWithMessage != null) {
           indexes[0] = tokReadIndex;
           indexes[1] = tokIndex;
           return indexes;
