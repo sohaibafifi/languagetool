@@ -306,14 +306,14 @@ public class ArabicTagManager {
    * @return true if have flag is noun/verb and has attached pronoun
    */
   public boolean isAttached(String postag) {
-    return ((isNoun(postag) || (isVerb(postag))) && (getFlag(postag, "PRONOUN") == 'H'));
+    return (isNoun(postag) || isVerb(postag)) && (getFlag(postag, "PRONOUN") == 'H');
   }
 
   /**
    * @return test if word has stopword tagging
    */
   public boolean isStopWord(String postag) {
-    return postag.startsWith("P");
+    return (postag != null && postag.startsWith("P"));
   }
 
   /**
@@ -369,9 +369,9 @@ public class ArabicTagManager {
    * @return true if a word has procletics like conj and jar
    */
   public boolean isBreak(String postag) {
-    return ((isStopWord(postag) && !hasConjunction(postag)) // a stopword without conjunction
-      || (isNoun(postag) && (!hasJar(postag) && !hasConjunction(postag))) // a noun without conjucntion and jar
-      || (isVerb(postag) && (!hasConjunction(postag)))); // a verb without conjucntion and istiqbal
+    return (isStopWord(postag) && !hasConjunction(postag)) // a stopword without conjunction
+      || (isNoun(postag) && !hasJar(postag) && !hasConjunction(postag)) // a noun without conjucntion and jar
+      || (isVerb(postag) && !hasConjunction(postag)); // a verb without conjucntion and istiqbal
 
   }
 
@@ -457,41 +457,20 @@ public class ArabicTagManager {
     if (postag.isEmpty())
       return "";
     char flag = getFlag(postag, "PRONOUN");
-    String suffix = "";
-    switch (flag) {
-      case 'b':
-        suffix = "ني";
-        break;
-      case 'c':
-        suffix = "نا";
-        break;
-      case 'd':
-        suffix = "ك";
-        break;
-      case 'e':
-        suffix = "كما";
-        break;
-      case 'f':
-        suffix = "كم";
-        break;
-      case 'g':
-        suffix = "كن";
-        break;
-      case 'H':
-        suffix = "ه";
-        break;
-      case 'i':
-        suffix = "ها";
-        break;
-      case 'j':
-        suffix = "هما";
-        break;
-      case 'k':
-        suffix = "هم";
-        break;
-      case 'n':
-        suffix = "هن";
-    }
+    String suffix = switch (flag) {
+      case 'b' -> "ني";
+      case 'c' -> "نا";
+      case 'd' -> "ك";
+      case 'e' -> "كما";
+      case 'f' -> "كم";
+      case 'g' -> "كن";
+      case 'H' -> "ه";
+      case 'i' -> "ها";
+      case 'j' -> "هما";
+      case 'k' -> "هم";
+      case 'n' -> "هن";
+      default -> "";
+    };
     return suffix;
   }
 
@@ -512,73 +491,42 @@ public class ArabicTagManager {
     } else if (isVerb(postag)) {
       key = "VERB_FLAG_POS_" + flagType;
     }
-    if (key.equals("NOUN_TAG_LENGTH")) {
-      pos = NOUN_TAG_LENGTH;
-    } else if (key.equals("NOUN_FLAG_POS_WORDTYPE")) {
-      pos = NOUN_FLAG_POS_WORDTYPE;
-    } else if (key.equals("NOUN_FLAG_POS_CATEGORY")) {
-      pos = NOUN_FLAG_POS_CATEGORY;
-    } else if (key.equals("NOUN_FLAG_POS_GENDER")) {
-      pos = NOUN_FLAG_POS_GENDER;
-    } else if (key.equals("NOUN_FLAG_POS_NUMBER")) {
-      pos = NOUN_FLAG_POS_NUMBER;
-    } else if (key.equals("NOUN_FLAG_POS_CASE")) {
-      pos = NOUN_FLAG_POS_CASE;
-    } else if (key.equals("NOUN_FLAG_POS_INFLECT_MARK")) {
-      pos = NOUN_FLAG_POS_INFLECT_MARK;
-    } else if (key.equals("NOUN_FLAG_POS_CONJ")) {
-      pos = NOUN_FLAG_POS_CONJ;
-    } else if (key.equals("NOUN_FLAG_POS_JAR")) {
-      pos = NOUN_FLAG_POS_JAR;
-    } else if (key.equals("NOUN_FLAG_POS_PRONOUN")) {
-      pos = NOUN_FLAG_POS_PRONOUN;
-    } else if (key.equals("VERB_TAG_LENGTH")) {
-      pos = VERB_TAG_LENGTH;
-    } else if (key.equals("VERB_FLAG_POS_WORDTYPE")) {
-      pos = VERB_FLAG_POS_WORDTYPE;
-    } else if (key.equals("VERB_FLAG_POS_CATEGORY")) {
-      pos = VERB_FLAG_POS_CATEGORY;
-    } else if (key.equals("VERB_FLAG_POS_TRANS")) {
-      pos = VERB_FLAG_POS_TRANS;
-    } else if (key.equals("VERB_FLAG_POS_GENDER")) {
-      pos = VERB_FLAG_POS_GENDER;
-    } else if (key.equals("VERB_FLAG_POS_NUMBER")) {
-      pos = VERB_FLAG_POS_NUMBER;
-    } else if (key.equals("VERB_FLAG_POS_PERSON")) {
-      pos = VERB_FLAG_POS_PERSON;
-    } else if (key.equals("VERB_FLAG_POS_INFLECT_MARK")) {
-      pos = VERB_FLAG_POS_INFLECT_MARK;
-    } else if (key.equals("VERB_FLAG_POS_TENSE")) {
-      pos = VERB_FLAG_POS_TENSE;
-    } else if (key.equals("VERB_FLAG_POS_VOICE")) {
-      pos = VERB_FLAG_POS_VOICE;
-    } else if (key.equals("VERB_FLAG_POS_CASE")) {
-      pos = VERB_FLAG_POS_CASE;
-    } else if (key.equals("VERB_FLAG_POS_CONJ")) {
-      pos = VERB_FLAG_POS_CONJ;
-    } else if (key.equals("VERB_FLAG_POS_ISTIQBAL")) {
-      pos = VERB_FLAG_POS_ISTIQBAL;
-    } else if (key.equals("VERB_FLAG_POS_PRONOUN")) {
-      pos = VERB_FLAG_POS_PRONOUN;
-    } else if (key.equals("PARTICLE_TAG_LENGTH")) {
-      pos = PARTICLE_TAG_LENGTH;
-    } else if (key.equals("PARTICLE_FLAG_POS_WORDTYPE")) {
-      pos = PARTICLE_FLAG_POS_WORDTYPE;
-    } else if (key.equals("PARTICLE_FLAG_POS_CATEGORY")) {
-      pos = PARTICLE_FLAG_POS_CATEGORY;
-    } else if (key.equals("PARTICLE_FLAG_POS_GENDER")) {
-      pos = PARTICLE_FLAG_POS_GENDER;
-    } else if (key.equals("PARTICLE_FLAG_POS_NUMBER")) {
-      pos = PARTICLE_FLAG_POS_NUMBER;
-    } else if (key.equals("PARTICLE_FLAG_POS_CASE")) {
-      pos = PARTICLE_FLAG_POS_CASE;
-    } else if (key.equals("PARTICLE_FLAG_POS_CONJ")) {
-      pos = PARTICLE_FLAG_POS_CONJ;
-    } else if (key.equals("PARTICLE_FLAG_POS_JAR")) {
-      pos = PARTICLE_FLAG_POS_JAR;
-    } else if (key.equals("PARTICLE_FLAG_POS_PRONOUN")) {
-      pos = PARTICLE_FLAG_POS_PRONOUN;
-    }
+    pos = switch (key) {
+      case "NOUN_TAG_LENGTH" -> NOUN_TAG_LENGTH;
+      case "NOUN_FLAG_POS_WORDTYPE" -> NOUN_FLAG_POS_WORDTYPE;
+      case "NOUN_FLAG_POS_CATEGORY" -> NOUN_FLAG_POS_CATEGORY;
+      case "NOUN_FLAG_POS_GENDER" -> NOUN_FLAG_POS_GENDER;
+      case "NOUN_FLAG_POS_NUMBER" -> NOUN_FLAG_POS_NUMBER;
+      case "NOUN_FLAG_POS_CASE" -> NOUN_FLAG_POS_CASE;
+      case "NOUN_FLAG_POS_INFLECT_MARK" -> NOUN_FLAG_POS_INFLECT_MARK;
+      case "NOUN_FLAG_POS_CONJ" -> NOUN_FLAG_POS_CONJ;
+      case "NOUN_FLAG_POS_JAR" -> NOUN_FLAG_POS_JAR;
+      case "NOUN_FLAG_POS_PRONOUN" -> NOUN_FLAG_POS_PRONOUN;
+      case "VERB_TAG_LENGTH" -> VERB_TAG_LENGTH;
+      case "VERB_FLAG_POS_WORDTYPE" -> VERB_FLAG_POS_WORDTYPE;
+      case "VERB_FLAG_POS_CATEGORY" -> VERB_FLAG_POS_CATEGORY;
+      case "VERB_FLAG_POS_TRANS" -> VERB_FLAG_POS_TRANS;
+      case "VERB_FLAG_POS_GENDER" -> VERB_FLAG_POS_GENDER;
+      case "VERB_FLAG_POS_NUMBER" -> VERB_FLAG_POS_NUMBER;
+      case "VERB_FLAG_POS_PERSON" -> VERB_FLAG_POS_PERSON;
+      case "VERB_FLAG_POS_INFLECT_MARK" -> VERB_FLAG_POS_INFLECT_MARK;
+      case "VERB_FLAG_POS_TENSE" -> VERB_FLAG_POS_TENSE;
+      case "VERB_FLAG_POS_VOICE" -> VERB_FLAG_POS_VOICE;
+      case "VERB_FLAG_POS_CASE" -> VERB_FLAG_POS_CASE;
+      case "VERB_FLAG_POS_CONJ" -> VERB_FLAG_POS_CONJ;
+      case "VERB_FLAG_POS_ISTIQBAL" -> VERB_FLAG_POS_ISTIQBAL;
+      case "VERB_FLAG_POS_PRONOUN" -> VERB_FLAG_POS_PRONOUN;
+      case "PARTICLE_TAG_LENGTH" -> PARTICLE_TAG_LENGTH;
+      case "PARTICLE_FLAG_POS_WORDTYPE" -> PARTICLE_FLAG_POS_WORDTYPE;
+      case "PARTICLE_FLAG_POS_CATEGORY" -> PARTICLE_FLAG_POS_CATEGORY;
+      case "PARTICLE_FLAG_POS_GENDER" -> PARTICLE_FLAG_POS_GENDER;
+      case "PARTICLE_FLAG_POS_NUMBER" -> PARTICLE_FLAG_POS_NUMBER;
+      case "PARTICLE_FLAG_POS_CASE" -> PARTICLE_FLAG_POS_CASE;
+      case "PARTICLE_FLAG_POS_CONJ" -> PARTICLE_FLAG_POS_CONJ;
+      case "PARTICLE_FLAG_POS_JAR" -> PARTICLE_FLAG_POS_JAR;
+      case "PARTICLE_FLAG_POS_PRONOUN" -> PARTICLE_FLAG_POS_PRONOUN;
+      default -> pos;
+    };
 
     return pos;
   }
