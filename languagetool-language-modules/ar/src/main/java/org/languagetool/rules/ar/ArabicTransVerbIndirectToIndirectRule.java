@@ -200,7 +200,8 @@ public class ArabicTransVerbIndirectToIndirectRule extends AbstractSimpleReplace
             // the candidate string is composed of verb + preposition
             String candidateString = verbLemma + " " + prepLemma;
             // lookup in WrongWords
-            SuggestionWithMessage verbLemmaMatch = wrongWords.get(wrongWords.size() - 1).get(candidateString);
+            // use 0 here since the sentence contains spaces between words
+            SuggestionWithMessage verbLemmaMatch = wrongWords.get(0).get(candidateString);
             // The lemma is found in the dictionary file
             if (verbLemmaMatch != null)
               return verbLemmaMatch;
@@ -216,7 +217,8 @@ public class ArabicTransVerbIndirectToIndirectRule extends AbstractSimpleReplace
             String candidateString = verbLemma + " " + prepLemma;
 
             // lookup in WrongWords
-            SuggestionWithMessage verbLemmaMatch = wrongWords.get(wrongWords.size() - 1).get(candidateString);
+            // use 0 here since the sentence contains spaces between words
+            SuggestionWithMessage verbLemmaMatch = wrongWords.get(0).get(candidateString);
             // The lemma is found in the dictionary file
             if (verbLemmaMatch != null) {
               return verbLemmaMatch;
@@ -245,7 +247,8 @@ public class ArabicTransVerbIndirectToIndirectRule extends AbstractSimpleReplace
         // the candidate string is composed of verb + preposition
         String candidateString = verbLemma + " " + prepLemma;
         // lookup in WrongWords
-        SuggestionWithMessage verbLemmaMatch = wrongWords.get(wrongWords.size() - 1).get(candidateString);
+        // use 0 here since the sentence contains spaces between words
+        SuggestionWithMessage verbLemmaMatch = wrongWords.get(0).get(candidateString);
         // The lemma is found in the dictionary file
         if (verbLemmaMatch != null)
           return verbLemmaMatch;
@@ -261,7 +264,8 @@ public class ArabicTransVerbIndirectToIndirectRule extends AbstractSimpleReplace
         String candidateString = verbLemma + " " + prepLemma;
 
         // lookup in WrongWords
-        SuggestionWithMessage verbLemmaMatch = wrongWords.get(wrongWords.size() - 1).get(candidateString);
+        // use 0 here since the sentence contains spaces between words
+        SuggestionWithMessage verbLemmaMatch = wrongWords.get(0).get(candidateString);
         // The lemma is found in the dictionary file
         if (verbLemmaMatch != null) {
           return verbLemmaMatch;
