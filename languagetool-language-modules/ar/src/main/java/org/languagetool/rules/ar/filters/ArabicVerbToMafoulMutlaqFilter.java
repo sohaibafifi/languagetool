@@ -67,7 +67,8 @@ public class ArabicVerbToMafoulMutlaqFilter extends RuleFilter {
 
   @Nullable
   @Override
-  public RuleMatch acceptRuleMatch(RuleMatch match, Map<String, String> arguments, int patternTokenPos, AnalyzedTokenReadings[] patternTokens, List<Integer> tokenPositions) {
+  public RuleMatch acceptRuleMatch(RuleMatch match, Map<String, String> arguments, int patternTokenPos, AnalyzedTokenReadings[] patternTokens) {
+
     String verb = arguments.get("verb");
     List<String> verbLemmas = tagger.getLemmas(patternTokens[0], "verb");
     String adj = arguments.get("adj");

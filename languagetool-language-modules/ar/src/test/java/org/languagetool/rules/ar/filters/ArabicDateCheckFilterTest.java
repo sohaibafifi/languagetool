@@ -21,6 +21,8 @@ package org.languagetool.rules.ar.filters;
 import org.junit.Test;
 import org.languagetool.rules.FakeRule;
 import org.languagetool.rules.RuleMatch;
+import org.languagetool.rules.ar.ArabicWordinessRule;
+
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -38,15 +40,16 @@ public class ArabicDateCheckFilterTest {
 
   @Test
   public void testAccept() {
-    assertNull(filter.acceptRuleMatch(match, makeMap("2022", "3", "12", "السبت"), -1, null, null));  // correct date
-    assertNotNull(filter.acceptRuleMatch(match, makeMap("2022", "3", "12", "الأحد"), -1, null, null));  // incorrect date
+    assertNull(filter.acceptRuleMatch(match, makeMap("2022", "3", "12", "السبت"), -1, null));  // correct date
+    assertNotNull(filter.acceptRuleMatch(match, makeMap("2022", "3", "12", "الأحد"), -1, null));  // incorrect date
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testAcceptIncompleteArgs() {
     Map<String, String> map = makeMap("2022", "3", "12", "السبت");
     map.remove("weekDay");
-    filter.acceptRuleMatch(match, map, -1, null, null);
+    filter.acceptRuleMatch(match, map, -1, null);
+
   }
 
   @Test

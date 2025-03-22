@@ -23,10 +23,14 @@ import org.languagetool.AnalyzedTokenReadings;
 import org.languagetool.rules.FakeRule;
 import org.languagetool.rules.RuleMatch;
 import org.languagetool.rules.SimpleReplaceDataLoader;
+import org.languagetool.rules.ar.ArabicWordinessRule;
+
 import org.languagetool.rules.patterns.RuleFilter;
 import org.languagetool.tagging.ar.ArabicTagger;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +58,8 @@ public class ArabicVerbToMasdarFilterTest {
     args.put("adj", word3);
     List<AnalyzedTokenReadings> patternTokens = tagger.tag(asList(word, word2, word3));
     AnalyzedTokenReadings[] patternTokensArray = patternTokens.toArray(new AnalyzedTokenReadings[0]);
-    RuleMatch ruleMatch = filter.acceptRuleMatch(match, args, -1, patternTokensArray, null);
+    RuleMatch ruleMatch = filter.acceptRuleMatch(match, args, -1, patternTokensArray);
+
     assertThat(ruleMatch, notNullValue());
     assertThat(ruleMatch.getSuggestedReplacements(), hasItem(expectedSuggestion));
   }

@@ -349,6 +349,21 @@ public class ArabicTagManager {
    */
   public boolean isMasdar(String postag) {
     return postag != null && postag.startsWith("NM");
+
+  }
+
+  /**
+   * @return true if have flag Adj
+   */
+  public boolean isAdj(String postag) {
+    return postag != null && postag.startsWith("NA");
+  }
+
+  /**
+   * @return true if have flag Adj
+   */
+  public boolean isMasdar(String postag) {
+    return postag != null && postag.startsWith("NM");
   }
 
 
@@ -694,6 +709,7 @@ public class ArabicTagManager {
       return postag;
     }
     return newposTag;
+    
   }
 
 

@@ -20,8 +20,10 @@
 package org.languagetool.rules.ar.filters;
 
 
+import org.languagetool.language.Arabic;
 import org.languagetool.rules.AbstractAdvancedSynthesizerFilter;
-
+import org.languagetool.synthesis.Synthesizer;
+import org.languagetool.synthesis.ar.ArabicSynthesizer;
 /*
  * Synthesize suggestions using the lemma from one token (lemma_from)
  * and the POS tag from another one (postag_from).
@@ -30,5 +32,12 @@ import org.languagetool.rules.AbstractAdvancedSynthesizerFilter;
  * to choose one among several possible readings.
  */
 public class ArabicAdvancedSynthesizerFilter extends AbstractAdvancedSynthesizerFilter {
+
+  private final ArabicSynthesizer synth = new ArabicSynthesizer(new Arabic());
+
+  @Override
+  protected Synthesizer getSynthesizer() {
+    return synth;
+  }
 
 }

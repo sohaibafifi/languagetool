@@ -22,6 +22,8 @@ import org.junit.Test;
 import org.languagetool.AnalyzedTokenReadings;
 import org.languagetool.rules.FakeRule;
 import org.languagetool.rules.RuleMatch;
+import org.languagetool.rules.ar.ArabicWordinessRule;
+
 import org.languagetool.rules.patterns.RuleFilter;
 import org.languagetool.tagging.ar.ArabicTagger;
 import org.languagetool.tokenizers.ArabicWordTokenizer;
@@ -107,7 +109,8 @@ public class ArabicNumberPhraseFilterTest {
     List<AnalyzedTokenReadings> patternTokens = tagger.tag(tokens);
 
     AnalyzedTokenReadings[] patternTokensArray = patternTokens.toArray(new AnalyzedTokenReadings[0]);
-    RuleMatch ruleMatch = filter.acceptRuleMatch(match, args, -1, patternTokensArray, null);
+    RuleMatch ruleMatch = filter.acceptRuleMatch(match, args, -1, patternTokensArray);
+
     if (!debug) {
       int expectedSize = expectedSuggestion.split("\\|").length;
       assertThat(ruleMatch, notNullValue());
