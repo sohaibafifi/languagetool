@@ -709,7 +709,6 @@ public class ArabicTagManager {
       return postag;
     }
     return newposTag;
-    
   }
 
 
