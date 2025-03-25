@@ -8022,60 +8022,60 @@ Implemented as a text rules used in rules/arabic_trans_indirect_to_direct.txt
 
     </rule>
 
-    <!--<rule id="syntax_kam_huwa_djamil" name="كم هو جميل_ما أجمله">
-    &lt;!&ndash;       /*
-    الحالات:
-    الاسم ليس ضميرا
+    <rule id="syntax_kam_huwa_djamil" name="كم هو جميل_ما أجمله">
+      <!--    /*
+      الحالات:
+      الاسم ليس ضميرا
 
 
-    ال   كم الولد جميل==> ما أجمل الولد
-    أجمل بالولد
+      ال   كم الولد جميل==> ما أجمل الولد
+      أجمل بالولد
 
-    حالة الضمير
+      حالة الضمير
 
-    كم هو جميل==> ما أجمله
-      أجمل به
+      كم هو جميل==> ما أجمله
+        أجمل به
 
-    حالة الضفة غير الثلاثية
-    اسم:
-    كم الطالب شديد الاستيعاب
-    ما أشد استيعاب الطالب
-    أشدد باستيعابه
+      حالة الضفة غير الثلاثية
+      اسم:
+      كم الطالب شديد الاستيعاب
+      ما أشد استيعاب الطالب
+      أشدد باستيعابه
 
-    ضمير
-    كم هو شديد الاستيعاب
-    ما أشد استيعابه
-    أشد باستيعابه
-           &ndash;&gt;
-      <pattern>
-          <token>كم</token>
-        <or>
-          <token regexp="yes">&isolated_pronouns;</token>
-          <token postag="N.*;.*;&#45;&#45;L" postag_regexp="yes"/>
-        </or>
-          <token postag="NA.*;.*;-&#45;&#45;" postag_regexp="yes"/>
-      </pattern>
-      <filter class="org.languagetool.rules.ar.filters.ArabicAdjectiveToExclamationFilter" args="adj:\3 adj_pos:3 noun:\2"/>
-      <message>التعجب بالاستفهام يستعمل للمقدار أو الكمية، مثل: كم كتابٍ قرأت! كم مرةٍ زرتك! أما الصفات فيتعجب منها بما أفعله أو أفعل به
+      ضمير
+      كم هو شديد الاستيعاب
+      ما أشد استيعابه
+      أشد باستيعابه
+             -->
+        <pattern>
+            <token>كم</token>
+          <or>
+            <token regexp="yes">&isolated_pronouns;</token>
+            <token postag="N.*;.*;--L" postag_regexp="yes"/>
+          </or>
+            <token postag="NA.*;.*;---;" postag_regexp="yes"/>
+        </pattern>
+        <filter class="org.languagetool.rules.ar.filters.ArabicAdjectiveToExclamationFilter" args="adj:\3 adj_pos:3 noun:\2"/>
+        <message>التعجب بالاستفهام يستعمل للمقدار أو الكمية، مثل: كم كتابٍ قرأت! كم مرةٍ زرتك! أما الصفات فيتعجب منها بما أفعله أو أفعل به
 
-      </message>
-      <example correction="ما أجمله|أجمِل به"><marker>كم هو جميل</marker>.</example>
-      <example correction="ما أسعد الطالب|أسعِد بالطالب"><marker>كم الطالب سعيد</marker>.</example>
-      <example >ما أسعد الطالب.</example>
-      <example >ما أجمله.</example>
-      <example >أجمِل به.</example>
+        </message>
+        <example correction="ما أجمله|أجمِل به"><marker>كم هو جميل</marker>.</example>
+        <example correction="ما أسعد الطالب|أسعِد بالطالب"><marker>كم الطالب سعيد</marker>.</example>
+        <example >ما أسعد الطالب.</example>
+        <example >ما أجمله.</example>
+        <example >أجمِل به.</example>
 
-    </rule>
--->
-  <rulegroup id="syntax_numeric" name="تدقيق ألفاظ الأعداد">
+      </rule>
 
-    <rule id="syntax_numeric_0003" name="تدقيق ألفاظ الأعداد">
-      <pattern>
-        <marker>
-          <token>في</token>
-          <token postag="NN.;..[^U].*;.*" postag_regexp="yes" min="0" max="14"/>
-          <token regexp="yes">&numeric_words_raf3;</token>
-    <!--                      <token postag="NN.;..U.*;.*" postag_regexp="yes"/> -->
+    <rulegroup id="syntax_numeric" name="تدقيق ألفاظ الأعداد">
+
+      <rule id="syntax_numeric_0003" name="تدقيق ألفاظ الأعداد">
+        <pattern>
+          <marker>
+            <token>في</token>
+            <token postag="NN.;..[^U].*;.*" postag_regexp="yes" min="0" max="14"/>
+            <token regexp="yes">&numeric_words_raf3;</token>
+      <!--                      <token postag="NN.;..U.*;.*" postag_regexp="yes"/> -->
           <token postag="NN.;.*;.*" postag_regexp="yes" min="0" max="14"/>
         </marker>
           <token postag="NJ.*" postag_regexp="yes">
