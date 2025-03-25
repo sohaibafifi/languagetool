@@ -5099,7 +5099,17 @@ Alexandra Palace
 Peter Wright
 Guillermo del Toro
 Andrea Pirlo
+André Kostolany
+Bo Henriksen
+Daniel Maldini
+Cesare Maldini
 Paolo Maldini
+Maldini
+Udinese Calcio
+Chapter 11
+VW Tayron
+Volkswagen Tayron
+Jeffrey Goldberg
 Peter Lynch
 Dana White
 Kris Jenner
@@ -24109,6 +24119,8 @@ Wes Ball
 Candace Bushnell
 Greg Daniels
 John Mearsheimer
+John J. Mearsheimer
+John Joseph Mearsheimer
 Maria Reiche
 Tibor Gánti
 Ðiện Biên Phủ
@@ -27578,7 +27590,6 @@ John Larson
 White Lotus
 The White Lotus
 Makaveli
-Fabian Hürzeler
 Dassault Rafale
 Rafale S5
 Flossbach von Storch
@@ -27628,6 +27639,9 @@ BYD Company Limited
 BYD Company
 Alina Habba
 Barry Jenkins
+Dimitri Vegas
+Warcraft Rumble
+Kirsty Coventry
 Stephen Miran
 Peter Navarro
 Johnnie Cochran
@@ -27645,3 +27659,35 @@ Philip Barantini
 Stephen Graham
 John McClane
 Nick Fury
+David Frum
+Joseph Walsh
+Kate McKinnon
+Waltraud Meier
+Baqueira-Beret
+Augustin Cauchy
+Hermann Amandus Schwarz
+Hermann Schwarz
+Staatskapelle Dresden
+Staatskapelle Berlin
+Hans Moravec
+David O. Sacks
+David Sacks
+Ludwig Boltzmann
+Ludwig Edward Boltzmann
+Josiah Willard Gibbs
+Josiah W. Gibbs
+Josiah Gibbs
+Thomas Kuhn
+Josef Stefan
+Jožef Stefan
+Chamath Palihapitiya
+Ben Horowitz
+Benjamin Abraham Horowitz
+Shulamith Firestone
+Carlos Arniches
+Francisco Salzillo
+Josep Maria Sert
+von Mises
+Laken Riley
+Mencius Moldbug
+George Will
