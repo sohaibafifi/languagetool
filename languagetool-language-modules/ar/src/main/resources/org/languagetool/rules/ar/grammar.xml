@@ -8109,5 +8109,52 @@ Implemented as a text rules used in rules/arabic_trans_indirect_to_direct.txt
 
   </rulegroup>
  </category>
+ 
+     <!-- ====================================================================== -->
+    <!-- Punctuation Errors -->
+    <!-- ====================================================================== -->
+    <category id="PUNCTUATION" name="Punctuation">
+  <rulegroup id="punctuation_question_mark" name="علامة الاستفهام">
+      <rule id="punct_question_mark0001" name="إغفال علامة الاستفهام">
+      <pattern>
+        <token postag="SENT_START" skip="1"/>
+          <token regexp="yes" skip="-1">هل|كم|ماذا|لماذا|متى</token>
+<!--          <token min="1" max="4"/>-->
+         <marker><token postag="SENT_END" spacebefore="no">.</token></marker>
+<!--         <marker><token postag="SENT_END" spacebefore="no" regexp="yes">\.|،</token></marker>-->
+      </pattern>
+      <message>ربما نسيت وضع علامة استفهام في نهاية الجملة 
+       <suggestion>؟</suggestion>
+      </message>
+      <example type="incorrect" correction="؟">كم عمرك<marker>.</marker></example>
+      <example type="incorrect" correction="؟">لماذا جئت<marker>.</marker></example>
+      <example type="incorrect" correction="؟"> متى تسافر<marker>.</marker></example>
+      <example type="incorrect" correction="؟"> هل تلعب معنا<marker>.</marker></example>
+      <example type="incorrect" correction="؟"> هل تلعب معنا في الساحة مساء يو غد<marker>.</marker></example>
+
+       </rule>
+
+    <rule id="punct_question_mark0002" name="إغفال علامة الاستفهام">
+      <pattern>
+        <token postag="SENT_START" skip="1"/>
+        <token regexp="yes" skip="-1">هل|كم|ماذا|لماذا|متى</token>
+        <!--          <token min="1" max="4"/>-->
+        <marker><token spacebefore="no">،</token></marker>
+        <!--         <marker><token postag="SENT_END" spacebefore="no" regexp="yes">\.|،</token></marker>-->
+      </pattern>
+      <message>ربما نسيت وضع علامة استفهام في نهاية الجملة
+        <suggestion>؟</suggestion>
+      </message>
+      <example type="incorrect" correction="؟">كم عمرك<marker>،</marker></example>
+      <example type="incorrect" correction="؟">لماذا جئت<marker>،</marker></example>
+      <example type="incorrect" correction="؟"> متى تسافر<marker>،</marker></example>
+      <example type="incorrect" correction="؟"> هل تلعب معنا<marker>،</marker></example>
+      <example type="incorrect" correction="؟"> هل تلعب معنا في الساحة مساء يو غد<marker>،</marker></example>
+
+      <example type="incorrect" correction="؟"> هل تلعب معنا<marker>،</marker>  في الساحة مساء يو غد</example>
+
+    </rule>
+  </rulegroup>
+ </category>    
 </rules>
 
